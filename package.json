@@ -1,6 +1,6 @@
 {
   "name": "react-router-native",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A routing library for React Native NavigationExperimental that strives for sensible API parity with react-router",
   "main": "lib/index.js",
   "author": "Jake Murzy <jake@murzy>",
