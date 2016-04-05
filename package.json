@@ -7,16 +7,19 @@
   "license": "MIT",
   "homepage": "https://github.com/jmurzy/react-router-native",
   "keywords": [
-    "babel",
     "react",
+    "react-router",
     "react-native",
-    "babel-plugin",
-    "stylesheet",
-    "css",
-    "style",
-    "import",
-    "hook",
-    "plugin"
+    "react-router-native",
+    "react-native-router",
+    "native",
+    "router",
+    "navigator",
+    "navigationexperimental",
+    "navigation",
+    "navigatorios",
+    "ios",
+    "andorid"
   ],
   "contributors": [
     {
