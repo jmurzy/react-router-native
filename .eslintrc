@@ -1,6 +1,4 @@
 {
-  "extends": "rackt",
-  "env": {
-    "mocha": true
-  }
+  "extends": "airbnb",
+  "parser": "babel-eslint"
 }

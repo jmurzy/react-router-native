@@ -6,7 +6,9 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "react": "^0.14.8",
-    "react-native": "^0.24.1"
+    "react": "^15.0.2",
+    "react-native": "git://github.com/facebook/react-native.git#8f295f16b19d1346a683b1448684144c804a973c",
+    "react-router": "^2.3.0",
+    "react-router-native": "file:../../"
   }
 }
