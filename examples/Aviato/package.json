@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "react": "^15.0.2",
-    "react-native": "git://github.com/facebook/react-native.git#8f295f16b19d1346a683b1448684144c804a973c",
+    "react-native": "^0.26.0-rc",
     "react-router": "^2.3.0",
     "react-router-native": "file:../../"
   }

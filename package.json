@@ -42,7 +42,8 @@
     "clean": "rimraf lib",
     "build": "npm run clean && node node_modules/.bin/babel src --out-dir lib",
     "lint": "node node_modules/.bin/eslint src test",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "sync": "sane '/usr/bin/rsync -a --exclude .git --exclude examples --exclude node_modules ./ examples/Aviato/node_modules/react-router-native' . --glob='{package.json,modules/**/*.js}'"
   },
   "repository": {
     "type": "git",
@@ -52,7 +53,6 @@
     "url": "https://github.com/jmurzy/react-router-native/issues"
   },
   "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0",
     "react-native": "git://github.com/facebook/react-native.git#24f44558f678fd2c8139564d960c05f700a8bd68",
     "react-router": "^2.3.0"
   },
@@ -67,9 +67,13 @@
     "babel-eslint": "^6.0.4",
     "eslint": "^2.9.0",
     "eslint-config-airbnb": "^8.0.0",
+    "eslint-plugin-flowtype": "^2.2.7",
     "eslint-plugin-import": "^1.6.1",
     "eslint-plugin-jsx-a11y": "^1.0.4",
     "eslint-plugin-react": "^5.0.1",
+    "react": "^15.0.2",
+    "react-native": "^0.26.0-rc",
+    "react-router": "^2.3.0",
     "rimraf": "^2.5.2"
   }
 }
