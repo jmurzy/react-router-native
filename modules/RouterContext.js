@@ -215,7 +215,7 @@ class RouterContext extends Component<any, any, any> {
     }
 
     invariant(
-      element !== null && element !== false && React.isValidElement(element),
+      element === null || element === false || React.isValidElement(element),
       'The root route must render a single element'
     );
 
