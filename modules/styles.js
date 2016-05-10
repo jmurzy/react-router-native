@@ -14,6 +14,7 @@ const globalStyles = StyleSheet.create({
     flex: 1,
   },
   navigationCard: {
+    overflow: 'hidden',
     position: 'absolute',
     backgroundColor: '#E9E9EF',
     bottom: 0,
