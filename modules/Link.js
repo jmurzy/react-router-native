@@ -2,7 +2,6 @@
 
 import React, { PropTypes, Component } from 'react';
 import { TouchableHighlight } from 'react-native';
-import { isEmptyObject } from './util';
 
 type Props = {
   to: any,
@@ -22,7 +21,7 @@ class Link extends Component<DefaultProps, Props, any> {
   static propTypes = {
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     state: PropTypes.object,
-    activeStyle: PropTypes.object,
+    activeStyle: PropTypes.any,
     onlyActiveOnIndex: PropTypes.bool,
     onPress: PropTypes.func,
   };
@@ -58,18 +57,14 @@ class Link extends Component<DefaultProps, Props, any> {
   render(): ReactElement {
     const { to, activeStyle, onlyActiveOnIndex, ...props } = this.props;
 
-    // Ignore if rendered outside the context of router, simplifies unit testing.
     const { router } = this.context;
 
     if (router && to) {
       const location = to;
-
-      // props.href = router.createHref(location)
-
-      if (activeStyle != null && !isEmptyObject(activeStyle)) {
+      if (activeStyle != null) {
         if (router.isActive(location, onlyActiveOnIndex)) {
           if (activeStyle) {
-            props.style = { ...props.style, ...activeStyle };
+            props.style = [props.style, activeStyle];
           }
         }
       }
