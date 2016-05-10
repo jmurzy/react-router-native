@@ -39,9 +39,7 @@
     "node": ">=4.0.0"
   },
   "scripts": {
-    "clean": "rimraf lib",
-    "build": "npm run clean && node node_modules/.bin/babel src --out-dir lib",
-    "lint": "node node_modules/.bin/eslint src test",
+    "lint": "node node_modules/.bin/eslint modules",
     "test": "npm run lint",
     "sync": "sane '/usr/bin/rsync -a --exclude .git --exclude examples --exclude node_modules ./ examples/Aviato/node_modules/react-router-native' . --glob='{package.json,modules/**/*.js}'"
   },
