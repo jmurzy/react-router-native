@@ -5,8 +5,8 @@ import invariant from 'invariant';
 import { Actions } from 'history';
 import RootWrapper from './RootWrapper';
 import reducer from './Reducer';
-import { createNavigation } from './RouteUtils';
-import { canPopActiveStack, getActiveRouteType } from './ReducerUtils';
+import { createNavigation, RouteTypes } from './RouteUtils';
+import { getActiveLocation, getActiveParentRouteType, getActiveRouteType } from './ReducerUtils';
 import type {
   Snapshot,
   RouteDef,
@@ -17,6 +17,7 @@ import type {
 } from './TypeDefinition';
 
 type Props = {
+  allRoutes: Array<RouteDef>,
   router: Object,
   location: Location,
   routes: Array<RouteDef>,
@@ -28,16 +29,20 @@ type Props = {
 
 type State = {
   navState: EnhancedNavigationState,
+  navigationTree: ?ReactElement,
 };
 
 let backwardHistory: Array<Snapshot> = [];
 let forwardHistory: Array<Snapshot> = [];
 
-const { PUSH: HISTORY_PUSH, POP: HISTORY_POP, REPLACE: HISTORY_REPLACE } = Actions;
+const { POP: HISTORY_POP, REPLACE: HISTORY_REPLACE } = Actions;
+
+const { TABS } = RouteTypes;
 
 class RouterContext extends Component<any, any, any> {
 
   static propTypes= {
+    allRoutes: PropTypes.array.isRequired,
     router: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     routes: PropTypes.array.isRequired,
@@ -63,7 +68,11 @@ class RouterContext extends Component<any, any, any> {
     const action: NavigationAction = { routes, location, params };
     const navState = reducer(null, action);
 
-    this.state = { navState };
+    (this: any).createElement = this.createElement.bind(this);
+
+    const navigationTree = createNavigation(this.createElement, routes);
+
+    this.state = { navState, navigationTree };
     backwardHistory.push(navState);
   }
 
@@ -72,87 +81,52 @@ class RouterContext extends Component<any, any, any> {
   getChildContext(): Object {
     const {
       router: {
-        transitionTo: baseTransitionTo,
+        createPop,
+        createTransitionTo,
+        createPush,
+        createReplace,
         ...router,
       },
+      location,
+      routes,
     } = this.props;
 
-    const navState = this.state.navState;
+    const { navState } = this.state;
+    const activeRouteType = getActiveParentRouteType(routes);
 
-    function pop(n = -1) {
-      if (!n || n > -1) {
-        return false;
-      }
-
-      const prevLocation = canPopActiveStack(n, navState);
-
-      if (prevLocation) {
-        const stateKey = prevLocation.state.stateKey;
-        const location = router.createLocation(router.createPath(prevLocation), HISTORY_PUSH);
-        location.state = { stateKey };
-
-        baseTransitionTo(location);
-        return true;
-      }
-
-      return false;
-    }
-
-    const transitionTo = (nextLocation) => {
-      // History API treats HISTORY_PUSH to current path like HISTORY_REPLACE to be consistent with
-      // browser behavior. (mjackson/history/blob/v2.0.1/modules/createHistory.js#L126) This is not
-      // reasonable when performing `router.pop()` on <Stack />. A unique stateKey is needed for
-      // each `location` to (1) bust the default 'HISTORY_REPLACE' behavior, (2) location objects
-      // that are passed to reducer during a `pop` needs a stateKey to be able to use a previous
-      // state for the newly HISTORY_PUSH'ed pointer to an older scene, (3) History needs a unique
-      // `location.key` for each location entry. So cannot be used as stateKey.
-      const location = nextLocation;
-      const stateKey = router.createKey();
-      location.state = { ...location.state, stateKey };
-
-      if (location.action === HISTORY_PUSH) {
-        const currentLocation = this.props.location;
-        const currentPath = router.createPath(currentLocation);
-        const nextPath = router.createPath(location);
-        const currentStateKey = currentLocation.state.stateKey;
-        const nextStateKey = location.state.stateKey;
-
-        if (currentPath === nextPath && currentStateKey !== nextStateKey) {
-          const routeType = getActiveRouteType(this.props.routes);
-          if (routeType !== 'stack') {
-            location.action = HISTORY_REPLACE;
-          }
-        }
-      }
-
-      baseTransitionTo(location);
-    };
-
-    const push = (input) => transitionTo(router.createLocation(input, HISTORY_PUSH));
-    const replace = (input) => transitionTo(router.createLocation(input, HISTORY_REPLACE));
+    const pop = createPop(navState);
+    const transitionTo = createTransitionTo(location, activeRouteType);
+    const push = createPush(location, activeRouteType);
+    const replace = createReplace(location, activeRouteType);
 
     const enhancedRouter = {
       ...router,
       transitionTo,
+      pop,
       push,
       replace,
-      pop,
     };
 
     return { router: enhancedRouter, backwardHistory, forwardHistory };
   }
 
   componentWillMount(): void {
-    (this: any).createElement = this.createElement.bind(this);
+    (this: any).shouldRedirectToActiveRoute = this.shouldRedirectToActiveRoute.bind(this);
   }
 
   componentWillReceiveProps(nextProps: Props): void {
-    const { routes, location, params } = nextProps;
+    const { routes: nextRoutes,
+            location: nextLocation,
+            params: nextParams,
+          } = nextProps;
 
     let navState;
-    // go(n/-n)
-    if (location.action === HISTORY_POP) {
-      let index = backwardHistory.findIndex(snapshot => snapshot.location.key === location.key);
+
+    // TODO Refactor snapshot tracking into `nativeHistory` with our own version of
+    // `createMemoryHistory`
+    if (nextLocation.action === HISTORY_POP) {
+      // go(n/-n)
+      let index = backwardHistory.findIndex(snapshot => snapshot.location.key === nextLocation.key);
       if (index >= 0) {
         // Moving backward
         navState = backwardHistory[index];
@@ -160,7 +134,7 @@ class RouterContext extends Component<any, any, any> {
         forwardHistory = [...head, ...forwardHistory];
       } else {
         // Assume forward
-        index = forwardHistory.findIndex(snapshot => snapshot.location.key === location.key);
+        index = forwardHistory.findIndex(snapshot => snapshot.location.key === nextLocation.key);
         navState = forwardHistory[index];
         const tail = forwardHistory.splice(0, index + 1);
         backwardHistory = [...backwardHistory, ...tail];
@@ -171,23 +145,87 @@ class RouterContext extends Component<any, any, any> {
 
       // TODO Double taps should reset stack
       let resetStack = false;
-      if (location.action === HISTORY_REPLACE) {
+      if (nextLocation.action === HISTORY_REPLACE) {
         resetStack = true;
       }
 
-      const action: NavigationAction = { routes, location, params, resetStack };
-      navState = reducer(this.state.navState, action);
+      const action: NavigationAction = {
+        routes: nextRoutes,
+        location: nextLocation,
+        params: nextParams,
+        resetStack,
+      };
 
-      if (location.action === HISTORY_REPLACE) {
+      const nextNavState = navState = reducer(this.state.navState, action);
+
+      if (nextLocation.action === HISTORY_REPLACE) {
         backwardHistory[backwardHistory.length - 1] = navState;
       } else {
         backwardHistory.push(navState);
       }
+
+      const skipRender = this.shouldRedirectToActiveRoute(nextProps, nextNavState);
+
+      if (skipRender) return;
     }
+
+    const navigationTree = createNavigation(this.createElement, nextRoutes);
 
     this.setState({
       navState,
+      navigationTree,
     });
+  }
+
+  shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
+    // Also prevents a premature render before redirecting to active paths
+    return this.state.navState !== nextState.navState ||
+           this.state.navigationTree !== nextState.navigationTree;
+  }
+
+  shouldRedirectToActiveRoute(nextProps: Props, nextNavState: EnhancedNavigationState): bool {
+    const {
+      routes: nextRoutes,
+      location: nextLocation,
+    } = nextProps;
+
+    const nextActiveRouteType = getActiveRouteType(nextRoutes);
+    // Terminating at tabs
+    if (nextActiveRouteType === TABS) {
+      // Find location of the most active leaf of tabs
+      const activeLocation = getActiveLocation(nextNavState);
+
+      if (activeLocation) {
+        const { router } = this.props;
+
+        const nextPath = router.createPath(nextLocation);
+        const redirectPath = router.createPath(activeLocation);
+
+        const {
+          location: currentLocation,
+          routes: currentRoutes,
+        } = this.props;
+
+        if (redirectPath !== nextPath) {
+          // Ugh. Bust current render and redirect to active location
+          this.setState({}, () => {
+            // `HISTORY_REPLACE` with active location to prevent snapshots from going out of sync.
+            // Note that this only replaces the tabs route that causes the redirect. The `router`
+            // needs to go through the match loop twice to obtain a what-if `navState`, and
+            // `history` does not have an API to replace the last n entries to achieve the expected
+            // redirect behavior. So we may end up having consecutive entires for the same path in
+            // `history` and `snapshots`.
+            const currentActiveRouteType = getActiveParentRouteType(currentRoutes);
+            const replace = router.createReplace(currentLocation, currentActiveRouteType);
+            replace(activeLocation);
+          });
+
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   props: Props;
@@ -197,9 +235,9 @@ class RouterContext extends Component<any, any, any> {
   }
 
   render(): ?ReactElement {
-    const { location, routes, addressBar } = this.props;
+    const { location, addressBar } = this.props;
 
-    const navigationTree = createNavigation(this.createElement, routes);
+    const navigationTree = this.state.navigationTree;
     const navState = this.state.navState;
 
     let element = null;
