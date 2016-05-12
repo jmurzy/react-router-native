@@ -16,6 +16,8 @@ import type {
   NavigationAction,
 } from './TypeDefinition';
 
+import match from 'react-router/es6/match';
+
 type Props = {
   allRoutes: Array<RouteDef>,
   router: Object,
@@ -85,6 +87,7 @@ class RouterContext extends Component<any, any, any> {
         createTransitionTo,
         createPush,
         createReplace,
+        listenBefore,
         ...router,
       },
       location,
@@ -98,6 +101,49 @@ class RouterContext extends Component<any, any, any> {
     const transitionTo = createTransitionTo(location, activeRouteType);
     const push = createPush(location, activeRouteType);
     const replace = createReplace(location, activeRouteType);
+
+    // TODO User defined listenBefore
+    // TODO Explore a better react-router API to do this
+    const unListenBefore = listenBefore((nextLocation, callback) => {
+      // One-off per navState
+      unListenBefore();
+
+      const path = router.createPath(nextLocation);
+      match({ location: path, routes }, (error, redirectLocation, nextState) => {
+        if (!nextState) {
+          callback(true);
+          return;
+        }
+
+        const {
+          routes: nextRoutes,
+          params: nextParams,
+        } = nextState;
+
+        const action: NavigationAction = {
+          routes: nextRoutes,
+          location: nextLocation,
+          params: nextParams,
+        };
+
+        const nextNavState = reducer(navState, action);
+
+        const activeLocation = this.shouldRedirectToActiveRoute(
+          nextRoutes,
+          nextLocation,
+          nextNavState
+        );
+
+        // if (activeLocation) debugger;
+
+        if (!activeLocation) {
+          callback(true);
+        } else {
+          callback(false);
+          push(activeLocation);
+        }
+      });
+    });
 
     const enhancedRouter = {
       ...router,
@@ -156,17 +202,13 @@ class RouterContext extends Component<any, any, any> {
         resetStack,
       };
 
-      const nextNavState = navState = reducer(this.state.navState, action);
+      navState = reducer(this.state.navState, action);
 
       if (nextLocation.action === HISTORY_REPLACE) {
         backwardHistory[backwardHistory.length - 1] = navState;
       } else {
         backwardHistory.push(navState);
       }
-
-      const skipRender = this.shouldRedirectToActiveRoute(nextProps, nextNavState);
-
-      if (skipRender) return;
     }
 
     const navigationTree = createNavigation(this.createElement, nextRoutes);
@@ -177,22 +219,14 @@ class RouterContext extends Component<any, any, any> {
     });
   }
 
-  shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
-    // Also prevents a premature render before redirecting to active paths
-    return this.state.navState !== nextState.navState ||
-           this.state.navigationTree !== nextState.navigationTree;
-  }
-
-  shouldRedirectToActiveRoute(nextProps: Props, nextNavState: EnhancedNavigationState): bool {
-    const {
-      routes: nextRoutes,
-      location: nextLocation,
-    } = nextProps;
-
+  shouldRedirectToActiveRoute(
+    nextRoutes: Array<RouteDef>,
+    nextLocation: Location,
+    nextNavState: EnhancedNavigationState): ?Location {
     const nextActiveRouteType = getActiveRouteType(nextRoutes);
     // Terminating at tabs
     if (nextActiveRouteType === TABS) {
-      // Find location of the most active leaf of tabs
+      // Find location of the most active leaf
       const activeLocation = getActiveLocation(nextNavState);
 
       if (activeLocation) {
@@ -201,31 +235,13 @@ class RouterContext extends Component<any, any, any> {
         const nextPath = router.createPath(nextLocation);
         const redirectPath = router.createPath(activeLocation);
 
-        const {
-          location: currentLocation,
-          routes: currentRoutes,
-        } = this.props;
-
         if (redirectPath !== nextPath) {
-          // Ugh. Bust current render and redirect to active location
-          this.setState({}, () => {
-            // `HISTORY_REPLACE` with active location to prevent snapshots from going out of sync.
-            // Note that this only replaces the tabs route that causes the redirect. The `router`
-            // needs to go through the match loop twice to obtain a what-if `navState`, and
-            // `history` does not have an API to replace the last n entries to achieve the expected
-            // redirect behavior. So we may end up having consecutive entires for the same path in
-            // `history` and `snapshots`.
-            const currentActiveRouteType = getActiveParentRouteType(currentRoutes);
-            const replace = router.createReplace(currentLocation, currentActiveRouteType);
-            replace(activeLocation);
-          });
-
-          return true;
+          return activeLocation;
         }
       }
     }
 
-    return false;
+    return null;
   }
 
   props: Props;

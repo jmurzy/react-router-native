@@ -3,13 +3,18 @@
 import warning from 'warning';
 import invariant from 'invariant';
 import getRouteParams from 'react-router/es6/getRouteParams';
+import { RouteTypes } from './RouteUtils';
+
 import type {
   EnhancedNavigationState,
   Location,
   RouteDef,
   IndexRouteDef,
   NoPathRouteDef,
+  RouteType,
 } from './TypeDefinition';
+
+const { STACK, TABS, SINGLE } = RouteTypes;
 
 const hasNextChild = leaf => leaf.children && leaf.children.length === 1;
 
@@ -65,7 +70,7 @@ function mergeState(oldLeaf: EnhancedNavigationState,
 
     // For stacks, when a location descriptor with the same key is pushed, it's assumed POP,
     // re-activate leaf and slice off the tail
-    if (oldLeaf.type === 'stack') {
+    if (oldLeaf.type === STACK) {
       leaf = {
         ...leaf,
         children: [
@@ -78,7 +83,7 @@ function mergeState(oldLeaf: EnhancedNavigationState,
   }
 
   // Push a new child
-  if (oldLeaf.type === 'stack' || oldLeaf.type === 'tabs') {
+  if (oldLeaf.type === STACK || oldLeaf.type === TABS) {
     return {
       ...oldLeaf,
       children: [
@@ -109,7 +114,7 @@ function mergeState(oldLeaf: EnhancedNavigationState,
 // }
 
 // function isNoPathRoute(route: Route): boolean {
-//   if (!route.path && route.childRoutes && route.routeType === 'single') {
+//   if (!route.path && route.childRoutes && route.routeType === SINGLE) {
 //     return true;
 //   }
 //   return false;
@@ -126,12 +131,12 @@ function getIndexRoute(route: RouteDef): ?IndexRouteDef {
 }
 
 function getNoPathRoute(route: RouteDef): ?NoPathRouteDef {
-  if (!route.path && route.childRoutes && route.routeType === 'single') {
+  if (!route.path && route.childRoutes && route.routeType === SINGLE) {
     return {
       childRoutes: route.childRoutes,
       component: route.component,
       overlayComponent: route.overlayComponent,
-      routeType: route.routeType,
+      routeType: SINGLE,
     };
   }
   return null;
@@ -183,7 +188,7 @@ export function createState(routes: any,
 
     const stateKey = location.state.stateKey;
 
-    if (parentRoute && parentRoute.routeType === 'stack') {
+    if (parentRoute && parentRoute.routeType === STACK) {
       key = `${key}_${stateKey}`;
     }
 
@@ -230,7 +235,7 @@ export function canPopActiveStack(n: number,
   }
 
   // Can pop only if active leaf is of a stack
-  if (parentState && parentState.type === 'stack') {
+  if (parentState && parentState.type === STACK) {
     if (!canPop(n, parentState)) {
       warning(
         false,
@@ -268,9 +273,25 @@ export function activateState(oldState: ?EnhancedNavigationState,
   return mergeState(oldState, newState);
 }
 
-export function getActiveRouteType(routes: Array<RouteDef>): ?string {
+function getActiveRouteTypeAtIndex(index: number, routes: Array<RouteDef>): ?RouteType {
   if (routes && routes.length > 1) {
-    return routes[routes.length - 2].routeType;
+    return routes[index].routeType;
   }
   return null;
+}
+
+export function getActiveRouteType(routes: Array<RouteDef>): ?RouteType {
+  return getActiveRouteTypeAtIndex(routes.length - 1, routes);
+}
+
+export function getActiveParentRouteType(routes: Array<RouteDef>): ?RouteType {
+  return getActiveRouteTypeAtIndex(routes.length - 2, routes);
+}
+
+export function getActiveLocation(leafState: EnhancedNavigationState): ?Location {
+  if (leafState.children && leafState.children.length > 0) {
+    return getActiveLocation(leafState.children[leafState.index]);
+  }
+
+  return leafState.location;
 }
