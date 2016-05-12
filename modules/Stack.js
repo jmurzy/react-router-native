@@ -2,8 +2,10 @@
 
 import { PropTypes, Component } from 'react';
 import invariant from 'invariant';
-import { createRouteFromReactElement } from './RouteUtils';
+import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
 import { notImplemented, component } from './PropTypes';
+
+const { STACK } = RouteTypes;
 
 type Props = {
   path: string,
@@ -29,7 +31,7 @@ class Stack extends Component<any, Props, any> {
   };
 
   static defaultProps = {
-    routeType: 'stack',
+    routeType: STACK,
   };
 
   props: Props;

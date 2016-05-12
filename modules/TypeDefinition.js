@@ -1,5 +1,9 @@
 /* @flow */
 
+import { RouteTypes } from './RouteUtils';
+
+export type RouteType = $Keys<typeof RouteTypes>;
+
 export type Location = {
   action: string,
   hash: string,
@@ -26,7 +30,7 @@ export type RouteDef = {
   component: Function,
   overlayComponent: ?Function,
   path: ?string,
-  routeType: ?string,
+  routeType: ?RouteType,
 };
 
 export type IndexRouteDef = {
@@ -38,7 +42,7 @@ export type NoPathRouteDef = {
   childRoutes: Array<RouteDef>,
   component: Function,
   overlayComponent: ?Function,
-  routeType: string,
+  routeType: RouteType,
 };
 
 export type ElementProvider = (component: ReactClass<any>, props: any) => ?ReactElement;

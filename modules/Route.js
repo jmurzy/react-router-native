@@ -2,7 +2,7 @@
 
 import { PropTypes, Component } from 'react';
 import invariant from 'invariant';
-import { createRouteFromReactElement } from './RouteUtils';
+import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
 import { notImplemented, component } from './PropTypes';
 
 type Props = {
@@ -13,6 +13,8 @@ type Props = {
   getComponent: ?any,
   getComponents: ?any,
 };
+
+const { SINGLE } = RouteTypes;
 
 /* eslint-disable react/require-render-return */
 class Route extends Component<any, Props, any> {
@@ -29,7 +31,7 @@ class Route extends Component<any, Props, any> {
   };
 
   static defaultProps = {
-    routeType: 'single',
+    routeType: SINGLE,
   };
 
   props: Props;

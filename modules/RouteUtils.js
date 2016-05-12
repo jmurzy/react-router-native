@@ -9,10 +9,18 @@ import {
 } from 'react-router/es6/RouteUtils';
 import type { RouteDef, ElementProvider } from './TypeDefinition';
 
+export const RouteTypes = {
+  STACK: 'STACK',
+  TABS: 'TABS',
+  SINGLE: 'SINGLE',
+};
+
+const { STACK, TABS } = RouteTypes;
+
 export function createRouteFromReactElement(element: ReactElement,
                                             parentRoute: RouteDef): ReactElement {
   if (element.props.overlayComponent && (!parentRoute
-        || parentRoute.routeType !== 'stack' && parentRoute.routeType !== 'tabs')) {
+        || parentRoute.routeType !== STACK && parentRoute.routeType !== TABS)) {
     warning(false, 'overlayComponent does not make sense outside of <Stack> or <Tabs>');
   }
 
@@ -57,9 +65,9 @@ function createNavigationTree(createElement: ElementProvider,
   }
 
   let el;
-  if (route.routeType === 'stack') {
+  if (route.routeType === STACK) {
     el = createElement(StackView, props);
-  } else if (route.routeType === 'tabs') {
+  } else if (route.routeType === TABS) {
     el = createElement(TabsView, props);
   } else {
     el = createElement(SceneView, props);
