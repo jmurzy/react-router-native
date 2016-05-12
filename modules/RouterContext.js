@@ -1,6 +1,7 @@
 /* @flow */
 
 import React, { PropTypes, Component } from 'react';
+import { match } from 'react-router';
 import invariant from 'invariant';
 import { Actions } from 'history';
 import RootWrapper from './RootWrapper';
@@ -15,8 +16,6 @@ import type {
   ElementProvider,
   NavigationAction,
 } from './TypeDefinition';
-
-import match from 'react-router/es6/match';
 
 type Props = {
   allRoutes: Array<RouteDef>,
