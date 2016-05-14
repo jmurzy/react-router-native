@@ -34,7 +34,8 @@ const User = (props) => (/*...*/);
 const NoMatch = (props) => (/*...*/);
 
 render((
-  <Router>
+  /* Address Bar can be toggled on or off by setting the addressBar prop */
+  <Router addressBar>
     <Route path="/" component={App}>
       <Route path="about" component={About}/>
       <Route path="users" component={Users}>
