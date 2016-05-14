@@ -2,6 +2,8 @@
 
 A routing library for [React Native](https://github.com/facebook/react-native) that strives for sensible API parity with [react-router](https://github.com/reactjs/react-router/).
 
+<img align="right" width="360px" src="https://raw.githubusercontent.com/jmurzy/react-router-native/master/docs/screenshot.gif">
+
 ### Questions?
 Feedback is appreciated, but please keep in mind that the project contains components that are currently under active development and considered experimental. Documentation is still a work-in-progress, and pull requests are accepted gratefully!
 
