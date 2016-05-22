@@ -6,7 +6,7 @@ import invariant from 'invariant';
 import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
 import { notImplemented, falsy, component } from './PropTypes';
 
-const { TABS, STACK } = RouteTypes;
+const { TABS } = RouteTypes;
 
 type Props = {
   path: ?any,
