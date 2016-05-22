@@ -7,7 +7,7 @@ A routing library for [React Native](https://github.com/facebook/react-native) t
 ### Questions?
 Feedback is appreciated, but please keep in mind that the project contains components that are currently under active development and considered experimental. Documentation is still a work-in-progress, and pull requests are accepted gratefully!
 
-Feel free to reach out to me on Twitter [@jmurzy](https://twitter.com/jmurzy). If you have any questions please submit an Issue with the "question" tag or come hang out in the React Router [Reactiflux Channel](https://discord.gg/0ZcbPKXt5bYaNQ46) and post your request there.
+Feel free to reach out to me on Twitter [@jmurzy](https://twitter.com/jmurzy). If you have any questions, please submit an Issue with the "question" tag or come hang out in the React Router [Reactiflux Channel](https://discord.gg/0ZcbPKXt5bYaNQ46) and post your request there.
 
 ### Platform Support
 
