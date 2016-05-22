@@ -47,6 +47,8 @@ class Link extends Component<DefaultProps, Props, any> {
       onPress(event);
     }
 
+    // TODO Wrap this in requestAnimationFrame with TimerMixin
+    // docs/performance.html#my-touchablex-view-isn-t-very-responsive
     if (event.defaultPrevented !== true) {
       const { to } = this.props;
       const { router } = this.context;
