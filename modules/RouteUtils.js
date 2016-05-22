@@ -19,10 +19,17 @@ const { STACK, TABS } = RouteTypes;
 
 export function createRouteFromReactElement(element: ReactElement,
                                             parentRoute: RouteDef): ReactElement {
-  if (element.props.overlayComponent && (!parentRoute
-        || parentRoute.routeType !== STACK && parentRoute.routeType !== TABS)) {
-    warning(false, 'overlayComponent does not make sense outside of <Stack> or <Tabs>');
-  }
+  warning(
+    !element.props.overlayComponent || parentRoute
+      && (parentRoute.routeType === STACK || parentRoute.routeType === TABS),
+    'overlayComponent does not make sense outside of <Stack> or <Tabs>'
+  );
+
+  warning(
+    !parentRoute || parentRoute.routeType !== STACK
+      || (element.props.routeType !== STACK && element.props.routeType !== TABS),
+    '<Tabs> and <Stack> cannot be nested within <Stack>'
+  );
 
   return _createRouteFromReactElement(element);
 }

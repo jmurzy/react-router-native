@@ -3,8 +3,10 @@
 import { Component } from 'react';
 import warning from 'warning';
 import invariant from 'invariant';
-import { createRouteFromReactElement } from './RouteUtils';
+import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
 import { notImplemented, falsy, component } from './PropTypes';
+
+const { TABS, STACK } = RouteTypes;
 
 type Props = {
   path: ?any,
@@ -28,6 +30,11 @@ class IndexRoute extends Component<any, Props, any> {
   };
 
   static createRouteFromReactElement = (element, parentRoute) => {
+    warning(
+      parentRoute.routeType !== TABS,
+      'An <IndexRoute> is not allowed for <Tabs>'
+    );
+
     if (parentRoute) {
       /* eslint-disable no-param-reassign */
       parentRoute.indexRoute = createRouteFromReactElement(element, parentRoute);
