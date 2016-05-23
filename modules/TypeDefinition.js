@@ -1,8 +1,10 @@
 /* @flow */
-
+import { Animated } from 'react-native';
 import { RouteTypes } from './RouteUtils';
 
 export type RouteType = $Keys<typeof RouteTypes>;
+
+export type AnimatedValue = Animated.Value;
 
 export type Location = {
   action: string,
