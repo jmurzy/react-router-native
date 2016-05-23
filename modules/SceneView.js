@@ -8,7 +8,7 @@ import { globalStyles as styles } from './styles';
 import type { EnhancedNavigationState } from './TypeDefinition';
 
 const {
-  View: NavigationView,
+  AnimatedView: NavigationAnimatedView,
   PropTypes: NavigationPropTypes,
 } = NavigationExperimental;
 
@@ -53,7 +53,9 @@ class SceneView extends Component<any, Props, any> {
       warnOutOfSycn('Cannot render scene', props);
     }
 
-    return React.cloneElement(el, { _navigationState: scene.navigationState });
+    const key = scene.navigationState.key;
+
+    return React.cloneElement(el, { key, _navigationState: scene.navigationState });
   }
 
   render(): ReactElement {
@@ -64,8 +66,9 @@ class SceneView extends Component<any, Props, any> {
 
     let wrappedChildren;
     if (navScenes && children && children.length > 0) {
+      // react-native/c3714d7ed7c8ee57e005d51147820456ef8cda3e?diff=split
       wrappedChildren = (
-        <NavigationView
+        <NavigationAnimatedView
           style={styles.wrapper}
           navigationState={_navigationState}
           renderScene={this.renderScene}
