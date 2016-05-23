@@ -1,13 +1,16 @@
 /* @flow */
 
 import React, { PropTypes, Component, Element as ReactElement } from 'react';
-import { View, NavigationExperimental } from 'react-native';
+import { View } from 'react-native';
 import invariant from 'invariant';
 import warnOnce from './warningUtil';
 import AddressBar from './AddressBar';
+import { PAN_RESPONDER_BACK_ACTION } from './transitionRegistry';
 import type { EnhancedNavigationState, Location } from './TypeDefinition';
 
 import { ADDDRESS_BAR_HEIGHT, globalStyles as styles } from './styles';
+
+const NAVIGATION_HEADER_BACK_BUTTON_BACK_ACTION = 'BackAction';
 
 type Props = {
   navigationTree: ReactElement,
@@ -18,17 +21,6 @@ type Props = {
 
 type Context = {
   router: Object,
-};
-
-const {
-  RootContainer: NavigationRootContainer,
-} = NavigationExperimental;
-
-// NavigationExperimental/NavigationCardStackPanResponder.js#L68
-const NavigationCardStackPanResponder = {
-  Actions: {
-    BACK: { type: 'back' },
-  },
 };
 
 class RootWrapper extends Component<any, Props, any> {
@@ -68,10 +60,8 @@ class RootWrapper extends Component<any, Props, any> {
   handleNavigation(action: Object): boolean { // eslint-disable-line consistent-return
     const { type } = action;
 
-    const { type: backType } = NavigationRootContainer.getBackAction();
-    const { Actions: { BACK: { type: panBackType } } } = NavigationCardStackPanResponder;
-
-    if (type === backType || type === panBackType) {
+    if (type === NAVIGATION_HEADER_BACK_BUTTON_BACK_ACTION ||
+        type === PAN_RESPONDER_BACK_ACTION) {
       warnOnce(
         false,
         'Using <NavigationHeader /> with the default `renderLeftComponent` prop that uses' +

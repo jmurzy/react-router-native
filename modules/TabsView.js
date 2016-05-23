@@ -1,16 +1,17 @@
 /* @flow */
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { NavigationExperimental } from 'react-native';
 import { warnOutOfSycn } from './warningUtil';
-import interpolatorRegistry from './interpolatorRegistry';
+import withOnNavigate from './withOnNavigate';
+import transitionRegistry from './transitionRegistry';
 import { globalStyles as styles } from './styles';
 
 import type { EnhancedNavigationState } from './TypeDefinition';
 
 const {
   Card: NavgationCard,
-  AnimatedView: NavigationAnimatedView,
+  Transitioner: NavigationTransitioner,
   PropTypes: NavigationPropTypes,
 } = NavigationExperimental;
 
@@ -25,17 +26,19 @@ type Props = {
   overlayComponent: ?ReactClass,
   navScenes: ?Array<ReactElement>,
   _navigationState: EnhancedNavigationState,
+  onNavigate: Function,
 };
 
 class TabsView extends Component<any, Props, any> {
 
   static propTypes = {
-    path: React.PropTypes.string.isRequired,
-    type: React.PropTypes.string.isRequired,
-    navigationComponent: React.PropTypes.any.isRequired,
-    overlayComponent: React.PropTypes.any,
-    navScenes: React.PropTypes.arrayOf(React.PropTypes.element),
-    _navigationState: React.PropTypes.object,
+    path: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    navigationComponent: PropTypes.any.isRequired,
+    overlayComponent: PropTypes.any,
+    navScenes: PropTypes.arrayOf(PropTypes.element),
+    _navigationState: PropTypes.object,
+    onNavigate: PropTypes.func.isRequired,
   };
 
   componentWillMount(): void {
@@ -81,7 +84,7 @@ class TabsView extends Component<any, Props, any> {
     const {
       styleInterpolator,
       panResponder,
-    } = interpolatorRegistry[interpolator];
+    } = transitionRegistry[interpolator];
 
     const viewStyle = styleInterpolator(props);
     const panHandlers = panResponder(props);
@@ -116,22 +119,35 @@ class TabsView extends Component<any, Props, any> {
   }
 
   render(): ReactElement {
-    const { navScenes, _navigationState, navigationComponent: NavigationComponent } = this.props;
-    const { children, params, routeParams, location, interpolator } = _navigationState;
+    const {
+      onNavigate,
+      navScenes,
+      _navigationState,
+      navigationComponent: NavigationComponent,
+    } = this.props;
 
     const {
-      applyAnimation,
-    } = interpolatorRegistry[interpolator];
+      children,
+      params,
+      routeParams,
+      location,
+      interpolator,
+    } = _navigationState;
+
+    const {
+      configureTransition,
+    } = transitionRegistry[interpolator];
 
     let wrappedChildren;
     if (navScenes && children && children.length > 0) {
       wrappedChildren = (
-        <NavigationAnimatedView
-          applyAnimation={applyAnimation}
+        <NavigationTransitioner
+          configureTransition={configureTransition}
           style={styles.wrapper}
           navigationState={_navigationState}
           renderScene={this.renderScene}
           renderOverlay={this.renderOverlay}
+          onNavigate={onNavigate}
         />
       );
     }
@@ -145,4 +161,4 @@ class TabsView extends Component<any, Props, any> {
 
 }
 
-export default TabsView;
+export default withOnNavigate(TabsView);

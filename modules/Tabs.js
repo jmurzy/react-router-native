@@ -4,7 +4,7 @@ import { PropTypes, Component } from 'react';
 import invariant from 'invariant';
 import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
 import { notImplemented, component } from './PropTypes';
-import { NONE } from './interpolatorRegistry';
+import { NONE } from './transitionRegistry';
 
 type Props = {
   path: string,

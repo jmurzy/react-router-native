@@ -1,14 +1,15 @@
 /* @flow */
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { NavigationExperimental } from 'react-native';
 import { warnOutOfSycn } from './warningUtil';
+import withOnNavigate from './withOnNavigate';
 import { globalStyles as styles } from './styles';
 
 import type { EnhancedNavigationState } from './TypeDefinition';
 
 const {
-  AnimatedView: NavigationAnimatedView,
+  Transitioner: NavigationTransitioner,
   PropTypes: NavigationPropTypes,
 } = NavigationExperimental;
 
@@ -22,16 +23,18 @@ type Props = {
   navigationComponent: ReactClass,
   navScenes: ?Array<ReactElement>,
   _navigationState: EnhancedNavigationState,
+  onNavigate: Function,
 };
 
 class SceneView extends Component<any, Props, any> {
 
   static propTypes = {
-    path: React.PropTypes.string.isRequired,
-    type: React.PropTypes.string.isRequired,
-    navigationComponent: React.PropTypes.any.isRequired,
-    navScenes: React.PropTypes.arrayOf(React.PropTypes.element),
-    _navigationState: React.PropTypes.object,
+    path: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    navigationComponent: PropTypes.any.isRequired,
+    navScenes: PropTypes.arrayOf(PropTypes.element),
+    _navigationState: PropTypes.object,
+    onNavigate: PropTypes.func.isRequired,
   };
 
   componentWillMount(): void {
@@ -59,19 +62,29 @@ class SceneView extends Component<any, Props, any> {
   }
 
   render(): ReactElement {
-    const { navScenes,
-            _navigationState,
-            navigationComponent: NavigationComponent } = this.props;
-    const { children, params, routeParams, location } = _navigationState;
+    const {
+      onNavigate,
+      navScenes,
+      _navigationState,
+      navigationComponent: NavigationComponent,
+    } = this.props;
+
+    const {
+      children,
+      params,
+      routeParams,
+      location,
+    } = _navigationState;
 
     let wrappedChildren;
     if (navScenes && children && children.length > 0) {
       // react-native/c3714d7ed7c8ee57e005d51147820456ef8cda3e?diff=split
       wrappedChildren = (
-        <NavigationAnimatedView
+        <NavigationTransitioner
           style={styles.wrapper}
           navigationState={_navigationState}
           renderScene={this.renderScene}
+          onNavigate={onNavigate}
         />
       );
     }
@@ -84,4 +97,4 @@ class SceneView extends Component<any, Props, any> {
   }
 }
 
-export default SceneView;
+export default withOnNavigate(SceneView);

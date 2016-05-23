@@ -4,7 +4,7 @@ import { PropTypes, Component } from 'react';
 import invariant from 'invariant';
 import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
 import { notImplemented, component } from './PropTypes';
-import { HORIZONTAL_PAGER } from './interpolatorRegistry';
+import { HORIZONTAL_PAGER } from './transitionRegistry';
 
 const { STACK } = RouteTypes;
 

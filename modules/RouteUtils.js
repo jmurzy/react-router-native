@@ -5,7 +5,7 @@ import invariant from 'invariant';
 import SceneView from './SceneView';
 import StackView from './StackView';
 import TabsView from './TabsView';
-import interpolatorRegistry from './interpolatorRegistry';
+import transitionRegistry from './transitionRegistry';
 import {
   createRouteFromReactElement as _createRouteFromReactElement,
 } from 'react-router/es6/RouteUtils';
@@ -22,9 +22,9 @@ const { STACK, TABS } = RouteTypes;
 export function createRouteFromReactElement(element: ReactElement,
                                             parentRoute: RouteDef): ReactElement {
   invariant(
-    !element.props.interpolator || interpolatorRegistry[element.props.interpolator] !== undefined,
+    !element.props.interpolator || transitionRegistry[element.props.interpolator] !== undefined,
     '"%s" is not a valid interpolator. If you are using a custom interpolator, make sure to ' +
-    'register it with `interpolatorRegistry`',
+    'register it with `transitionRegistry`',
     element.props.interpolator
   );
 
