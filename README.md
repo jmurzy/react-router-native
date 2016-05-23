@@ -1,4 +1,4 @@
-# React Router Native [![npm version](https://img.shields.io/npm/v/react-router-native.svg?style=flat-square)](https://www.npmjs.com/package/react-router-native) [![npm](https://img.shields.io/npm/l/react-router-native.svg)](https://github.com/jmurzy/react-router-native/blob/master/LICENSE.md)
+# React Router Native [![CircleCI](https://img.shields.io/circleci/project/jmurzy/react-router-native.svg)](https://circleci.com/gh/jmurzy/react-router-native) [![npm version](https://img.shields.io/npm/v/react-router-native.svg?style=flat-square)](https://www.npmjs.com/package/react-router-native) [![npm](https://img.shields.io/npm/l/react-router-native.svg)](https://github.com/jmurzy/react-router-native/blob/master/LICENSE.md)
 
 A routing library for [React Native](https://github.com/facebook/react-native) that strives for sensible API parity with [react-router](https://github.com/reactjs/react-router/).
 

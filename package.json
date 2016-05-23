@@ -41,7 +41,8 @@
   },
   "scripts": {
     "lint": "node node_modules/.bin/eslint modules",
-    "test": "npm run lint",
+    "flow": "node_modules/.bin/flow check",
+    "test": "npm run lint && npm run flow",
     "sync": "sane '/usr/bin/rsync -a --exclude .git --exclude examples --exclude node_modules ./ examples/Aviato/node_modules/react-router-native' . --glob='{package.json,modules/**/*.js}'"
   },
   "repository": {
@@ -70,6 +71,7 @@
     "eslint-plugin-import": "^1.6.1",
     "eslint-plugin-jsx-a11y": "^1.0.4",
     "eslint-plugin-react": "^5.0.1",
+    "flow-bin": "^0.25.0",
     "react": "^15.0.2",
     "react-native": "^0.26.0-rc",
     "react-router": "^2.3.0",
