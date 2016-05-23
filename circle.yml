@@ -8,4 +8,4 @@ dependencies:
 
 test:
   override:
-    - node_modules/.bin/npm test
+    - npm test
