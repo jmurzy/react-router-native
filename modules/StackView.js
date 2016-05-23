@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { NavigationExperimental } from 'react-native';
 import { warnOutOfSycn } from './warningUtil';
+import interpolatorRegistry from './interpolatorRegistry';
 import { globalStyles as styles } from './styles';
 
 import type { EnhancedNavigationState } from './TypeDefinition';
@@ -16,11 +17,6 @@ const {
 const {
   SceneRenderer: NavigationSceneRendererProps,
 } = NavigationPropTypes;
-
-const {
-  PagerStyleInterpolator: NavgationPagerStyleInterpolator,
-  CardStackPanResponder: NavigationCardStackPanResponder,
-} = NavgationCard;
 
 type Props = {
   path: string,
@@ -70,15 +66,25 @@ class StackView extends Component<any, Props, any> {
     return null;
   }
 
-  renderScene(props: NavigationSceneRendererProps) {
+  renderScene(props: NavigationSceneRendererProps): ?ReactElement {
     const { scene } = props;
 
     if (!scene.navigationState) {
       return null;
     }
 
-    const viewStyle = NavgationPagerStyleInterpolator.forHorizontal(props);
-    const panHandlers = NavigationCardStackPanResponder.forHorizontal(props);
+    const { interpolator: parentInterpolator } = props.navigationState;
+    const { interpolator: sceneInterpolator } = scene.navigationState;
+
+    const interpolator = sceneInterpolator || parentInterpolator;
+
+    const {
+      styleInterpolator,
+      panResponder,
+    } = interpolatorRegistry[interpolator];
+
+    const viewStyle = styleInterpolator(props);
+    const panHandlers = panResponder(props);
 
     return (
       <NavgationCard
@@ -109,12 +115,17 @@ class StackView extends Component<any, Props, any> {
 
   render(): ReactElement {
     const { navScenes, _navigationState, navigationComponent: NavigationComponent } = this.props;
-    const { children, params, routeParams, location } = _navigationState;
+    const { children, params, routeParams, location, interpolator } = _navigationState;
+
+    const {
+      applyAnimation,
+    } = interpolatorRegistry[interpolator];
 
     let wrappedChildren;
     if (navScenes && children && children.length > 0) {
       wrappedChildren = (
         <NavigationAnimatedView
+          applyAnimation={applyAnimation}
           style={styles.wrapper}
           navigationState={_navigationState}
           renderScene={this.renderScene}

@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { NavigationExperimental } from 'react-native';
 import { warnOutOfSycn } from './warningUtil';
+import interpolatorRegistry from './interpolatorRegistry';
 import { globalStyles as styles } from './styles';
 
 import type { EnhancedNavigationState } from './TypeDefinition';
@@ -17,10 +18,6 @@ const {
   SceneRenderer: NavigationSceneRendererProps,
 } = NavigationPropTypes;
 
-const {
-  PagerStyleInterpolator: NavgationPagerStyleInterpolator,
-} = NavgationCard;
-
 type Props = {
   path: string,
   type: string,
@@ -29,10 +26,6 @@ type Props = {
   navScenes: ?Array<ReactElement>,
   _navigationState: EnhancedNavigationState,
 };
-
-function applyAnimation(position, navigationState) {
-  position.setValue(navigationState.index);
-}
 
 class TabsView extends Component<any, Props, any> {
 
@@ -80,13 +73,24 @@ class TabsView extends Component<any, Props, any> {
       return null;
     }
 
-    const viewStyle = NavgationPagerStyleInterpolator.forHorizontal(props);
+    const { interpolator: parentInterpolator } = props.navigationState;
+    const { interpolator: sceneInterpolator } = scene.navigationState;
+
+    const interpolator = sceneInterpolator || parentInterpolator;
+
+    const {
+      styleInterpolator,
+      panResponder,
+    } = interpolatorRegistry[interpolator];
+
+    const viewStyle = styleInterpolator(props);
+    const panHandlers = panResponder(props);
 
     return (
       <NavgationCard
         key={scene.navigationState.key}
         style={[viewStyle, styles.navigationCard]}
-        panHandlers={null}
+        panHandlers={panHandlers}
         {...props}
         renderScene={this.renderCardScene}
       />
@@ -113,7 +117,11 @@ class TabsView extends Component<any, Props, any> {
 
   render(): ReactElement {
     const { navScenes, _navigationState, navigationComponent: NavigationComponent } = this.props;
-    const { children, params, routeParams, location } = _navigationState;
+    const { children, params, routeParams, location, interpolator } = _navigationState;
+
+    const {
+      applyAnimation,
+    } = interpolatorRegistry[interpolator];
 
     let wrappedChildren;
     if (navScenes && children && children.length > 0) {

@@ -4,6 +4,7 @@ import { PropTypes, Component } from 'react';
 import invariant from 'invariant';
 import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
 import { notImplemented, component } from './PropTypes';
+import { HORIZONTAL_PAGER } from './interpolatorRegistry';
 
 const { STACK } = RouteTypes;
 
@@ -14,6 +15,7 @@ type Props = {
   components: ?any,
   getComponent: ?any,
   getComponents: ?any,
+  interpolator: ?string,
 };
 
 /* eslint-disable react/require-render-return */
@@ -28,10 +30,12 @@ class Stack extends Component<any, Props, any> {
     components: notImplemented,
     getComponent: notImplemented,
     getComponents: notImplemented,
+    interpolator: PropTypes.string,
   };
 
   static defaultProps = {
     routeType: STACK,
+    interpolator: HORIZONTAL_PAGER,
   };
 
   props: Props;

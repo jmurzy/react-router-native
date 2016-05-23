@@ -161,6 +161,7 @@ export function createState(routes: any,
     let key = currentRoute.path;
     let type = currentRoute.routeType;
     let routeParams = getRouteParams(currentRoute, params);
+    const interpolator = currentRoute.interpolator;
 
     const indexRoute = getIndexRoute(currentRoute);
 
@@ -202,6 +203,7 @@ export function createState(routes: any,
         routeParams,
         params,
         location,
+        interpolator,
       };
 
       if (prevState) {
@@ -250,10 +252,15 @@ export function canPopActiveStack(n: number,
     return parentState.children[popTo].location;
   }
 
+  const sceneTypeMap = {
+    [SINGLE]: '<Route>',
+    [TABS]: '<Tabs>',
+  };
+
   warning(
     false,
     'Cannot pop %s scene',
-    (parentState ? parentState.type : '')
+    (parentState ? sceneTypeMap[parentState.type] : '')
   );
 
   return null;

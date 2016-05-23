@@ -4,6 +4,7 @@ import { PropTypes, Component } from 'react';
 import invariant from 'invariant';
 import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
 import { notImplemented, component } from './PropTypes';
+import { NONE } from './interpolatorRegistry';
 
 type Props = {
   path: string,
@@ -12,6 +13,7 @@ type Props = {
   components: ?any,
   getComponent: ?any,
   getComponents: ?any,
+  interpolator: ?string,
 };
 
 const { TABS } = RouteTypes;
@@ -28,10 +30,12 @@ class Tabs extends Component<any, Props, any> {
     components: notImplemented,
     getComponent: notImplemented,
     getComponents: notImplemented,
+    interpolator: PropTypes.string,
   };
 
   static defaultProps = {
     routeType: TABS,
+    interpolator: NONE,
   };
 
   props: Props;
