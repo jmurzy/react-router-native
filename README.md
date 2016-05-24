@@ -5,7 +5,7 @@ A routing library for [React Native](https://github.com/facebook/react-native) t
 <img align="right" width="360px" src="https://raw.githubusercontent.com/jmurzy/react-router-native/master/docs/screenshot.gif">
 
 ### Questions?
-Feedback is appreciated, but please keep in mind that the project contains components that are currently under active development and considered experimental. Documentation is still a work-in-progress, and pull requests are accepted gratefully!
+Feedback is appreciated, but please keep in mind that the project contains components that are currently under [active](https://github.com/facebook/react-native/commits?author=ericvicenti) [development](https://github.com/facebook/react-native/commits?author=hedgerwang) and considered experimental. Documentation is still a work-in-progress, and pull requests are accepted gratefully!
 
 Feel free to reach out to me on Twitter [@jmurzy](https://twitter.com/jmurzy). If you have any questions, please submit an Issue with the "question" tag or come hang out in the React Router [Reactiflux Channel](https://discord.gg/0ZcbPKXt5bYaNQ46) and post your request there.
 
@@ -51,4 +51,4 @@ render((
 
 React Router Native is based on [React Router](https://github.com/reactjs/react-router). Thanks to Ryan Florence [@ryanflorence](https://twitter.com/ryanflorence), Michael Jackson [@mjackson](https://twitter.com/mjackson) and all the contributors for their work on [react-router](https://github.com/reactjs/react-router) and [history](https://github.com/mjackson/history).
 
-Special thanks to Eric Vicenti [@ericvicenti](https://twitter.com/ericvicenti) for his work on [NavigationExperimental](https://github.com/ericvicenti/navigation-rfc).
+Special thanks to Eric Vicenti [@ericvicenti](https://twitter.com/ericvicenti) and Hedger Wang [@hedgerwang](https://twitter.com/hedgerwang) for their work on [NavigationExperimental](https://github.com/ericvicenti/navigation-rfc).
