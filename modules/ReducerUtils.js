@@ -14,7 +14,7 @@ import type {
   RouteType,
 } from './TypeDefinition';
 
-const { STACK_ROUTE, TAB_ROUTE, ROUTE } = RouteTypes;
+const { STACK_ROUTE, TABS_ROUTE, ROUTE } = RouteTypes;
 
 const hasNextChild = leaf => leaf.children && leaf.children.length === 1;
 
@@ -83,7 +83,7 @@ function mergeState(oldLeaf: EnhancedNavigationState,
   }
 
   // Push a new child
-  if (oldLeaf.type === STACK_ROUTE || oldLeaf.type === TAB_ROUTE) {
+  if (oldLeaf.type === STACK_ROUTE || oldLeaf.type === TABS_ROUTE) {
     return {
       ...oldLeaf,
       children: [

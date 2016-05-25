@@ -12,10 +12,10 @@ export { Link, IndexLink, Back, Pop, Router };
 /* components (configuration) */
 import IndexRoute from './IndexRoute';
 import Route from './Route';
-import Stack from './Stack';
-import Tabs from './Tabs';
+import StackRoute from './StackRoute';
+import TabsRoute from './TabsRoute';
 
-export { IndexRoute, Route, Stack, Tabs };
+export { IndexRoute, Route, StackRoute, TabsRoute };
 
 /* utils */
 import RouterContext from './RouterContext';

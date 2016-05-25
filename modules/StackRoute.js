@@ -19,12 +19,12 @@ type Props = {
 };
 
 /* eslint-disable react/require-render-return */
-class Stack extends Component<any, Props, any> {
+class StackRoute extends Component<any, Props, any> {
 
   static createRouteFromReactElement = createRouteFromReactElement;
 
   static propTypes = {
-    path: PropTypes.string.isRequired, // Stack and Tab cannot be used as no-path routes.
+    path: PropTypes.string.isRequired, // StackRoute and TabsRoute cannot be used as no-path routes.
     component,
     overlayComponent: component,
     components: notImplemented,
@@ -43,10 +43,10 @@ class Stack extends Component<any, Props, any> {
   render() {
     invariant(
       false,
-      '<Stack> elements are for router configuration only and should not be rendered'
+      '<StackRoute> elements are for router configuration only and should not be rendered'
     );
   }
 }
 /* eslint-enable */
 
-export default Stack;
+export default StackRoute;
