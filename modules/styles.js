@@ -8,7 +8,7 @@ export const ADDDRESS_BAR_ROW_HEIGHT = 30;
 
 const { width } = Dimensions.get('window');
 
-// Used across all navigational components i.e StackView
+// Used across all navigational components i.e StackRouteView
 const globalStyles = StyleSheet.create({
   wrapper: {
     flex: 1,

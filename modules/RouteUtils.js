@@ -3,8 +3,8 @@
 import warning from 'warning';
 import invariant from 'invariant';
 import RouteView from './RouteView';
-import StackView from './StackView';
-import TabsView from './TabsView';
+import StackRouteView from './StackRouteView';
+import TabsRouteView from './TabsRouteView';
 import transitionRegistry from './transitionRegistry';
 import {
   createRouteFromReactElement as _createRouteFromReactElement,
@@ -82,9 +82,9 @@ function createNavigationTree(createElement: ElementProvider,
 
   let el;
   if (route.routeType === STACK_ROUTE) {
-    el = createElement(StackView, props);
+    el = createElement(StackRouteView, props);
   } else if (route.routeType === TABS_ROUTE) {
-    el = createElement(TabsView, props);
+    el = createElement(TabsRouteView, props);
   } else {
     el = createElement(RouteView, props);
   }

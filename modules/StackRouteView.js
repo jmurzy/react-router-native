@@ -29,7 +29,7 @@ type Props = {
   onNavigate: Function,
 };
 
-class StackView extends Component<any, Props, any> {
+class StackRouteView extends Component<any, Props, any> {
 
   static propTypes = {
     path: PropTypes.string.isRequired,
@@ -161,4 +161,4 @@ class StackView extends Component<any, Props, any> {
 
 }
 
-export default withOnNavigate(StackView);
+export default withOnNavigate(StackRouteView);

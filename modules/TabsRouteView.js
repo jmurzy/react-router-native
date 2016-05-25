@@ -29,7 +29,7 @@ type Props = {
   onNavigate: Function,
 };
 
-class TabsView extends Component<any, Props, any> {
+class TabsRouteView extends Component<any, Props, any> {
 
   static propTypes = {
     path: PropTypes.string.isRequired,
@@ -163,4 +163,4 @@ class TabsView extends Component<any, Props, any> {
 
 }
 
-export default withOnNavigate(TabsView);
+export default withOnNavigate(TabsRouteView);
