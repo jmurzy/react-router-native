@@ -8,7 +8,7 @@ import { DEFAULT_KEY_LENGTH, createRandomKey } from './LocationUtils';
 
 import { RouteTypes } from './RouteUtils';
 
-const { STACK } = RouteTypes;
+const { STACK_ROUTE } = RouteTypes;
 
 import type {
   Location,
@@ -48,11 +48,11 @@ const useNavState = (createHistory: Function) =>
     const createTransitionTo = (currentLocation, activeRouteType: RouteType) => (nextLocation) => {
       // History API treats HISTORY_PUSH to current path like HISTORY_REPLACE to be consistent with
       // browser behavior. (mjackson/history/blob/v2.0.1/modules/createHistory.js#L126) This is not
-      // reasonable when performing `router.pop()` on <Stack />. A unique stateKey is needed for
-      // each `location` to (1) bust the default 'HISTORY_REPLACE' behavior, (2) location objects
-      // that are passed to reducer during a `pop` needs a stateKey to be able to use a previous
-      // state for the newly HISTORY_PUSH'ed pointer to an older scene, (3) History needs a unique
-      // `location.key` for each location entry. So cannot be used as stateKey.
+      // reasonable when performing `router.pop()` on <StackRoute />. A unique stateKey is needed
+      // for each `location` to (1) bust the default 'HISTORY_REPLACE' behavior, (2) location
+      // objects that are passed to reducer during a `pop` needs a stateKey to be able to use a
+      // previous state for the newly HISTORY_PUSH'ed pointer to an older scene, (3) History needs a
+      // unique `location.key` for each location entry. So cannot be used as stateKey.
       const nLocation = nextLocation;
       const stateKey = history.createKey();
       nLocation.state = { ...nLocation.state, stateKey };
@@ -64,7 +64,7 @@ const useNavState = (createHistory: Function) =>
         const nextStateKey = nLocation.state.stateKey;
 
         if (currentPath === nextPath && currentStateKey !== nextStateKey) {
-          if (activeRouteType !== STACK) {
+          if (activeRouteType !== STACK_ROUTE) {
             nLocation.action = HISTORY_REPLACE;
           }
         }

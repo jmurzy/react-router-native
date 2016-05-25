@@ -38,7 +38,7 @@ let forwardHistory: Array<Snapshot> = [];
 
 const { POP: HISTORY_POP, REPLACE: HISTORY_REPLACE } = Actions;
 
-const { TABS } = RouteTypes;
+const { TABS_ROUTE } = RouteTypes;
 
 class RouterContext extends Component<any, any, any> {
 
@@ -133,8 +133,6 @@ class RouterContext extends Component<any, any, any> {
           nextNavState
         );
 
-        // if (activeLocation) debugger;
-
         if (!activeLocation) {
           callback(true);
         } else {
@@ -224,7 +222,7 @@ class RouterContext extends Component<any, any, any> {
     nextNavState: EnhancedNavigationState): ?Location {
     const nextActiveRouteType = getActiveRouteType(nextRoutes);
     // Terminating at tabs
-    if (nextActiveRouteType === TABS) {
+    if (nextActiveRouteType === TABS_ROUTE) {
       // Find location of the most active leaf
       const activeLocation = getActiveLocation(nextNavState);
 

@@ -1,8 +1,7 @@
 /* @flow */
 import { Animated } from 'react-native';
-import { RouteTypes } from './RouteUtils';
 
-export type RouteType = $Keys<typeof RouteTypes>;
+export type RouteType = '<Route>' | '<StackRoute>' | '<TabsRoute>';
 
 export type AnimatedValue = Animated.Value;
 
