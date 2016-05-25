@@ -1,0 +1,9 @@
+{
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": ['.ios.js', '.android.js', '.js', '.jsx', '.babel.jsx', '.babel.js']
+      }
+    }
+  }
+}
