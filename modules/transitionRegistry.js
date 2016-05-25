@@ -1,7 +1,7 @@
-import { /* NavigationExperimental, Animated, */Easing } from 'react-native';
+import { /* NavigationExperimental, */ Animated, Easing } from 'react-native';
 import invariant from 'invariant';
 
-// import type { EnhancedNavigationState, AnimatedValue } from './TypeDefinition';
+import type { EnhancedNavigationState, AnimatedValue } from './TypeDefinition';
 
 /* eslint-disable no-multi-str */
 import NavigationCardStackStyleInterpolator from 'react-native/Libraries/\
@@ -38,7 +38,8 @@ const transitionRegistry = {};
 
 const defaultTransitionSpec = {
   duration: 250,
-  easing: Easing.inOut(Easing.ease),
+  // Similar to spring
+  easing: Easing.elastic(0),
 };
 
 function configureDefaultTransition() {
@@ -47,32 +48,51 @@ function configureDefaultTransition() {
 }
 
 function configureSkipTransition() {
+  // The new Transitioner abstracts away the `AnimatedValue` so there is no way to `setValue` on
+  // `position`
   return {
     duration: 0,
   };
 }
 
-// function skipAnimation(
-//   position: AnimatedValue,
-//   navigationState: EnhancedNavigationState,
-// ): void {
-//   position.setValue(navigationState.index);
-// }
+// deprecated
+function skipAnimation( // eslint-disable-line no-unused-vars
+  position: AnimatedValue,
+  navigationState: EnhancedNavigationState,
+): void {
+  position.setValue(navigationState.index);
+}
 
-// function applyDefaultAnimation(
-//   position: AnimatedValue,
-//   navigationState: EnhancedNavigationState,
-// ): void {
-//   Animated.spring(
-//     position,
-//     {
-//       bounciness: 0,
-//       toValue: navigationState.index,
-//     }
-//   ).start();
-// }
+// deprecated
+function applyDefaultAnimation( // eslint-disable-line no-unused-vars
+  position: AnimatedValue,
+  navigationState: EnhancedNavigationState,
+): void {
+  Animated.spring(
+    position,
+    {
+      bounciness: 0,
+      toValue: navigationState.index,
+    }
+  ).start();
+}
 
 const noPanResponder = () => null;
+
+function createApplyAnimation(transitionSpec: Object) {
+  return (
+    position: AnimatedValue,
+    navigationState: EnhancedNavigationState,
+  ): void => {
+    Animated.timing(
+      position,
+      {
+        ...transitionSpec,
+        toValue: navigationState.index,
+      }
+    ).start();
+  };
+}
 
 export function addHandler(
   key: string,
@@ -96,6 +116,9 @@ export function addHandler(
     styleInterpolator,
     panResponder: panResponder || noPanResponder,
     configureTransition,
+    // Create Transitioner compatible API for AnimatedView until issues are sorted out
+    // jmurzy/react-router-native/issues/3
+    applyAnimation: createApplyAnimation(configureTransition()),
   };
 }
 

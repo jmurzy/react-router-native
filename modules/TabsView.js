@@ -11,7 +11,7 @@ import type { EnhancedNavigationState } from './TypeDefinition';
 
 const {
   Card: NavgationCard,
-  Transitioner: NavigationTransitioner,
+  AnimatedView: NavigationTransitioner,
   PropTypes: NavigationPropTypes,
 } = NavigationExperimental;
 
@@ -136,6 +136,7 @@ class TabsView extends Component<any, Props, any> {
 
     const {
       configureTransition,
+      applyAnimation,
     } = transitionRegistry[interpolator];
 
     let wrappedChildren;
@@ -143,6 +144,7 @@ class TabsView extends Component<any, Props, any> {
       wrappedChildren = (
         <NavigationTransitioner
           configureTransition={configureTransition}
+          applyAnimation={applyAnimation}
           style={styles.wrapper}
           navigationState={_navigationState}
           renderScene={this.renderScene}

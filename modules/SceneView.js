@@ -9,7 +9,7 @@ import { globalStyles as styles } from './styles';
 import type { EnhancedNavigationState } from './TypeDefinition';
 
 const {
-  Transitioner: NavigationTransitioner,
+  AnimatedView: NavigationTransitioner,
   PropTypes: NavigationPropTypes,
 } = NavigationExperimental;
 
@@ -78,7 +78,8 @@ class SceneView extends Component<any, Props, any> {
 
     let wrappedChildren;
     if (navScenes && children && children.length > 0) {
-      // react-native/c3714d7ed7c8ee57e005d51147820456ef8cda3e?diff=split
+      // react-native/c3714d7ed7c8ee57e005d51147820456ef8cda3e
+      // FIXME Replace `Transitioner` with `View` to reclaim performance
       wrappedChildren = (
         <NavigationTransitioner
           style={styles.wrapper}
