@@ -6,7 +6,7 @@ import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
 import { notImplemented, component } from './PropTypes';
 import { HORIZONTAL_PAGER } from './transitionRegistry';
 
-const { STACK } = RouteTypes;
+const { STACK_ROUTE } = RouteTypes;
 
 type Props = {
   path: string,
@@ -34,7 +34,7 @@ class Stack extends Component<any, Props, any> {
   };
 
   static defaultProps = {
-    routeType: STACK,
+    routeType: STACK_ROUTE,
     interpolator: HORIZONTAL_PAGER,
   };
 

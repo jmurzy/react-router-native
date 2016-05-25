@@ -16,7 +16,7 @@ type Props = {
   interpolator: ?string,
 };
 
-const { TABS } = RouteTypes;
+const { TAB_ROUTE } = RouteTypes;
 
 /* eslint-disable react/require-render-return */
 class Tabs extends Component<any, Props, any> {
@@ -34,7 +34,7 @@ class Tabs extends Component<any, Props, any> {
   };
 
   static defaultProps = {
-    routeType: TABS,
+    routeType: TAB_ROUTE,
     interpolator: NONE,
   };
 

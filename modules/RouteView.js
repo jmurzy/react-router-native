@@ -26,7 +26,7 @@ type Props = {
   onNavigate: Function,
 };
 
-class SceneView extends Component<any, Props, any> {
+class RouteView extends Component<any, Props, any> {
 
   static propTypes = {
     path: PropTypes.string.isRequired,
@@ -98,4 +98,4 @@ class SceneView extends Component<any, Props, any> {
   }
 }
 
-export default withOnNavigate(SceneView);
+export default withOnNavigate(RouteView);

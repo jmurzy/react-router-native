@@ -6,7 +6,7 @@ import invariant from 'invariant';
 import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
 import { notImplemented, falsy, component } from './PropTypes';
 
-const { TABS } = RouteTypes;
+const { TAB_ROUTE } = RouteTypes;
 
 type Props = {
   path: ?any,
@@ -31,7 +31,7 @@ class IndexRoute extends Component<any, Props, any> {
 
   static createRouteFromReactElement = (element, parentRoute) => {
     warning(
-      parentRoute.routeType !== TABS,
+      parentRoute.routeType !== TAB_ROUTE,
       'An <IndexRoute> is not allowed for <Tabs>'
     );
 

@@ -14,7 +14,7 @@ import type {
   RouteType,
 } from './TypeDefinition';
 
-const { STACK, TABS, SINGLE } = RouteTypes;
+const { STACK_ROUTE, TAB_ROUTE, ROUTE } = RouteTypes;
 
 const hasNextChild = leaf => leaf.children && leaf.children.length === 1;
 
@@ -70,7 +70,7 @@ function mergeState(oldLeaf: EnhancedNavigationState,
 
     // For stacks, when a location descriptor with the same key is pushed, it's assumed POP,
     // re-activate leaf and slice off the tail
-    if (oldLeaf.type === STACK) {
+    if (oldLeaf.type === STACK_ROUTE) {
       leaf = {
         ...leaf,
         children: [
@@ -83,7 +83,7 @@ function mergeState(oldLeaf: EnhancedNavigationState,
   }
 
   // Push a new child
-  if (oldLeaf.type === STACK || oldLeaf.type === TABS) {
+  if (oldLeaf.type === STACK_ROUTE || oldLeaf.type === TAB_ROUTE) {
     return {
       ...oldLeaf,
       children: [
@@ -114,7 +114,7 @@ function mergeState(oldLeaf: EnhancedNavigationState,
 // }
 
 // function isNoPathRoute(route: Route): boolean {
-//   if (!route.path && route.childRoutes && route.routeType === SINGLE) {
+//   if (!route.path && route.childRoutes && route.routeType === ROUTE) {
 //     return true;
 //   }
 //   return false;
@@ -131,12 +131,12 @@ function getIndexRoute(route: RouteDef): ?IndexRouteDef {
 }
 
 function getNoPathRoute(route: RouteDef): ?NoPathRouteDef {
-  if (!route.path && route.childRoutes && route.routeType === SINGLE) {
+  if (!route.path && route.childRoutes && route.routeType === ROUTE) {
     return {
       childRoutes: route.childRoutes,
       component: route.component,
       overlayComponent: route.overlayComponent,
-      routeType: SINGLE,
+      routeType: ROUTE,
     };
   }
   return null;
@@ -189,7 +189,7 @@ export function createState(routes: any,
 
     const stateKey = location.state.stateKey;
 
-    if (parentRoute && parentRoute.routeType === STACK) {
+    if (parentRoute && parentRoute.routeType === STACK_ROUTE) {
       key = `${key}_${stateKey}`;
     }
 
@@ -237,7 +237,7 @@ export function canPopActiveStack(n: number,
   }
 
   // Can pop only if active leaf is of a stack
-  if (parentState && parentState.type === STACK) {
+  if (parentState && parentState.type === STACK_ROUTE) {
     if (!canPop(n, parentState)) {
       warning(
         false,
@@ -252,15 +252,10 @@ export function canPopActiveStack(n: number,
     return parentState.children[popTo].location;
   }
 
-  const sceneTypeMap = {
-    [SINGLE]: '<Route>',
-    [TABS]: '<Tabs>',
-  };
-
   warning(
     false,
     'Cannot pop %s scene',
-    (parentState ? sceneTypeMap[parentState.type] : '')
+    (parentState ? parentState.type : '')
   );
 
   return null;

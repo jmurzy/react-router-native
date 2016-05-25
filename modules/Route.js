@@ -15,7 +15,7 @@ type Props = {
   interpolator: ?string,
 };
 
-const { SINGLE } = RouteTypes;
+const { ROUTE } = RouteTypes;
 
 /* eslint-disable react/require-render-return */
 class Route extends Component<any, Props, any> {
@@ -33,7 +33,7 @@ class Route extends Component<any, Props, any> {
   };
 
   static defaultProps = {
-    routeType: SINGLE,
+    routeType: ROUTE,
   };
 
   props: Props;

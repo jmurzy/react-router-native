@@ -2,7 +2,7 @@
 
 import warning from 'warning';
 import invariant from 'invariant';
-import SceneView from './SceneView';
+import RouteView from './RouteView';
 import StackView from './StackView';
 import TabsView from './TabsView';
 import transitionRegistry from './transitionRegistry';
@@ -12,12 +12,12 @@ import {
 import type { RouteDef, ElementProvider } from './TypeDefinition';
 
 export const RouteTypes = {
-  STACK: 'STACK',
-  TABS: 'TABS',
-  SINGLE: 'SINGLE',
+  STACK_ROUTE: '<StackRoute>',
+  TAB_ROUTE: '<TabRoute>',
+  ROUTE: '<Route>',
 };
 
-const { STACK, TABS } = RouteTypes;
+const { STACK_ROUTE, TAB_ROUTE } = RouteTypes;
 
 export function createRouteFromReactElement(element: ReactElement,
                                             parentRoute: RouteDef): ReactElement {
@@ -30,13 +30,13 @@ export function createRouteFromReactElement(element: ReactElement,
 
   warning(
     !element.props.overlayComponent || parentRoute
-      && (parentRoute.routeType === STACK || parentRoute.routeType === TABS),
+      && (parentRoute.routeType === STACK_ROUTE || parentRoute.routeType === TAB_ROUTE),
     'overlayComponent does not make sense outside of <Stack> or <Tabs>'
   );
 
   warning(
-    !parentRoute || parentRoute.routeType !== STACK
-      || (element.props.routeType !== STACK && element.props.routeType !== TABS),
+    !parentRoute || parentRoute.routeType !== STACK_ROUTE
+      || (element.props.routeType !== STACK_ROUTE && element.props.routeType !== TAB_ROUTE),
     '<Tabs> and <Stack> cannot be nested within <Stack>'
   );
 
@@ -74,19 +74,19 @@ function createNavigationTree(createElement: ElementProvider,
         indexRouteProps.overlayComponent = route.indexRoute.overlayComponent;
       }
 
-      const indexRouteEl = createElement(SceneView, indexRouteProps);
+      const indexRouteEl = createElement(RouteView, indexRouteProps);
 
       props.navScenes.unshift(indexRouteEl);
     }
   }
 
   let el;
-  if (route.routeType === STACK) {
+  if (route.routeType === STACK_ROUTE) {
     el = createElement(StackView, props);
-  } else if (route.routeType === TABS) {
+  } else if (route.routeType === TAB_ROUTE) {
     el = createElement(TabsView, props);
   } else {
-    el = createElement(SceneView, props);
+    el = createElement(RouteView, props);
   }
   return el;
 }
