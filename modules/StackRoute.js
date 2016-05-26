@@ -15,7 +15,7 @@ type Props = {
   components: ?any,
   getComponent: ?any,
   getComponents: ?any,
-  interpolator: ?string,
+  transition: ?string,
 };
 
 /* eslint-disable react/require-render-return */
@@ -30,12 +30,12 @@ class StackRoute extends Component<any, Props, any> {
     components: notImplemented,
     getComponent: notImplemented,
     getComponents: notImplemented,
-    interpolator: PropTypes.string,
+    transition: PropTypes.string,
   };
 
   static defaultProps = {
     routeType: STACK_ROUTE,
-    interpolator: HORIZONTAL_PAGER,
+    transition: HORIZONTAL_PAGER,
   };
 
   props: Props;

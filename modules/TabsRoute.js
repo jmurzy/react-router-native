@@ -13,7 +13,7 @@ type Props = {
   components: ?any,
   getComponent: ?any,
   getComponents: ?any,
-  interpolator: ?string,
+  transition: ?string,
 };
 
 const { TABS_ROUTE } = RouteTypes;
@@ -30,12 +30,12 @@ class TabsRoute extends Component<any, Props, any> {
     components: notImplemented,
     getComponent: notImplemented,
     getComponents: notImplemented,
-    interpolator: PropTypes.string,
+    transition: PropTypes.string,
   };
 
   static defaultProps = {
     routeType: TABS_ROUTE,
-    interpolator: NONE,
+    transition: NONE,
   };
 
   props: Props;

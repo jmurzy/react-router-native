@@ -24,7 +24,7 @@ export type EnhancedNavigationState = {
   location: Location,
   params: Object,
   routeParams: Object,
-  interpolator: ?string,
+  transition: ?string,
 };
 
 export type RouteDef = {
@@ -33,7 +33,7 @@ export type RouteDef = {
   overlayComponent: ?Function,
   path: ?string,
   routeType: ?RouteType,
-  interpolator: ?string,
+  transition: ?string,
 };
 
 export type IndexRouteDef = {

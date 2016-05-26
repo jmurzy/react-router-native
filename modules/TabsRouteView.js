@@ -76,15 +76,15 @@ class TabsRouteView extends Component<any, Props, any> {
       return null;
     }
 
-    const { interpolator: parentInterpolator } = props.navigationState;
-    const { interpolator: sceneInterpolator } = scene.navigationState;
+    const { transition: parentTransition } = props.navigationState;
+    const { transition: sceneTransition } = scene.navigationState;
 
-    const interpolator = sceneInterpolator || parentInterpolator;
+    const transition = sceneTransition || parentTransition;
 
     const {
       styleInterpolator,
       panResponder,
-    } = transitionRegistry[interpolator];
+    } = transitionRegistry[transition];
 
     const viewStyle = styleInterpolator(props);
     const panHandlers = panResponder(props);
@@ -131,13 +131,13 @@ class TabsRouteView extends Component<any, Props, any> {
       params,
       routeParams,
       location,
-      interpolator,
+      transition,
     } = _navigationState;
 
     const {
       configureTransition,
       applyAnimation,
-    } = transitionRegistry[interpolator];
+    } = transitionRegistry[transition];
 
     let wrappedChildren;
     if (navScenes && children && children.length > 0) {

@@ -161,7 +161,7 @@ export function createState(routes: any,
     let key = currentRoute.path;
     let type = currentRoute.routeType;
     let routeParams = getRouteParams(currentRoute, params);
-    const interpolator = currentRoute.interpolator;
+    const transition = currentRoute.transition;
 
     const indexRoute = getIndexRoute(currentRoute);
 
@@ -203,7 +203,7 @@ export function createState(routes: any,
         routeParams,
         params,
         location,
-        interpolator,
+        transition,
       };
 
       if (prevState) {

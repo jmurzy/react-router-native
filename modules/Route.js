@@ -12,7 +12,7 @@ type Props = {
   components: ?any,
   getComponent: ?any,
   getComponents: ?any,
-  interpolator: ?string,
+  transition: ?string,
 };
 
 const { ROUTE } = RouteTypes;
@@ -29,7 +29,7 @@ class Route extends Component<any, Props, any> {
     components: notImplemented,
     getComponent: notImplemented,
     getComponents: notImplemented,
-    interpolator: PropTypes.string,
+    transition: PropTypes.string,
   };
 
   static defaultProps = {

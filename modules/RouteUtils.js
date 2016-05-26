@@ -22,10 +22,10 @@ const { STACK_ROUTE, TABS_ROUTE } = RouteTypes;
 export function createRouteFromReactElement(element: ReactElement,
                                             parentRoute: RouteDef): ReactElement {
   invariant(
-    !element.props.interpolator || transitionRegistry[element.props.interpolator] !== undefined,
-    '"%s" is not a valid interpolator. If you are using a custom interpolator, make sure to ' +
+    !element.props.transition || transitionRegistry[element.props.transition] !== undefined,
+    '"%s" is not a valid transition. If you are using a custom transition, make sure to ' +
     'register it with `transitionRegistry`',
-    element.props.interpolator
+    element.props.transition
   );
 
   warning(
