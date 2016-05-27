@@ -29,20 +29,26 @@ const APP_KEY = 'app'
 
 const App = (props) => (/*...*/);
 const About = (props) => (/*...*/);
+const AboutHeader = (props) => (/*...*/);
 const Users = (props) => (/*...*/);
 const User = (props) => (/*...*/);
+const UserHeader = (props) => (/*...*/);
 const NoMatch = (props) => (/*...*/);
 
 render((
   /* Address Bar can be toggled on or off by setting the addressBar prop */
   <Router addressBar>
-    <Route path="/" component={App}>
-      <Route path="about" component={About}/>
-      <Route path="users" component={Users}>
+    <TabsRoute
+      path="app"
+      component={App}
+      transition="horizontal-pager"
+    >
+      <Route path="/" component={About} overlayComponent={AboutHeader}/>
+      <Route path="users" component={Users} overlayComponent={UserHeader}>
         <Route path="/user/:userId" component={User}/>
       </Route>
       <Route path="*" component={NoMatch}/>
-    </Route>
+    </TabsRoute>
   </Router>
 ), APP_KEY);
 ```
