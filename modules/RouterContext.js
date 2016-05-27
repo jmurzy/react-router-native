@@ -7,7 +7,13 @@ import { Actions } from 'history';
 import RootWrapper from './RootWrapper';
 import reducer from './Reducer';
 import { createNavigation, RouteTypes } from './RouteUtils';
-import { getActiveLocation, getActiveParentRouteType, getActiveRouteType } from './ReducerUtils';
+import {
+  getActiveLocation,
+  getActiveParentRouteType,
+  getActiveRouteType,
+  createState,
+  LOCATION_CHANGE,
+} from './ReducerUtils';
 import type {
   Snapshot,
   RouteDef,
@@ -66,7 +72,14 @@ class RouterContext extends Component<any, any, any> {
   constructor(props: Props) {
     super(props);
     const { routes, location, params } = props;
-    const action: NavigationAction = { routes, location, params };
+    const nextNavigationState = createState(routes, location, params);
+    const action: NavigationAction = {
+      type: LOCATION_CHANGE,
+      routes,
+      location,
+      params,
+      nextNavigationState,
+    };
     const navState = reducer(null, action);
 
     (this: any).createElement = this.createElement.bind(this);
@@ -119,10 +132,14 @@ class RouterContext extends Component<any, any, any> {
           params: nextParams,
         } = nextState;
 
+        const nextNavigationState = createState(nextRoutes, nextLocation, nextParams);
+
         const action: NavigationAction = {
+          type: LOCATION_CHANGE,
           routes: nextRoutes,
           location: nextLocation,
           params: nextParams,
+          nextNavigationState,
         };
 
         const nextNavState = reducer(navState, action);
@@ -192,10 +209,14 @@ class RouterContext extends Component<any, any, any> {
         resetStack = true;
       }
 
+      const nextNavigationState = createState(nextRoutes, nextLocation, nextParams);
+
       const action: NavigationAction = {
+        type: LOCATION_CHANGE,
         routes: nextRoutes,
         location: nextLocation,
         params: nextParams,
+        nextNavigationState,
         resetStack,
       };
 

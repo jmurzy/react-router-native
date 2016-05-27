@@ -14,6 +14,8 @@ import type {
   RouteType,
 } from './TypeDefinition';
 
+export const LOCATION_CHANGE = '@@router-native/LOCATION_CHANGE';
+
 const { STACK_ROUTE, TABS_ROUTE, ROUTE } = RouteTypes;
 
 const hasNextChild = leaf => leaf.children && leaf.children.length === 1;
@@ -24,7 +26,7 @@ const extractCapturedState = leaf => ({
   location: leaf.location,
 });
 
-function mergeState(oldLeaf: EnhancedNavigationState,
+export function mergeState(oldLeaf: EnhancedNavigationState,
                     newLeaf: EnhancedNavigationState): EnhancedNavigationState {
   // `creteState()` always returns a unary tree
   const nextLeaf = newLeaf.children[0];
@@ -259,20 +261,6 @@ export function canPopActiveStack(n: number,
   );
 
   return null;
-}
-
-export function activateState(oldState: ?EnhancedNavigationState,
-                              newState: EnhancedNavigationState): EnhancedNavigationState {
-  if (!oldState) {
-    return newState;
-  }
-
-  // Root swap
-  if (oldState.path !== newState.path) {
-    return newState;
-  }
-
-  return mergeState(oldState, newState);
 }
 
 function getActiveRouteTypeAtIndex(index: number, routes: Array<RouteDef>): ?RouteType {

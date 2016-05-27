@@ -51,9 +51,11 @@ export type NoPathRouteDef = {
 export type ElementProvider = (component: ReactClass<any>, props: any) => ?ReactElement;
 
 export type NavigationAction = {
+  type: string,
   routes: Array<RouteDef>,
   location: Location,
   params: Object,
+  nextNavigationState: EnhancedNavigationState,
 }
 
 export type Snapshot = EnhancedNavigationState;
