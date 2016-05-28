@@ -12,6 +12,7 @@ import type {
   IndexRouteDef,
   NoPathRouteDef,
   RouteType,
+  NavigationAction,
 } from './TypeDefinition';
 
 export const LOCATION_CHANGE = '@@router-native/LOCATION_CHANGE';
@@ -26,8 +27,12 @@ const extractCapturedState = leaf => ({
   location: leaf.location,
 });
 
-export function mergeState(oldLeaf: EnhancedNavigationState,
-                    newLeaf: EnhancedNavigationState): EnhancedNavigationState {
+export function mergeState(
+  oldLeaf: EnhancedNavigationState,
+  action: NavigationAction,
+): EnhancedNavigationState {
+  const { nextNavigationState: newLeaf } = action;
+
   // `creteState()` always returns a unary tree
   const nextLeaf = newLeaf.children[0];
 
@@ -43,11 +48,16 @@ export function mergeState(oldLeaf: EnhancedNavigationState,
     const foundLeaf = oldLeaf.children[foundIndex];
     // `nextLeaf` has one child, always. See `createState()`
     if (hasNextChild(nextLeaf)) {
+      const nextAction: NavigationAction = {
+        ...action,
+        nextNavigationState: nextLeaf,
+      };
+
       return {
         ...oldLeaf,
         children: [
           ...oldLeaf.children.slice(0, foundIndex),
-          mergeState(foundLeaf, nextLeaf),
+          mergeState(foundLeaf, nextAction),
           ...oldLeaf.children.slice(foundIndex + 1, oldLeaf.children.length),
         ],
         index: foundIndex,
