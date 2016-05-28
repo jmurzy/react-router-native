@@ -6,13 +6,14 @@ import nativeHistory from './nativeHistory';
 import createNativeContext from './createNativeContext';
 
 const NativeRouter = (props: any): ReactElement => {
-  const { routes, children } = props;
+  const { routes, children, ...rest } = props;
 
+  const computedRoutes = createRoutes(routes || children);
   // Leak route definition into native context
-  const nativeContext = createNativeContext(createRoutes(routes || children));
+  const nativeContext = createNativeContext(computedRoutes);
 
   return (
-    <Router history={nativeHistory} render={nativeContext} {...props} />
+    <Router history={nativeHistory} render={nativeContext} routes={computedRoutes} {...rest} />
   );
 };
 
