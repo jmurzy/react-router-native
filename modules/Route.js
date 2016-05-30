@@ -3,6 +3,7 @@
 import { PropTypes, Component } from 'react';
 import invariant from 'invariant';
 import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
+import { defaultRouteReducer } from './ReducerUtils';
 import { notImplemented, component } from './PropTypes';
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
   getComponent: ?any,
   getComponents: ?any,
   transition: ?string,
+  reducer: ?Function
 };
 
 const { ROUTE } = RouteTypes;
@@ -30,10 +32,12 @@ class Route extends Component<any, Props, any> {
     getComponent: notImplemented,
     getComponents: notImplemented,
     transition: PropTypes.string,
+    reducer: PropTypes.func,
   };
 
   static defaultProps = {
     routeType: ROUTE,
+    reducer: defaultRouteReducer,
   };
 
   props: Props;

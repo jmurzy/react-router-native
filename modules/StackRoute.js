@@ -3,6 +3,7 @@
 import { PropTypes, Component } from 'react';
 import invariant from 'invariant';
 import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
+import { defaultStackRouteReducer } from './ReducerUtils';
 import { notImplemented, component } from './PropTypes';
 import { HORIZONTAL_PAGER } from './transitionRegistry';
 
@@ -16,6 +17,7 @@ type Props = {
   getComponent: ?any,
   getComponents: ?any,
   transition: ?string,
+  reducer: ?Function
 };
 
 /* eslint-disable react/require-render-return */
@@ -31,11 +33,13 @@ class StackRoute extends Component<any, Props, any> {
     getComponent: notImplemented,
     getComponents: notImplemented,
     transition: PropTypes.string,
+    reducer: PropTypes.func,
   };
 
   static defaultProps = {
     routeType: STACK_ROUTE,
     transition: HORIZONTAL_PAGER,
+    reducer: defaultStackRouteReducer,
   };
 
   props: Props;

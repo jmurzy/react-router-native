@@ -25,6 +25,7 @@ export type EnhancedNavigationState = {
   params: Object,
   routeParams: Object,
   transition: ?string,
+  reducer: Function,
 };
 
 export type RouteDef = {
@@ -34,6 +35,7 @@ export type RouteDef = {
   path: ?string,
   routeType: ?RouteType,
   transition: ?string,
+  reducer: Function,
 };
 
 export type IndexRouteDef = {

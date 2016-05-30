@@ -3,6 +3,7 @@
 import { PropTypes, Component } from 'react';
 import invariant from 'invariant';
 import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
+import { defaultTabsRouteReducer } from './ReducerUtils';
 import { notImplemented, component } from './PropTypes';
 import { NONE } from './transitionRegistry';
 
@@ -14,6 +15,7 @@ type Props = {
   getComponent: ?any,
   getComponents: ?any,
   transition: ?string,
+  reducer: ?Function
 };
 
 const { TABS_ROUTE } = RouteTypes;
@@ -31,11 +33,13 @@ class TabsRoute extends Component<any, Props, any> {
     getComponent: notImplemented,
     getComponents: notImplemented,
     transition: PropTypes.string,
+    reducer: PropTypes.func,
   };
 
   static defaultProps = {
     routeType: TABS_ROUTE,
     transition: NONE,
+    reducer: defaultTabsRouteReducer,
   };
 
   props: Props;

@@ -1,6 +1,6 @@
 /* @flow */
 
-import { mergeState } from './ReducerUtils';
+import { defaultReducer } from './ReducerUtils';
 import type { EnhancedNavigationState, NavigationAction } from './TypeDefinition';
 
 export default (
@@ -18,5 +18,5 @@ export default (
     return nextNavigationState;
   }
 
-  return mergeState(state, action);
+  return defaultReducer(state, action);
 };

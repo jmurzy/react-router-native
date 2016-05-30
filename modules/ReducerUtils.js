@@ -27,25 +27,49 @@ const extractCapturedState = leaf => ({
   location: leaf.location,
 });
 
-export function mergeState(
-  oldLeaf: EnhancedNavigationState,
+export function defaultReducer(
+  state: EnhancedNavigationState,
   action: NavigationAction,
 ): EnhancedNavigationState {
-  const { nextNavigationState: newLeaf } = action;
+  const { nextNavigationState: nextState } = action;
+
+  invariant(
+    !!nextState && !!nextState.reducer,
+    'Must define `reducer` for `%s`.',
+    state.type
+  );
+
+  // TODO Drop `reducer` refs from `state` as it makes it not serializable
+  const reducer = nextState.reducer;
+
+  return reducer(state, action);
+}
+
+export function defaultRouteReducer(
+  state: EnhancedNavigationState,
+  action: NavigationAction,
+): EnhancedNavigationState {
+  invariant(
+    state.type === ROUTE,
+    '`%s` is configured with an invalid reducer.',
+    state.type
+  );
+
+  const { nextNavigationState: nextState } = action;
 
   // `creteState()` always returns a unary tree
-  const nextLeaf = newLeaf.children[0];
+  const nextLeaf = nextState.children[0];
 
   if (!nextLeaf) {
-    // Return `newLeaf` to reset state, or `oldLeaf` to maintain state
-    return newLeaf;
+    // Return `nextState` to reset state, or `state` to maintain state
+    return nextState;
   }
 
-  const foundIndex = oldLeaf.children.findIndex(leaf => nextLeaf && leaf.key === nextLeaf.key);
+  const foundIndex = state.children.findIndex(leaf => nextLeaf && leaf.key === nextLeaf.key);
   const foundNextLeaf = foundIndex > -1;
 
   if (foundNextLeaf) {
-    const foundLeaf = oldLeaf.children[foundIndex];
+    const foundLeaf = state.children[foundIndex];
     // `nextLeaf` has one child, always. See `createState()`
     if (hasNextChild(nextLeaf)) {
       const nextAction: NavigationAction = {
@@ -54,83 +78,184 @@ export function mergeState(
       };
 
       return {
-        ...oldLeaf,
+        ...state,
         children: [
-          ...oldLeaf.children.slice(0, foundIndex),
-          mergeState(foundLeaf, nextAction),
-          ...oldLeaf.children.slice(foundIndex + 1, oldLeaf.children.length),
+          ...state.children.slice(0, foundIndex),
+          defaultReducer(foundLeaf, nextAction),
+          ...state.children.slice(foundIndex + 1, state.children.length),
         ],
         index: foundIndex,
-        ...extractCapturedState(newLeaf),
+        ...extractCapturedState(nextState),
       };
     }
 
-    // nextLeaf is the final leaf (newleaf has no grandchild), update index and stop
-    let leaf = {
-      ...oldLeaf,
+    // nextLeaf is the final leaf (nextState has no grandchild), update index and stop
+    return {
+      ...state,
       children: [
-        ...oldLeaf.children.slice(0, foundIndex),
+        ...state.children.slice(0, foundIndex),
         {
           ...foundLeaf,
           ...extractCapturedState(nextLeaf),
         },
-        ...oldLeaf.children.slice(foundIndex + 1, oldLeaf.children.length),
+        ...state.children.slice(foundIndex + 1, state.children.length),
       ],
       index: foundIndex,
-      ...extractCapturedState(newLeaf),
-    };
-
-    // For stacks, when a location descriptor with the same key is pushed, it's assumed POP,
-    // re-activate leaf and slice off the tail
-    if (oldLeaf.type === STACK_ROUTE) {
-      leaf = {
-        ...leaf,
-        children: [
-          ...oldLeaf.children.slice(0, foundIndex + 1),
-        ],
-      };
-    }
-
-    return leaf;
-  }
-
-  // Push a new child
-  if (oldLeaf.type === STACK_ROUTE || oldLeaf.type === TABS_ROUTE) {
-    return {
-      ...oldLeaf,
-      children: [
-        ...oldLeaf.children,
-        nextLeaf,
-      ],
-      index: oldLeaf.children.length,
-      ...extractCapturedState(newLeaf),
+      ...extractCapturedState(nextState),
     };
   }
 
   // Replace existing child
   return {
-    ...oldLeaf,
+    ...state,
     children: [
       nextLeaf,
     ],
     index: 0,
-    ...extractCapturedState(newLeaf),
+    ...extractCapturedState(nextState),
   };
 }
 
-// function isIndexRoute(route: Route): boolean {
-//   if (!route.path && !route.childRoutes && !route.routeType) {
-//     return true;
-//   }
-//   return false;
-// }
+export function defaultTabsRouteReducer(
+  state: EnhancedNavigationState,
+  action: NavigationAction,
+): EnhancedNavigationState {
+  invariant(
+    state.type === TABS_ROUTE,
+    '`%s` is configured with an invalid reducer.',
+    state.type
+  );
 
-// function isNoPathRoute(route: Route): boolean {
-//   if (!route.path && route.childRoutes && route.routeType === ROUTE) {
-//     return true;
-//   }
-//   return false;
-// }
+  const { nextNavigationState: nextState } = action;
+
+  // `creteState()` always returns a unary tree
+  const nextLeaf = nextState.children[0];
+
+  if (!nextLeaf) {
+    // Return `nextState` to reset state, or `state` to maintain state
+    return nextState;
+  }
+
+  const foundIndex = state.children.findIndex(leaf => nextLeaf && leaf.key === nextLeaf.key);
+  const foundNextLeaf = foundIndex > -1;
+
+  if (foundNextLeaf) {
+    const foundLeaf = state.children[foundIndex];
+    // `nextLeaf` has one child, always. See `createState()`
+    if (hasNextChild(nextLeaf)) {
+      const nextAction: NavigationAction = {
+        ...action,
+        nextNavigationState: nextLeaf,
+      };
+
+      return {
+        ...state,
+        children: [
+          ...state.children.slice(0, foundIndex),
+          defaultReducer(foundLeaf, nextAction),
+          ...state.children.slice(foundIndex + 1, state.children.length),
+        ],
+        index: foundIndex,
+        ...extractCapturedState(nextState),
+      };
+    }
+
+    // nextLeaf is the final leaf (nextState has no grandchild), update index and stop
+    return {
+      ...state,
+      children: [
+        ...state.children.slice(0, foundIndex),
+        {
+          ...foundLeaf,
+          ...extractCapturedState(nextLeaf),
+        },
+        ...state.children.slice(foundIndex + 1, state.children.length),
+      ],
+      index: foundIndex,
+      ...extractCapturedState(nextState),
+    };
+  }
+
+  // Push a new child
+  return {
+    ...state,
+    children: [
+      ...state.children,
+      nextLeaf,
+    ],
+    index: state.children.length,
+    ...extractCapturedState(nextState),
+  };
+}
+
+export function defaultStackRouteReducer(
+  state: EnhancedNavigationState,
+  action: NavigationAction,
+): EnhancedNavigationState {
+  invariant(
+    state.type === STACK_ROUTE,
+    '`%s` is configured with an invalid reducer.',
+    state.type
+  );
+
+  const { nextNavigationState: nextState } = action;
+
+  // `creteState()` always returns a unary tree
+  const nextLeaf = nextState.children[0];
+
+  if (!nextLeaf) {
+    // Return `nextState` to reset state, or `state` to maintain state
+    return nextState;
+  }
+
+  const foundIndex = state.children.findIndex(leaf => nextLeaf && leaf.key === nextLeaf.key);
+  const foundNextLeaf = foundIndex > -1;
+
+  if (foundNextLeaf) {
+    const foundLeaf = state.children[foundIndex];
+    // `nextLeaf` has one child, always. See `createState()`
+    if (hasNextChild(nextLeaf)) {
+      const nextAction: NavigationAction = {
+        ...action,
+        nextNavigationState: nextLeaf,
+      };
+
+      return {
+        ...state,
+        children: [
+          ...state.children.slice(0, foundIndex),
+          defaultReducer(foundLeaf, nextAction),
+          ...state.children.slice(foundIndex + 1, state.children.length),
+        ],
+        index: foundIndex,
+        ...extractCapturedState(nextState),
+      };
+    }
+
+    // nextLeaf is the final leaf (nextState has no grandchild), update index and stop For stacks,
+    // when a location descriptor with the same key is pushed, it's assumed POP, re-activate leaf
+    // and slice off the tail
+    return {
+      ...state,
+      children: [
+        ...state.children.slice(0, foundIndex + 1),
+      ],
+      index: foundIndex,
+      ...extractCapturedState(nextState),
+    };
+  }
+
+  // Push a new child
+  return {
+    ...state,
+    children: [
+      ...state.children,
+      nextLeaf,
+    ],
+    index: state.children.length,
+    ...extractCapturedState(nextState),
+  };
+}
 
 function getIndexRoute(route: RouteDef): ?IndexRouteDef {
   if (!route.path && !route.childRoutes && !route.routeType) {
@@ -174,6 +299,7 @@ export function createState(routes: any,
     let type = currentRoute.routeType;
     let routeParams = getRouteParams(currentRoute, params);
     const transition = currentRoute.transition;
+    const reducer = currentRoute.reducer;
 
     const indexRoute = getIndexRoute(currentRoute);
 
@@ -216,6 +342,7 @@ export function createState(routes: any,
         params,
         location,
         transition,
+        reducer,
       };
 
       if (prevState) {
