@@ -53,6 +53,23 @@ render((
 ), APP_KEY);
 ```
 
+### Advanced Usage
+
+You can customize behavior of the default reducers that are used to create the `navigationState` of `<Route>` or its siblings.
+
+This allows greater customizations on how `<Link>` behaves for a particular route and is especially useful for nested `<StackRoute>`'s where default action doesn't always lead to the intended behavior, or `<TabsRoute>`'s where double-taps should reset the `navigationState` of a nested `<StackRoute>`.
+
+```js
+const reducer = (
+  state: EnhancedNavigationState,
+  action: NavigationAction
+): EnhancedNavigationState => ({
+  /* ... */
+});
+
+<TabsRoute path="/" component={Component} reducer={reducer}/>
+```
+
 ### Thanks
 
 React Router Native is based on [React Router](https://github.com/reactjs/react-router). Thanks to Ryan Florence [@ryanflorence](https://twitter.com/ryanflorence), Michael Jackson [@mjackson](https://twitter.com/mjackson) and all the contributors for their work on [react-router](https://github.com/reactjs/react-router) and [history](https://github.com/mjackson/history).
