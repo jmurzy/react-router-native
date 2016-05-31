@@ -15,7 +15,7 @@ React Router Native is cross-platform. It supports all platforms that [Navigatio
 
 ### Installation
 
-_Do __not__ let npm confuse you. There used to be another project with the same name that the previous owner nuked. Unfortunately, removing or re-publishing old versions is no longer supported by npm. So the packages that are currently available on npm are the artifacts of a different project, and the first version of this library will be released as __v2.0.0__ and strictly follow [React Versioning Scheme](https://facebook.github.io/react/blog/2016/02/19/new-versioning-scheme.html) afterwards._
+Do __not__ let npm confuse you. There used to be another project with the same name that the previous owner nuked. Unfortunately, removing or re-publishing old versions is no longer supported by npm. So the packages that are currently available on npm are the artifacts of a different project, and the first version of this library will be released as __v2.0.0__ and strictly follow [React Versioning Scheme](https://facebook.github.io/react/blog/2016/02/19/new-versioning-scheme.html) afterwards.
 
 Using [npm](https://www.npmjs.com/):
 
