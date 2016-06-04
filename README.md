@@ -4,24 +4,33 @@ A routing library for [React Native](https://github.com/facebook/react-native) t
 
 <img align="right" width="360px" src="https://raw.githubusercontent.com/jmurzy/react-router-native/master/docs/screenshot.gif">
 
-### Questions?
-Feedback is appreciated, but please keep in mind that the project contains components that are currently under [active](https://github.com/facebook/react-native/commits?author=ericvicenti) [development](https://github.com/facebook/react-native/commits?author=hedgerwang) and considered experimental—aka use in production at your own risk. Documentation is still a [work-in-progress](https://github.com/jmurzy/react-router-native/issues), and pull requests are accepted gratefully!
+### Motivation
+- Knowledge and proven idioms from react-router can be reused while extending them as necessary to allow navigation semantics unique to native platforms
+- Possibility to share routing code for react web / native codebases
+- Deep linking
+- URL Driven Development
 
-Feel free to reach out to me on Twitter [@jmurzy](https://twitter.com/jmurzy). If you have any questions, please submit an Issue with the "question" tag or come hang out in the React Router [Reactiflux Channel](https://discord.gg/0ZcbPKXt5bYaNQ46) and post your request there.
+**Note**: This project contains components that are currently under [active](https://github.com/facebook/react-native/commits?author=ericvicenti) [development](https://github.com/facebook/react-native/commits?author=hedgerwang) and considered experimental—aka use in production at your own risk. Documentation is still a [work-in-progress](https://github.com/jmurzy/react-router-native/issues), and pull requests are accepted gratefully!
 
-### Platform Support
 
-React Router Native is cross-platform. It supports all platforms that [NavigationExperimental](https://github.com/ericvicenti/navigation-rfc) supports.
+### Example
+The example app from the GIF can be found at `examples/Aviato`. You can run it as follows:
+
+```bash
+git clone https://github.com/jmurzy/react-router-native && cd react-router-native
+cd examples/Aviato
+npm install
+react-native run-ios
+```
+
+Look at `examples/Aviato/app/routes.js` and play around with the app to get a feel for what's possible.
 
 ### Installation
 
-Do __not__ let npm confuse you. There used to be another project with the same name that the previous owner nuked. Unfortunately, removing or re-publishing old versions is no longer supported by npm. So the packages that are currently available on npm are the artifacts of a different project, and the first version of this library will be released as __v2.0.0__ and strictly follow [React Versioning Scheme](https://facebook.github.io/react/blog/2016/02/19/new-versioning-scheme.html) afterwards.
+Do not let npm confuse you: there used to be another project with the same name that the previous owner nuked. Unfortunately, removing or re-publishing old versions is no longer supported by npm. So the packages that are currently available on npm *are the artifacts of a different project*, and the first version of this library *will be released as __v2.0.0__* and strictly follow [React Versioning Scheme](https://facebook.github.io/react/blog/2016/02/19/new-versioning-scheme.html) afterwards.
 
-Using [npm](https://www.npmjs.com/):
+For now, it's only available on Github until it has reached a minimum viable stability 🚀. 
 
-```sh
-$ npm install --save react-router react-router-native@2.0.0
-```
 ### Usage
 
 ```javascript
@@ -71,6 +80,19 @@ const reducer = (
 
 <TabsRoute path="/" component={Component} reducer={reducer}/>
 ```
+
+### Platform Support
+
+React Router Native is cross-platform. It supports all platforms that [NavigationExperimental](https://github.com/ericvicenti/navigation-rfc) supports.
+
+### Contributing
+In order to hack on the library code and sync it into `examples/Aviato/node_modules` run `npm run sync` (depends on `npm i -g sane`). The library code is specified as a [local dependency](https://docs.npmjs.com/files/package.json#local-paths) in the example's [`package.json`](https://github.com/jmurzy/react-router-native/blob/master/examples/Aviato/package.json) -- `npm link` does not work with RN packager right now (it's an [open issue](https://productpains.com/post/react-native/symlink-support-for-packager/)).
+
+We look forward to your input! 👊
+
+### Questions?
+
+Feel free to reach out to me on Twitter [@jmurzy](https://twitter.com/jmurzy). If you have any questions, please submit an Issue with the "question" tag or come hang out in the React Router [Reactiflux Channel](https://discord.gg/0ZcbPKXt5bYaNQ46) and post your request there.
 
 ### Thanks
 
