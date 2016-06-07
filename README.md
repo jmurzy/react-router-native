@@ -12,6 +12,15 @@ A routing library for [React Native](https://github.com/facebook/react-native) t
 
 **Note**: This project contains components that are currently under [active](https://github.com/facebook/react-native/commits?author=ericvicenti) [development](https://github.com/facebook/react-native/commits?author=hedgerwang) and considered experimental—aka use in production at your own risk. Documentation is still a [work-in-progress](https://github.com/jmurzy/react-router-native/issues), and pull requests are accepted gratefully!
 
+### Installation
+
+Do not let npm confuse you: there used to be another project with the same name that the previous owner nuked. Unfortunately, removing or re-publishing old versions is no longer supported by npm. So packages that are tagged __< v2.0.0__ on npm *are artifacts of a different project*, and the first stable version of this library *will be released as __v2.0.0__* and strictly follow the [React Versioning Scheme](https://facebook.github.io/react/blog/2016/02/19/new-versioning-scheme.html) afterwards.
+
+#### Using [npm](https://www.npmjs.com/):
+
+ ```sh
+ $ npm install --save react-router-native react-router
+ ```
 
 ### Example
 The example app from the GIF can be found at `examples/Aviato`. You can run it as follows:
@@ -23,13 +32,7 @@ npm install
 react-native run-ios
 ```
 
-Look at `examples/Aviato/app/routes.js` and play around with the app to get a feel for what's possible.
-
-### Installation
-
-Do not let npm confuse you: there used to be another project with the same name that the previous owner nuked. Unfortunately, removing or re-publishing old versions is no longer supported by npm. So the packages that are currently available on npm *are the artifacts of a different project*, and the first version of this library *will be released as __v2.0.0__* and strictly follow [React Versioning Scheme](https://facebook.github.io/react/blog/2016/02/19/new-versioning-scheme.html) afterwards.
-
-For now, it's only available on Github until it has reached a minimum viable stability 🚀. 
+Look at `examples/Aviato/app/routes.js` and play around with the app to get a feel for what's possible. The address bar shown in the demo is used for development and can be disabled by removing the [`addressBar`](https://github.com/jmurzy/react-router-native/blob/9f68616c22a4d8b525eb19e960c25314f85dd7f8/examples/Aviato/app/routes.js#L139) prop from the ``<Router>`` component.
 
 ### Usage
 
