@@ -1,8 +1,13 @@
 {
   "name": "react-router-native",
-  "version": "0.1.0",
+  "version": "2.0.0-alpha.0",
   "description": "A routing library for React Native that strives for sensible API parity with react-router",
   "main": "modules/index",
+  "files": [
+    "*.md",
+    "docs",
+    "modules"
+  ],
   "jsnext:main": "modules/index",
   "author": "Jake Murzy <jake@murzy>",
   "license": "MIT",
