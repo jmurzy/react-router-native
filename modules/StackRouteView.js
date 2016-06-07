@@ -22,10 +22,11 @@ const {
 type Props = {
   path: string,
   type: string,
-  navigationComponent: ReactClass,
+  component: ReactClass,
   overlayComponent: ?ReactClass,
-  navigationScenes: ?Array<ReactElement>,
+  navigationalElements: ?Array<ReactElement>,
   navigationState: EnhancedNavigationRoute,
+  createElement: Function,
   onNavigate: Function,
 };
 
@@ -34,10 +35,11 @@ class StackRouteView extends Component<any, Props, any> {
   static propTypes = {
     path: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    navigationComponent: PropTypes.any.isRequired,
+    component: PropTypes.any.isRequired,
     overlayComponent: PropTypes.any,
-    navigationScenes: PropTypes.arrayOf(PropTypes.element),
+    navigationalElements: PropTypes.arrayOf(PropTypes.element),
     navigationState: PropTypes.object,
+    createElement: PropTypes.func.isRequired,
     onNavigate: PropTypes.func.isRequired,
   };
 
@@ -50,23 +52,31 @@ class StackRouteView extends Component<any, Props, any> {
   renderOverlay(props: NavigationSceneRendererProps): ?ReactElement {
     const { scene } = props;
 
-    const { navigationScenes } = this.props;
-    if (!navigationScenes) {
+    const { navigationalElements, createElement } = this.props;
+    if (!navigationalElements) {
       return null;
     }
 
-    const navigationScene = navigationScenes.find(
+    const navigationalElement = navigationalElements.find(
       navScene => navScene.props.path === scene.route.path
     );
 
-    if (!navigationScene) {
+    if (!navigationalElement) {
       warnOutOfSync('Cannot render overlay', scene.route.path);
     }
 
-    const overlayComponent = navigationScene.props.overlayComponent;
+    const overlayComponent = navigationalElement.props.overlayComponent;
     if (overlayComponent) {
       const { location, params, routeParams } = scene.route;
-      return React.createElement(overlayComponent, { ...props, location, params, routeParams });
+
+      const overlayComponentProps = {
+        ...props,
+        location,
+        params,
+        routeParams,
+      };
+
+      return createElement(overlayComponent, overlayComponentProps);
     }
 
     return null;
@@ -92,42 +102,43 @@ class StackRouteView extends Component<any, Props, any> {
     const viewStyle = styleInterpolator(props);
     const panHandlers = panResponder(props);
 
-    return (
-      <NavigationCard
-        key={scene.route.key}
-        style={[viewStyle, styles.navigationCard]}
-        panHandlers={panHandlers}
-        {...props}
-        renderScene={this.renderCardScene}
-      />
-    );
+    const navigationCardProps = {
+      key: scene.route.key,
+      style: [viewStyle, styles.navigationCard],
+      panHandlers,
+      ...props,
+      renderScene: this.renderCardScene,
+    };
+
+    return React.createElement(NavigationCard, navigationCardProps);
   }
 
   renderCardScene(props: NavigationSceneRendererProps): ?ReactElement {
     const { scene } = props;
 
-    const { navigationScenes } = this.props;
-    if (!navigationScenes) {
+    const { navigationalElements } = this.props;
+    if (!navigationalElements) {
       return null;
     }
 
-    const navigationScene = navigationScenes.find(
+    const navigationalElement = navigationalElements.find(
       navScene => navScene.props.path === scene.route.path
     );
 
-    if (!navigationScene) {
+    if (!navigationalElement) {
       warnOutOfSync('Cannot render card', scene.route.path);
     }
 
-    return React.cloneElement(navigationScene, { navigationState: scene.route });
+    return React.cloneElement(navigationalElement, { navigationState: scene.route });
   }
 
   render(): ReactElement {
     const {
       onNavigate,
-      navigationScenes,
+      navigationalElements,
       navigationState,
-      navigationComponent: NavigationComponent,
+      component,
+      createElement,
     } = this.props;
 
     const {
@@ -143,28 +154,31 @@ class StackRouteView extends Component<any, Props, any> {
       applyAnimation,
     } = transitionRegistry[transition];
 
-    let wrappedChildren;
-    if (navigationScenes && routes && routes.length > 0) {
-      wrappedChildren = (
-        <NavigationTransitioner
-          configureTransition={configureTransition}
-          applyAnimation={applyAnimation}
-          style={styles.wrapper}
-          navigationState={navigationState}
-          renderScene={this.renderScene}
-          renderOverlay={this.renderOverlay}
-          onNavigate={onNavigate}
-        />
-      );
+    // Create NavigationTransitioner for handling nested routes
+    let transitioner;
+    if (navigationalElements && routes && routes.length > 0) {
+      const transitionerProps = {
+        configureTransition,
+        applyAnimation,
+        style: styles.wrapper,
+        navigationState,
+        renderScene: this.renderScene,
+        renderOverlay: this.renderOverlay,
+        onNavigate,
+      };
+
+      transitioner = React.createElement(NavigationTransitioner, transitionerProps);
     }
 
-    return (
-      <NavigationComponent params={params} routeParams={routeParams} location={location}>
-        {wrappedChildren}
-      </NavigationComponent>
-    );
-  }
+    const componentProps = {
+      params,
+      routeParams,
+      location,
+      children: transitioner,
+    };
 
+    return createElement(component, componentProps);
+  }
 }
 
 export default withOnNavigate(StackRouteView);

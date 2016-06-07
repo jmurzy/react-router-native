@@ -289,7 +289,7 @@ class RouterContext extends Component<any, any, any> {
         location,
       };
 
-      element = this.createElement(RootWrapper, props);
+      element = React.createElement(RootWrapper, props);
     }
 
     invariant(

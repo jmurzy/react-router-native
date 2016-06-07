@@ -20,9 +20,10 @@ const {
 type Props = {
   path: string,
   type: string,
-  navigationComponent: ReactClass,
-  navigationScenes: ?Array<ReactElement>,
+  component: ReactClass,
+  navigationalElements: ?Array<ReactElement>,
   navigationState: EnhancedNavigationRoute,
+  createElement: Function,
   onNavigate: Function,
 };
 
@@ -31,9 +32,10 @@ class RouteView extends Component<any, Props, any> {
   static propTypes = {
     path: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
-    navigationComponent: PropTypes.any.isRequired,
-    navigationScenes: PropTypes.arrayOf(PropTypes.element),
+    component: PropTypes.any.isRequired,
+    navigationalElements: PropTypes.arrayOf(PropTypes.element),
     navigationState: PropTypes.object,
+    createElement: PropTypes.func.isRequired,
     onNavigate: PropTypes.func.isRequired,
   };
 
@@ -44,31 +46,32 @@ class RouteView extends Component<any, Props, any> {
   renderScene(props: NavigationSceneRendererProps): ?ReactElement {
     const { scene } = props;
 
-    const { navigationScenes } = this.props;
+    const { navigationalElements } = this.props;
 
-    if (!scene.route || !navigationScenes) {
+    if (!scene.route || !navigationalElements) {
       return null;
     }
 
-    const navigationScene = navigationScenes.find(
+    const navigationalElement = navigationalElements.find(
       navScene => navScene.props.path === scene.route.path
     );
 
-    if (!navigationScene) {
+    if (!navigationalElement) {
       warnOutOfSync('Cannot render scene', scene.route.path);
     }
 
     const key = scene.route.key;
 
-    return React.cloneElement(navigationScene, { key, navigationState: scene.route });
+    return React.cloneElement(navigationalElement, { key, navigationState: scene.route });
   }
 
   render(): ReactElement {
     const {
       onNavigate,
-      navigationScenes,
+      navigationalElements,
       navigationState,
-      navigationComponent: NavigationComponent,
+      component,
+      createElement,
     } = this.props;
 
     const {
@@ -78,25 +81,29 @@ class RouteView extends Component<any, Props, any> {
       location,
     } = navigationState;
 
-    let wrappedChildren;
-    if (navigationScenes && routes && routes.length > 0) {
+    // Create NavigationTransitioner for handling nested routes
+    let transitioner;
+    if (navigationalElements && routes && routes.length > 0) {
       // react-native/c3714d7ed7c8ee57e005d51147820456ef8cda3e
       // FIXME Replace `Transitioner` with `View` to reclaim performance
-      wrappedChildren = (
-        <NavigationTransitioner
-          style={styles.wrapper}
-          navigationState={navigationState}
-          renderScene={this.renderScene}
-          onNavigate={onNavigate}
-        />
-      );
+      const transitionerProps = {
+        style: styles.wrapper,
+        navigationState,
+        renderScene: this.renderScene,
+        onNavigate,
+      };
+
+      transitioner = React.createElement(NavigationTransitioner, transitionerProps);
     }
 
-    return (
-      <NavigationComponent params={params} routeParams={routeParams} location={location}>
-        {wrappedChildren}
-      </NavigationComponent>
-    );
+    const componentProps = {
+      params,
+      routeParams,
+      location,
+      children: transitioner,
+    };
+
+    return createElement(component, componentProps);
   }
 }
 

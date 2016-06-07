@@ -1,5 +1,6 @@
 /* @flow */
 
+import React from 'react';
 import warning from 'warning';
 import invariant from 'invariant';
 import RouteView from './RouteView';
@@ -49,16 +50,17 @@ function createNavigationTree(createElement: ElementProvider,
                               positionInParent: number): ?ReactElement {
   const props = {};
 
+  props.createElement = createElement;
   props.path = route.path || `[visual]${positionInParent}`;
   props.type = route.routeType;
-  props.navigationComponent = route.component;
+  props.component = route.component;
 
   if (route.overlayComponent) {
     props.overlayComponent = route.overlayComponent;
   }
 
   if (route.childRoutes) {
-    props.navigationScenes = route.childRoutes.map(
+    props.navigationalElements = route.childRoutes.map(
       (r, index) => createNavigationTree(createElement, routes, r, index)
     );
 
@@ -68,7 +70,7 @@ function createNavigationTree(createElement: ElementProvider,
 
       indexRouteProps.path = '[index]';
       indexRouteProps.type = 'index';
-      indexRouteProps.navigationComponent = route.indexRoute.component;
+      indexRouteProps.component = route.indexRoute.component;
 
       if (route.indexRoute.overlayComponent) {
         indexRouteProps.overlayComponent = route.indexRoute.overlayComponent;
@@ -76,17 +78,17 @@ function createNavigationTree(createElement: ElementProvider,
 
       const indexRouteEl = createElement(RouteView, indexRouteProps);
 
-      props.navigationScenes.unshift(indexRouteEl);
+      props.navigationalElements.unshift(indexRouteEl);
     }
   }
 
   let el;
   if (route.routeType === STACK_ROUTE) {
-    el = createElement(StackRouteView, props);
+    el = React.createElement(StackRouteView, props);
   } else if (route.routeType === TABS_ROUTE) {
-    el = createElement(TabsRouteView, props);
+    el = React.createElement(TabsRouteView, props);
   } else {
-    el = createElement(RouteView, props);
+    el = React.createElement(RouteView, props);
   }
   return el;
 }
