@@ -69,6 +69,7 @@ class RouteView extends Component<any, Props, any> {
       navigationScenes,
       navigationState,
       navigationComponent: NavigationComponent,
+      createElement,
     } = this.props;
 
     const {
@@ -92,11 +93,13 @@ class RouteView extends Component<any, Props, any> {
       );
     }
 
-    return (
-      <NavigationComponent params={params} routeParams={routeParams} location={location}>
-        {wrappedChildren}
-      </NavigationComponent>
-    );
+    const props = {
+      params,
+      routeParams,
+      location,
+      children: wrappedChildren,
+    };
+    return createElement(NavigationComponent, props);
   }
 }
 
