@@ -7,8 +7,6 @@ import { defaultStackRouteReducer } from './ReducerUtils';
 import { notImplemented, component } from './PropTypes';
 import { HORIZONTAL_PAGER } from './transitionRegistry';
 
-const { STACK_ROUTE } = RouteTypes;
-
 type Props = {
   path: string,
   component: ReactClass,
@@ -19,6 +17,8 @@ type Props = {
   transition: ?string,
   reducer: ?Function
 };
+
+const { STACK_ROUTE } = RouteTypes;
 
 /* eslint-disable react/require-render-return */
 class StackRoute extends Component<any, Props, any> {

@@ -7,7 +7,7 @@ import withOnNavigate from './withOnNavigate';
 import transitionRegistry from './transitionRegistry';
 import { globalStyles as styles } from './styles';
 
-import type { EnhancedNavigationState } from './TypeDefinition';
+import type { EnhancedNavigationRoute } from './TypeDefinition';
 
 const {
   Card: NavgationCard,
@@ -24,8 +24,8 @@ type Props = {
   type: string,
   navigationComponent: ReactClass,
   overlayComponent: ?ReactClass,
-  navScenes: ?Array<ReactElement>,
-  _navigationState: EnhancedNavigationState,
+  navigationScenes: ?Array<ReactElement>,
+  navigationState: EnhancedNavigationRoute,
   onNavigate: Function,
 };
 
@@ -36,8 +36,8 @@ class TabsRouteView extends Component<any, Props, any> {
     type: PropTypes.string.isRequired,
     navigationComponent: PropTypes.any.isRequired,
     overlayComponent: PropTypes.any,
-    navScenes: PropTypes.arrayOf(PropTypes.element),
-    _navigationState: PropTypes.object,
+    navigationScenes: PropTypes.arrayOf(PropTypes.element),
+    navigationState: PropTypes.object,
     onNavigate: PropTypes.func.isRequired,
   };
 
@@ -50,19 +50,22 @@ class TabsRouteView extends Component<any, Props, any> {
   renderOverlay(props: NavigationSceneRendererProps): ?ReactElement {
     const { scene } = props;
 
-    const { navScenes } = this.props;
-    if (!navScenes) {
+    const { navigationScenes } = this.props;
+    if (!navigationScenes) {
       return null;
     }
 
-    const el = navScenes.find(navScene => navScene.props.path === scene.navigationState.path);
-    if (!el) {
-      warnOutOfSycn('Cannot render overlay', props);
+    const navigationScene = navigationScenes.find(
+      navScene => navScene.props.path === scene.route.path
+    );
+
+    if (!navigationScene) {
+      warnOutOfSycn('Cannot render overlay', scene.route.path);
     }
 
-    const overlayComponent = el.props.overlayComponent;
+    const overlayComponent = navigationScene.props.overlayComponent;
     if (overlayComponent) {
-      const { location, params, routeParams } = scene.navigationState;
+      const { location, params, routeParams } = scene.route;
       return React.createElement(overlayComponent, { ...props, location, params, routeParams });
     }
 
@@ -72,12 +75,12 @@ class TabsRouteView extends Component<any, Props, any> {
   renderScene(props: NavigationSceneRendererProps): ?ReactElement {
     const { scene } = props;
 
-    if (!scene.navigationState) {
+    if (!scene.route) {
       return null;
     }
 
     const { transition: parentTransition } = props.navigationState;
-    const { transition: sceneTransition } = scene.navigationState;
+    const { transition: sceneTransition } = scene.route;
 
     const transition = sceneTransition || parentTransition;
 
@@ -91,7 +94,7 @@ class TabsRouteView extends Component<any, Props, any> {
 
     return (
       <NavgationCard
-        key={scene.navigationState.key}
+        key={scene.route.key}
         style={[viewStyle, styles.navigationCard]}
         panHandlers={panHandlers}
         {...props}
@@ -103,36 +106,38 @@ class TabsRouteView extends Component<any, Props, any> {
   renderCardScene(props: NavigationSceneRendererProps): ?ReactElement {
     const { scene } = props;
 
-    const { navScenes } = this.props;
+    const { navigationScenes } = this.props;
 
-    if (!navScenes) {
+    if (!navigationScenes) {
       return null;
     }
 
-    const el = navScenes.find(navScene => navScene.props.path === scene.navigationState.path);
+    const navigationScene = navigationScenes.find(
+      navScene => navScene.props.path === scene.route.path
+    );
 
-    if (!el) {
-      warnOutOfSycn('Cannot render card', props);
+    if (!navigationScene) {
+      warnOutOfSycn('Cannot render card', scene.route.path);
     }
 
-    return React.cloneElement(el, { _navigationState: scene.navigationState });
+    return React.cloneElement(navigationScene, { navigationState: scene.route });
   }
 
   render(): ReactElement {
     const {
       onNavigate,
-      navScenes,
-      _navigationState,
+      navigationScenes,
+      navigationState,
       navigationComponent: NavigationComponent,
     } = this.props;
 
     const {
-      children,
+      routes,
       params,
       routeParams,
       location,
       transition,
-    } = _navigationState;
+    } = navigationState;
 
     const {
       configureTransition,
@@ -140,13 +145,13 @@ class TabsRouteView extends Component<any, Props, any> {
     } = transitionRegistry[transition];
 
     let wrappedChildren;
-    if (navScenes && children && children.length > 0) {
+    if (navigationScenes && routes && routes.length > 0) {
       wrappedChildren = (
         <NavigationTransitioner
           configureTransition={configureTransition}
           applyAnimation={applyAnimation}
           style={styles.wrapper}
-          navigationState={_navigationState}
+          navigationState={navigationState}
           renderScene={this.renderScene}
           renderOverlay={this.renderOverlay}
           onNavigate={onNavigate}

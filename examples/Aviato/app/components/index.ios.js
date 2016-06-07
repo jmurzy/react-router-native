@@ -1,6 +1,6 @@
 /* @noflow */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import {
   NavigationExperimental,
   View,
@@ -37,7 +37,7 @@ export const stackHeaderComponent = (backgroundColor, marginTop = 0) => {
 
     renderTitleComponent(props) {
       const { scene } = props;
-      const title = String(scene.navigationState.key || '');
+      const title = String(scene.route.key || '');
       return (
         <NavigationHeaderTitle>
           {title}
@@ -89,7 +89,7 @@ export const tabHeaderComponent = (backgroundColor, marginTop = 0) => {
 
     renderTitleComponent(props) {
       const { scene } = props;
-      const title = String(scene.navigationState.key || '');
+      const title = String(scene.route.key || '');
       return (
         <NavigationHeaderTitle>
           {title}

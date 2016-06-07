@@ -1,7 +1,7 @@
 import { /* NavigationExperimental, */ Animated, Easing } from 'react-native';
 import invariant from 'invariant';
 
-import type { EnhancedNavigationState, AnimatedValue } from './TypeDefinition';
+import type { EnhancedNavigationRoute, AnimatedValue } from './TypeDefinition';
 
 /* eslint-disable no-multi-str */
 import NavigationCardStackStyleInterpolator from 'react-native/Libraries/\
@@ -58,21 +58,21 @@ function configureSkipTransition() {
 // deprecated
 function skipAnimation( // eslint-disable-line no-unused-vars
   position: AnimatedValue,
-  navigationState: EnhancedNavigationState,
+  navigationRoute: EnhancedNavigationRoute,
 ): void {
-  position.setValue(navigationState.index);
+  position.setValue(navigationRoute.index);
 }
 
 // deprecated
 function applyDefaultAnimation( // eslint-disable-line no-unused-vars
   position: AnimatedValue,
-  navigationState: EnhancedNavigationState,
+  navigationRoute: EnhancedNavigationRoute,
 ): void {
   Animated.spring(
     position,
     {
       bounciness: 0,
-      toValue: navigationState.index,
+      toValue: navigationRoute.index,
     }
   ).start();
 }
@@ -82,13 +82,13 @@ const noPanResponder = () => null;
 function createApplyAnimation(transitionSpec: Object) {
   return (
     position: AnimatedValue,
-    navigationState: EnhancedNavigationState,
+    navigationRoute: EnhancedNavigationRoute,
   ): void => {
     Animated.timing(
       position,
       {
         ...transitionSpec,
-        toValue: navigationState.index,
+        toValue: navigationRoute.index,
       }
     ).start();
   };

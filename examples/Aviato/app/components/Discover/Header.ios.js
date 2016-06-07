@@ -23,7 +23,7 @@ export default class Header extends Component {
 
   renderTitleComponent(props) {
     const { scene } = props;
-    const title = String(scene.navigationState.key || '');
+    const title = String(scene.route.key || '');
     return (
       <NavigationHeaderTitle>
         {title}

@@ -15,10 +15,10 @@ export type Location = {
   state: Object,
 };
 
-export type EnhancedNavigationState = {
+export type EnhancedNavigationRoute = {
   key: string,
   index: number,
-  children: Array<EnhancedNavigationState>,
+  routes: Array<EnhancedNavigationRoute>,
   type: string,
   path: string,
   location: Location,
@@ -57,7 +57,7 @@ export type NavigationAction = {
   routes: Array<RouteDef>,
   location: Location,
   params: Object,
-  nextNavigationState: EnhancedNavigationState,
+  nextNavigationState: EnhancedNavigationRoute,
 }
 
-export type Snapshot = EnhancedNavigationState;
+export type Snapshot = EnhancedNavigationRoute;

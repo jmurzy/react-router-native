@@ -58,7 +58,7 @@ function createNavigationTree(createElement: ElementProvider,
   }
 
   if (route.childRoutes) {
-    props.navScenes = route.childRoutes.map(
+    props.navigationScenes = route.childRoutes.map(
       (r, index) => createNavigationTree(createElement, routes, r, index)
     );
 
@@ -76,7 +76,7 @@ function createNavigationTree(createElement: ElementProvider,
 
       const indexRouteEl = createElement(RouteView, indexRouteProps);
 
-      props.navScenes.unshift(indexRouteEl);
+      props.navigationScenes.unshift(indexRouteEl);
     }
   }
 

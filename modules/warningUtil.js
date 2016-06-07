@@ -1,22 +1,14 @@
 import warning from 'warning';
 import invariant from 'invariant';
-import { NavigationExperimental } from 'react-native';
-
-const {
-  PropTypes: NavigationPropTypes,
-} = NavigationExperimental;
-
-const {
-  SceneRenderer: NavigationSceneRendererProps,
-} = NavigationPropTypes;
 
 const warned = {};
 
-export function warnOutOfSycn(context: string, props: NavigationSceneRendererProps) {
+export function warnOutOfSycn(context: string, path: string) {
   invariant(
     false,
-    `react-router-native Route configuration is out of sync with router state. ${context} %s`,
-    props.scene.navigationState.path
+    'react-router-native Route configuration is out of sync with router state. %s at `%s`.',
+    context,
+    path
   );
 }
 

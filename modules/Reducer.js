@@ -1,12 +1,12 @@
 /* @flow */
 
 import { defaultReducer } from './ReducerUtils';
-import type { EnhancedNavigationState, NavigationAction } from './TypeDefinition';
+import type { EnhancedNavigationRoute, NavigationAction } from './TypeDefinition';
 
 export default (
-  state: ?EnhancedNavigationState,
+  state: ?EnhancedNavigationRoute,
   action: NavigationAction,
-): EnhancedNavigationState => {
+): EnhancedNavigationRoute => {
   const { nextNavigationState } = action;
 
   if (!state) {

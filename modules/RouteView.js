@@ -6,7 +6,7 @@ import { warnOutOfSycn } from './warningUtil';
 import withOnNavigate from './withOnNavigate';
 import { globalStyles as styles } from './styles';
 
-import type { EnhancedNavigationState } from './TypeDefinition';
+import type { EnhancedNavigationRoute } from './TypeDefinition';
 
 const {
   AnimatedView: NavigationTransitioner,
@@ -21,8 +21,8 @@ type Props = {
   path: string,
   type: string,
   navigationComponent: ReactClass,
-  navScenes: ?Array<ReactElement>,
-  _navigationState: EnhancedNavigationState,
+  navigationScenes: ?Array<ReactElement>,
+  navigationState: EnhancedNavigationRoute,
   onNavigate: Function,
 };
 
@@ -32,8 +32,8 @@ class RouteView extends Component<any, Props, any> {
     path: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     navigationComponent: PropTypes.any.isRequired,
-    navScenes: PropTypes.arrayOf(PropTypes.element),
-    _navigationState: PropTypes.object,
+    navigationScenes: PropTypes.arrayOf(PropTypes.element),
+    navigationState: PropTypes.object,
     onNavigate: PropTypes.func.isRequired,
   };
 
@@ -44,46 +44,48 @@ class RouteView extends Component<any, Props, any> {
   renderScene(props: NavigationSceneRendererProps): ?ReactElement {
     const { scene } = props;
 
-    const { navScenes } = this.props;
+    const { navigationScenes } = this.props;
 
-    if (!scene.navigationState || !navScenes) {
+    if (!scene.route || !navigationScenes) {
       return null;
     }
 
-    const el = navScenes.find(navScene => navScene.props.path === scene.navigationState.path);
+    const navigationScene = navigationScenes.find(
+      navScene => navScene.props.path === scene.route.path
+    );
 
-    if (!el) {
-      warnOutOfSycn('Cannot render scene', props);
+    if (!navigationScene) {
+      warnOutOfSycn('Cannot render scene', scene.route.path);
     }
 
-    const key = scene.navigationState.key;
+    const key = scene.route.key;
 
-    return React.cloneElement(el, { key, _navigationState: scene.navigationState });
+    return React.cloneElement(navigationScene, { key, navigationState: scene.route });
   }
 
   render(): ReactElement {
     const {
       onNavigate,
-      navScenes,
-      _navigationState,
+      navigationScenes,
+      navigationState,
       navigationComponent: NavigationComponent,
     } = this.props;
 
     const {
-      children,
+      routes,
       params,
       routeParams,
       location,
-    } = _navigationState;
+    } = navigationState;
 
     let wrappedChildren;
-    if (navScenes && children && children.length > 0) {
+    if (navigationScenes && routes && routes.length > 0) {
       // react-native/c3714d7ed7c8ee57e005d51147820456ef8cda3e
       // FIXME Replace `Transitioner` with `View` to reclaim performance
       wrappedChildren = (
         <NavigationTransitioner
           style={styles.wrapper}
-          navigationState={_navigationState}
+          navigationState={navigationState}
           renderScene={this.renderScene}
           onNavigate={onNavigate}
         />

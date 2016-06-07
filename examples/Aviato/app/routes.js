@@ -24,7 +24,6 @@ import { NAVIGATION_HEADER_HEIGHT } from './components/styles';
 const SECOND_HEADER = NAVIGATION_HEADER_HEIGHT;
 const THIRD_HEADER = NAVIGATION_HEADER_HEIGHT * 2;
 
-
 /**
  * NOTE: The route hierarchy below is deliberately complex to demonstrate all
  * capabilities of this library, don't approach the information architecture
@@ -43,8 +42,8 @@ const THIRD_HEADER = NAVIGATION_HEADER_HEIGHT * 2;
  *   - has a 'public' ('/', entry point of the app) and a 'private' section
  *     (/home/user/private) which can be navigated by two buttons in the bottom
  *     of the page
- *     - The 'private' section (/home/user/private) again has some subroutes, 
- *       which can be navigated to by opening the side menu and 
+ *     - The 'private' section (/home/user/private) again has some subroutes,
+ *       which can be navigated to by opening the side menu and
  *      selecting 'Private settings' or 'Private Info'
  * - a 'Following' (/home/following) tab
  * - a 'Bar' tab (/home/following-bar), a parameterized version of the 'Following' tab

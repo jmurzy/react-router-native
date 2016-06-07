@@ -6,7 +6,7 @@ import invariant from 'invariant';
 import warnOnce from './warningUtil';
 import AddressBar from './AddressBar';
 import { PAN_RESPONDER_BACK_ACTION } from './transitionRegistry';
-import type { EnhancedNavigationState, Location } from './TypeDefinition';
+import type { EnhancedNavigationRoute, Location } from './TypeDefinition';
 
 import { ADDDRESS_BAR_HEIGHT, globalStyles as styles } from './styles';
 
@@ -14,7 +14,7 @@ const NAVIGATION_HEADER_BACK_BUTTON_BACK_ACTION = 'BackAction';
 
 type Props = {
   navigationTree: ReactElement,
-  navState: EnhancedNavigationState,
+  navigationState: EnhancedNavigationRoute,
   location: Location,
   addressBar: boolean,
 };
@@ -27,7 +27,7 @@ class RootWrapper extends Component<any, Props, any> {
 
   static propTypes = {
     navigationTree: PropTypes.element.isRequired,
-    navState: PropTypes.object.isRequired,
+    navigationState: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     addressBar: PropTypes.bool,
   };
@@ -80,20 +80,21 @@ class RootWrapper extends Component<any, Props, any> {
     );
   }
 
-  renderNavigation(navigationState: EnhancedNavigationState): ?ReactElement {
+  renderNavigation(navigationState: EnhancedNavigationRoute): ?ReactElement {
     const { navigationTree } = this.props;
 
     if (!navigationState) {
       return null;
     }
-    return React.cloneElement(navigationTree, { _navigationState: navigationState });
+    return React.cloneElement(navigationTree, { navigationState });
   }
 
   render(): ReactElement {
-    const { navState, addressBar: isShown, location } = this.props;
+    const { navigationState, addressBar: isShown, location } = this.props;
 
     // TODO react-native does not accept `-reverse` values for `flex-direction`. We need to render
-    // <AddressBar /> after navigational components to keep it on top. See react-native/pull/6473
+    // <AddressBar /> after navigational components to keep it on top. See
+    // react-native/pull/6473|7825
     let rootStyles;
 
     if (isShown) {
@@ -104,7 +105,7 @@ class RootWrapper extends Component<any, Props, any> {
 
     return (
       <View style={rootStyles}>
-        {this.renderNavigation(navState)}
+        {this.renderNavigation(navigationState)}
         <AddressBar show={isShown} location={location} />
       </View>
     );

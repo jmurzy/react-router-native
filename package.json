@@ -53,8 +53,8 @@
     "url": "https://github.com/jmurzy/react-router-native/issues"
   },
   "peerDependencies": {
-    "react-native": "v0.27.0-rc",
-    "react-router": "^2.3.0"
+    "react-native": "0.28.0-rc.0",
+    "react-router": "3.0.0-alpha.1"
   },
   "dependencies": {
     "history": "^2.0.1",
@@ -72,9 +72,9 @@
     "eslint-plugin-jsx-a11y": "^1.0.4",
     "eslint-plugin-react": "^5.0.1",
     "flow-bin": "^0.25.0",
-    "react": "15.1.0-alpha.1",
-    "react-native": "v0.27.0-rc",
-    "react-router": "^2.3.0",
+    "react": "^15.1.0",
+    "react-native": "0.28.0-rc.0",
+    "react-router": "3.0.0-alpha.1",
     "rimraf": "^2.5.2"
   }
 }

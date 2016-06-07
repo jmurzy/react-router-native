@@ -18,7 +18,7 @@ import type {
   Snapshot,
   RouteDef,
   Location,
-  EnhancedNavigationState,
+  EnhancedNavigationRoute,
   ElementProvider,
   NavigationAction,
 } from './TypeDefinition';
@@ -35,7 +35,7 @@ type Props = {
 };
 
 type State = {
-  navState: EnhancedNavigationState,
+  navigationState: EnhancedNavigationRoute,
   navigationTree: ?ReactElement,
 };
 
@@ -80,14 +80,14 @@ class RouterContext extends Component<any, any, any> {
       params,
       nextNavigationState,
     };
-    const navState = reducer(null, action);
+    const navigationState = reducer(null, action);
 
     (this: any).createElement = this.createElement.bind(this);
 
     const navigationTree = createNavigation(this.createElement, routes);
 
-    this.state = { navState, navigationTree };
-    backwardHistory.push(navState);
+    this.state = { navigationState, navigationTree };
+    backwardHistory.push(navigationState);
   }
 
   state: State;
@@ -106,10 +106,10 @@ class RouterContext extends Component<any, any, any> {
       routes,
     } = this.props;
 
-    const { navState } = this.state;
+    const { navigationState } = this.state;
     const activeRouteType = getActiveParentRouteType(routes);
 
-    const pop = createPop(navState);
+    const pop = createPop(navigationState);
     const transitionTo = createTransitionTo(location, activeRouteType);
     const push = createPush(location, activeRouteType);
     const replace = createReplace(location, activeRouteType);
@@ -117,7 +117,7 @@ class RouterContext extends Component<any, any, any> {
     // TODO User defined listenBefore
     // TODO Explore a better react-router API to do this
     const unListenBefore = listenBefore((nextLocation, callback) => {
-      // One-off per navState
+      // One-off per navigationState
       unListenBefore();
 
       const path = router.createPath(nextLocation);
@@ -142,7 +142,7 @@ class RouterContext extends Component<any, any, any> {
           nextNavigationState,
         };
 
-        const nextNavState = reducer(navState, action);
+        const nextNavState = reducer(navigationState, action);
 
         const activeLocation = this.shouldRedirectToActiveRoute(
           nextRoutes,
@@ -180,7 +180,7 @@ class RouterContext extends Component<any, any, any> {
             params: nextParams,
           } = nextProps;
 
-    let navState;
+    let navigationState;
 
     // TODO Refactor snapshot tracking into `nativeHistory` with our own version of
     // `createMemoryHistory`
@@ -189,13 +189,13 @@ class RouterContext extends Component<any, any, any> {
       let index = backwardHistory.findIndex(snapshot => snapshot.location.key === nextLocation.key);
       if (index >= 0) {
         // Moving backward
-        navState = backwardHistory[index];
+        navigationState = backwardHistory[index];
         const head = backwardHistory.splice(index + 1);
         forwardHistory = [...head, ...forwardHistory];
       } else {
         // Assume forward
         index = forwardHistory.findIndex(snapshot => snapshot.location.key === nextLocation.key);
-        navState = forwardHistory[index];
+        navigationState = forwardHistory[index];
         const tail = forwardHistory.splice(0, index + 1);
         backwardHistory = [...backwardHistory, ...tail];
       }
@@ -220,19 +220,19 @@ class RouterContext extends Component<any, any, any> {
         resetStack,
       };
 
-      navState = reducer(this.state.navState, action);
+      navigationState = reducer(this.state.navigationState, action);
 
       if (nextLocation.action === HISTORY_REPLACE) {
-        backwardHistory[backwardHistory.length - 1] = navState;
+        backwardHistory[backwardHistory.length - 1] = navigationState;
       } else {
-        backwardHistory.push(navState);
+        backwardHistory.push(navigationState);
       }
     }
 
     const navigationTree = createNavigation(this.createElement, nextRoutes);
 
     this.setState({
-      navState,
+      navigationState,
       navigationTree,
     });
   }
@@ -240,7 +240,7 @@ class RouterContext extends Component<any, any, any> {
   shouldRedirectToActiveRoute(
     nextRoutes: Array<RouteDef>,
     nextLocation: Location,
-    nextNavState: EnhancedNavigationState): ?Location {
+    nextNavState: EnhancedNavigationRoute): ?Location {
     const nextActiveRouteType = getActiveRouteType(nextRoutes);
     // Terminating at tabs
     if (nextActiveRouteType === TABS_ROUTE) {
@@ -272,14 +272,14 @@ class RouterContext extends Component<any, any, any> {
     const { location, addressBar } = this.props;
 
     const navigationTree = this.state.navigationTree;
-    const navState = this.state.navState;
+    const navigationState = this.state.navigationState;
 
     let element = null;
     if (navigationTree) {
       const props = {
         addressBar,
         navigationTree,
-        navState,
+        navigationState,
         location,
       };
 
