@@ -1,38 +1,44 @@
-# React Router Native [![CircleCI](https://img.shields.io/circleci/project/jmurzy/react-router-native.svg?style=flat-square)](https://circleci.com/gh/jmurzy/react-router-native) [![npm version](https://img.shields.io/npm/v/react-router-native.svg?style=flat-square)](https://www.npmjs.com/package/react-router-native) [![npm](https://img.shields.io/npm/l/react-router-native.svg?style=flat-square)](https://github.com/jmurzy/react-router-native/blob/master/LICENSE.md) [![Discord Channel](https://img.shields.io/badge/discord-react--router@reactiflux-738bd7.svg?style=flat-square)](https://discord.gg/0ZcbPKXt5bYaNQ46)
+# React Router Native [![CircleCI](https://img.shields.io/circleci/project/jmurzy/react-router-native/master.svg?style=flat-square)](https://circleci.com/gh/jmurzy/react-router-native) [![npm version](https://img.shields.io/npm/v/react-router-native.svg?style=flat-square)](https://www.npmjs.com/package/react-router-native) [![npm](https://img.shields.io/npm/l/react-router-native.svg?style=flat-square)](https://github.com/jmurzy/react-router-native/blob/master/LICENSE.md) [![Discord Channel](https://img.shields.io/badge/discord-react--router@reactiflux-738bd7.svg?style=flat-square)](https://discord.gg/0ZcbPKXt5bYaNQ46)
 
 A routing library for [React Native](https://github.com/facebook/react-native) that strives for sensible API parity with [react-router](https://github.com/reactjs/react-router/).
 
 <img align="right" width="360px" src="https://raw.githubusercontent.com/jmurzy/react-router-native/master/docs/screenshot.gif">
 
-### Motivation
-- Knowledge and proven idioms from react-router can be reused while extending them as necessary to allow navigation semantics unique to native platforms
-- Possibility to share routing code for react web / native codebases
-- Deep linking
+### Background
+
+React Router community decided that a [reducer-based paradigm](https://github.com/reactjs/react-router/issues/743) similar to that of **NavigationExperimental** is better suited to native navigation. Transition to a reducer-based paradigm is also being [discussed](https://github.com/reactjs/react-router/issues/3190) for the web. On the other hand, NavigationExperimental [has no intention to support ](https://github.com/ericvicenti/navigation-rfc/issues/64#issuecomment-209001717) a React Router-like interface and leaves the navigation state up to the developer to maintain.
+
+A declarative API removes the need to write [boilerplate code](https://github.com/facebook/react-native/commit/1dc33b5f23640a60682ac879b9a3e94a4aa519d9) and speeds up development. React Router Native follows React's __Learn Once, Write Anywhere__ principle by providing a superset of React Router's API that marries _React Router_ to _NavigationExperimental_.
+
+#### Goals
+
 - URL Driven Development
+- Learn once, write anywhere: knowledge and proven idioms from react-router can be reused while extending them as necessary to allow navigation semantics unique to native platforms
+- First class deep linking support
 
 **Note**: This project contains components that are currently under [active](https://github.com/facebook/react-native/commits?author=ericvicenti) [development](https://github.com/facebook/react-native/commits?author=hedgerwang) and considered experimental—aka use in production at your own risk. Documentation is still a [work-in-progress](https://github.com/jmurzy/react-router-native/issues), and pull requests are accepted gratefully!
 
 ### Installation
 
+#### Using npm:
+
+```sh
+$ npm install --save react-router-native react-router
+```
+
 Do not let npm confuse you: there used to be another project with the same name that the previous owner nuked. Unfortunately, removing or re-publishing old versions is no longer supported by npm. So packages that are tagged __< v2.0.0__ on npm *are artifacts of a different project*, and the first stable version of this library *will be released as __v2.0.0__* and strictly follow the [React Versioning Scheme](https://facebook.github.io/react/blog/2016/02/19/new-versioning-scheme.html) afterwards.
-
-#### Using [npm](https://www.npmjs.com/):
-
- ```sh
- $ npm install --save react-router-native react-router
- ```
 
 ### Example
 The example app from the GIF can be found at `examples/Aviato`. You can run it as follows:
 
 ```bash
-git clone https://github.com/jmurzy/react-router-native && cd react-router-native
-cd examples/Aviato
+git clone https://github.com/jmurzy/react-router-native
+cd react-router-native/examples/Aviato
 npm install
 react-native run-ios
 ```
 
-Look at `examples/Aviato/app/routes.js` and play around with the app to get a feel for what's possible. The address bar shown in the demo is used for development and can be disabled by removing the [`addressBar`](https://github.com/jmurzy/react-router-native/blob/9f68616c22a4d8b525eb19e960c25314f85dd7f8/examples/Aviato/app/routes.js#L139) prop from the ``<Router>`` component.
+Look at `app/routes.js` and play around with the app to get a feel for what's possible. The __address bar__ shown in the demo is used for development only and can be disabled by removing the [`addressBar`](https://github.com/jmurzy/react-router-native/blob/9f68616c22a4d8b525eb19e960c25314f85dd7f8/examples/Aviato/app/routes.js#L139) prop from the ``<Router>`` component.
 
 ### Usage
 
@@ -61,8 +67,8 @@ render((
       <Route path="users" component={Users} overlayComponent={UserHeader}>
         <Route path="/user/:userId" component={User}/>
       </Route>
-      <Route path="*" component={NoMatch}/>
     </TabsRoute>
+    <Route path="*" component={NoMatch}/>
   </Router>
 ), APP_KEY);
 ```
