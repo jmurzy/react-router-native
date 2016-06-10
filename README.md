@@ -43,9 +43,10 @@ Look at `app/routes.js` and play around with the app to get a feel for what's po
 ### Usage
 
 ```javascript
-import { Router, Route, render } from 'react-router-native';
+// index.[ios|android].js
 
-const APP_KEY = 'app'
+import { AppRegistry } from 'react-native';
+import { Router, Route, TabsRoute } from 'react-router-native';
 
 const App = (props) => (/*...*/);
 const About = (props) => (/*...*/);
@@ -55,7 +56,7 @@ const User = (props) => (/*...*/);
 const UserHeader = (props) => (/*...*/);
 const NoMatch = (props) => (/*...*/);
 
-render((
+const routes = (
   /* Address Bar can be toggled on or off by setting the addressBar prop */
   <Router addressBar>
     <TabsRoute
@@ -70,7 +71,9 @@ render((
     </TabsRoute>
     <Route path="*" component={NoMatch}/>
   </Router>
-), APP_KEY);
+);
+
+AppRegistry.registerComponent('YourApp', () => () => routes);
 ```
 
 ### Advanced Usage

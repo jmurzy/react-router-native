@@ -1,12 +1,4 @@
-import { render } from 'react-router-native';
+import { AppRegistry } from 'react-native';
 import routes from './app/routes';
 
-render(routes, 'Aviato');
-
-//
-// - or -
-//
-//
-// import { AppRegistry } from 'react-native';
-//
-// AppRegistry.registerComponent('Aviato', () => () => routes);
+AppRegistry.registerComponent('Aviato', () => () => routes);
