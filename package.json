@@ -3,12 +3,12 @@
   "version": "2.0.0-alpha.0",
   "description": "A routing library for React Native that strives for sensible API parity with react-router",
   "main": "modules/index",
+  "jsnext:main": "modules/index",
   "files": [
     "*.md",
     "docs",
     "modules"
   ],
-  "jsnext:main": "modules/index",
   "author": "Jake Murzy <jake@murzy>",
   "license": "MIT",
   "homepage": "https://github.com/jmurzy/react-router-native",
@@ -45,11 +45,11 @@
     "node": ">=4.0.0"
   },
   "scripts": {
+    "test": "npm run spec && npm run lint && npm run flow",
+    "spec": "./node_modules/.bin/babel-node ./node_modules/.bin/gulp spec",
     "lint": "./node_modules/.bin/babel-node ./node_modules/.bin/gulp lint",
     "flow": "./node_modules/.bin/flow check",
-    "mocha": "./node_modules/.bin/babel-node ./node_modules/.bin/gulp mocha",
-    "test": "npm run mocha && npm run lint && npm run flow",
-    "sync": "sane '/usr/bin/rsync -a --exclude .git --exclude examples --exclude node_modules ./ examples/Aviato/node_modules/react-router-native' . --glob='{package.json,modules/**/*.js}'"
+    "watch": "./node_modules/.bin/babel-node ./node_modules/.bin/gulp watch"
   },
   "repository": {
     "type": "git",
@@ -88,6 +88,7 @@
     "react-native": "0.28.0-rc.0",
     "react-native-mock": "^0.2.3",
     "react-router": "3.0.0-alpha.1",
-    "rimraf": "^2.5.2"
+    "rimraf": "^2.5.2",
+    "run-sequence": "^1.2.1"
   }
 }

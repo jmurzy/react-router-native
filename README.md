@@ -16,7 +16,7 @@ A declarative API removes the need to write [boilerplate code](https://github.co
 - Learn once, write anywhere: knowledge and proven idioms from react-router can be reused while extending them as necessary to allow navigation semantics unique to native platforms
 - First class deep linking support
 
-**Note**: This project contains components that are currently under [active](https://github.com/facebook/react-native/commits?author=ericvicenti) [development](https://github.com/facebook/react-native/commits?author=hedgerwang) and considered experimental—aka use in production at your own risk. Documentation is still a [work-in-progress](https://github.com/jmurzy/react-router-native/issues), and pull requests are accepted gratefully!
+**Note**: This project contains components that are currently under [active](https://github.com/facebook/react-native/commits?author=ericvicenti) [development](https://github.com/facebook/react-native/commits?author=hedgerwang) and considered experimental—aka use in production at your own risk.
 
 ### Installation
 
@@ -28,22 +28,12 @@ $ npm install --save react-router-native react-router
 
 Do not let npm confuse you: there used to be another project with the same name that the previous owner nuked. Unfortunately, removing or re-publishing old versions is no longer supported by npm. So packages that are tagged __< v2.0.0__ on npm *are artifacts of a different project*, and the first stable version of this library *will be released as __v2.0.0__* and strictly follow the [React Versioning Scheme](https://facebook.github.io/react/blog/2016/02/19/new-versioning-scheme.html) afterwards.
 
-### Example
-The example app from the GIF can be found at `examples/Aviato`. You can run it as follows:
-
-```bash
-git clone https://github.com/jmurzy/react-router-native
-cd react-router-native/examples/Aviato
-npm install
-react-native run-ios
-```
-
-Look at `app/routes.js` and play around with the app to get a feel for what's possible. The __address bar__ shown in the demo is used for development only and can be disabled by removing the [`addressBar`](https://github.com/jmurzy/react-router-native/blob/9f68616c22a4d8b525eb19e960c25314f85dd7f8/examples/Aviato/app/routes.js#L139) prop from the ``<Router>`` component.
-
 ### Usage
 
 ```javascript
-// index.[ios|android].js
+/**
+ * index.[ios|android].js
+ */
 
 import { AppRegistry } from 'react-native';
 import { Router, Route, TabsRoute } from 'react-router-native';
@@ -93,16 +83,28 @@ const reducer = (
 <TabsRoute path="/" component={Component} reducer={reducer}/>
 ```
 
+### Example
+The example app from the GIF can be found at `examples/Aviato`. You can run it as follows:
+
+```bash
+git clone https://github.com/jmurzy/react-router-native
+
+cd react-router-native/examples/Aviato
+npm install
+npm run ios
+```
+
+Look at `app/routes.js` and play around with the app to get a feel for what's possible. The __address bar__ shown in the demo is used for development only and can be disabled by removing the [`addressBar`](https://github.com/jmurzy/react-router-native/blob/9f68616c22a4d8b525eb19e960c25314f85dd7f8/examples/Aviato/app/routes.js#L139) prop from the ``<Router>`` component.
+
+### Documentation
+Documentation can be found [here](/docs).
+
 ### Platform Support
 
 React Router Native is cross-platform. It supports all platforms that [NavigationExperimental](https://github.com/ericvicenti/navigation-rfc) supports.
 
 ### Contributing
-In order to hack on the library code and sync it into `examples/Aviato/node_modules` run `npm run sync` (depends on `npm i -g sane`). The library code is specified as a [local dependency](https://docs.npmjs.com/files/package.json#local-paths) in the example's [`package.json`](https://github.com/jmurzy/react-router-native/blob/master/examples/Aviato/package.json) -- `npm link` does not work with RN packager right now (it's an [open issue](https://productpains.com/post/react-native/symlink-support-for-packager/)).
-
-More info on workflow and setup can be found in [CONTRIBUTING.md](CONTRIBUTING.md).
-
-We look forward to your input! 👊
+Want to hack on React Router Native? Awesome! We welcome contributions from anyone and everyone. Please see our [guidelines](CONTRIBUTING.md) for more information on workflow and setup.
 
 ### Questions?
 

@@ -1,7 +1,10 @@
 import gulp from 'gulp';
 import gulpESlint from 'gulp-eslint';
 import gulpMocha from 'gulp-mocha';
+import runSequence from 'run-sequence';
 
+const SRCDIR = 'modules';
+const SPECDIR = 'spec';
 const defaultLoader = require.extensions['.js'];
 
 function transpilePath(path, babelConfig) {
@@ -50,7 +53,7 @@ gulp.task('load-require-hooks', (done) => {
 
 gulp.task('lint', () => gulp
      .src([
-       'modules/**/*.js',
+       '${SRCDIR}/**/*.js',
        'gulpfile.js',
      ])
     .pipe(gulpESlint())
@@ -58,11 +61,36 @@ gulp.task('lint', () => gulp
     .pipe(gulpESlint.failAfterError())
 );
 
-gulp.task('mocha', ['load-require-hooks'], () =>
+gulp.task('spec', ['load-require-hooks'], () =>
   gulp.src([
-    'spec/**/*.spec.js',
+    `${SPECDIR}/**/*.spec.js`,
   ])
   .pipe(gulpMocha({
     reporter: 'spec',
     ui: 'bdd',
   })));
+
+gulp.task('copy', () =>
+  gulp.src([
+    `${SRCDIR}/**/*.js`,
+  ])
+  .pipe(gulp.dest(
+    'examples/Aviato/node_modules/react-router-native/modules',
+  ))
+);
+
+gulp.task('default', done => {
+  runSequence(
+    'spec',
+    'lint',
+    done
+   );
+});
+
+gulp.task('watch', () => {
+  gulp.watch([
+    `${SRCDIR}/**/*`,
+    `${SPECDIR}/**/*`,
+    'gulpfile.js',
+  ], ['copy', 'default']);
+});
