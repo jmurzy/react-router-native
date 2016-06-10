@@ -97,6 +97,8 @@ React Router Native is cross-platform. It supports all platforms that [Navigatio
 ### Contributing
 In order to hack on the library code and sync it into `examples/Aviato/node_modules` run `npm run sync` (depends on `npm i -g sane`). The library code is specified as a [local dependency](https://docs.npmjs.com/files/package.json#local-paths) in the example's [`package.json`](https://github.com/jmurzy/react-router-native/blob/master/examples/Aviato/package.json) -- `npm link` does not work with RN packager right now (it's an [open issue](https://productpains.com/post/react-native/symlink-support-for-packager/)).
 
+More info on workflow and setup can be found in [CONTRIBUTING.md](CONTRIBUTING.md).
+
 We look forward to your input! 👊
 
 ### Questions?
