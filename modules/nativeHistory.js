@@ -81,9 +81,20 @@ const useNavState = (createHistory: Function) => (options = {}) => {
           createTransitionTo(currentLocation,
                              activeRouteType)(history.createLocation(input, HISTORY_REPLACE));
 
+  // Used when `transitionTo` is invoked via transition hooks
+  const replace = (location) => {
+    const redirectInfo = history.createLocation(history.createPath(location), HISTORY_REPLACE);
+
+    const stateKey = createRandomKey(DEFAULT_KEY_LENGTH);
+    redirectInfo.state = { ...location.state, stateKey, $routerReplace: true };
+
+    baseTransitionTo(redirectInfo);
+  };
+
   return {
     ...history,
     baseTransitionTo,
+    transitionTo: replace,
     basePush,
     baseReplace,
     createTransitionTo,

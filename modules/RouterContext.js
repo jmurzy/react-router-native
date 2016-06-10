@@ -122,6 +122,12 @@ class RouterContext extends Component<any, any, any> {
 
       const path = router.createPath(nextLocation);
       match({ location: path, routes }, (error, redirectLocation, nextState) => {
+        if (redirectLocation) {
+          callback(false);
+          push(redirectLocation);
+          return;
+        }
+
         if (!nextState) {
           callback(true);
           return;
@@ -222,7 +228,7 @@ class RouterContext extends Component<any, any, any> {
 
       navigationState = reducer(this.state.navigationState, action);
 
-      if (nextLocation.action === HISTORY_REPLACE) {
+      if (nextLocation.action === HISTORY_REPLACE && !nextLocation.state.$routerReplace) {
         backwardHistory[backwardHistory.length - 1] = navigationState;
       } else {
         backwardHistory.push(navigationState);
