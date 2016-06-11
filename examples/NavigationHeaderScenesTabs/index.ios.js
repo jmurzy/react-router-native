@@ -13,8 +13,13 @@ import {
   StackRoute,
   Link,
   TabsRoute,
+  IndexRoute,
   Router,
 } from 'react-router-native';
+
+const {
+  Header: NavigationHeader,
+} = NavigationExperimental;
 
 // Temporary helper to make space in console for next run
 console.info('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'); // eslint-disable-line
@@ -25,47 +30,27 @@ console.info('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n
 // logging shortcut for functional components
 const l = (...args) => console.info(...args); // eslint-disable-line
 // disabled logging shortcut
-const ll = () => undefined;
+// const ll = () => undefined;
 
-const {
-  Header: NavigationHeader,
-} = NavigationExperimental;
-
-// import NavigationExampleRow from './NavigationExampleRow';
 import styles from './styles';
 
-// Next step.
-// Define your own scene.
-const YourScene = (props) => ll('[Your Scene] props', props) || (
-  <ScrollView style={styles.scrollView}>
-    <Link to="/apple/foo" style={styles.row} underlayColor="#D0D0D0">
-      <Text style={styles.buttonText}>
-        Push Route
-      </Text>
-    </Link>
-    <Link to="/apple/bar" style={styles.row} underlayColor="#D0D0D0">
-      <Text style={styles.buttonText}>
-        Push Route
-      </Text>
-    </Link>
-    {/*
-      TODO: Pop Route
-    */}
-  </ScrollView>
+const Header = (props) => (
+  <NavigationExperimental.Header
+    {...props}
+    renderLeftComponent={(props_) => ((!props_.scene.route.index) ? null : (
+      <Pop style={styles.leftHeaderLink} underlayColor="transparent">
+        <Text style={styles.leftHeaderLinkText}>Back</Text>
+      </Pop>
+    ))}
+    renderTitleComponent={({ scene }) => (
+      <NavigationHeader.Title>
+        {scene.route.location.pathname}
+      </NavigationHeader.Title>
+    )}
+  />
 );
 
-// Next step.
-// Define your own tabs.
-const YourTabs = () => (
-  <View style={styles.tabs}>
-    <YourTab text="Apple" to="/apple" />
-    <YourTab text="Banana" to="/banana" />
-  </View>
-);
-
-// Next step.
-// Define your own Tab
-const YourTab = ({ to, text }) => (
+const Tab = ({ to, text }) => (
   <Link
     to={to}
     activeStyle={styles.tabsActiveStyle}
@@ -75,39 +60,48 @@ const YourTab = ({ to, text }) => (
     <Text style={styles.tabLinkText}>{text}</Text>
   </Link>
 );
-YourTab.propTypes = {
+Tab.propTypes = {
   to: PropTypes.any.isRequired,
   text: PropTypes.string.isRequired,
 };
 
-// Yea ... how?
-const howToCheckThatICanPop = true;
-
-// Next step:
-// Define your header
-const YourHeader = (props) => (
-  <NavigationHeader
-    {...props}
-    renderLeftComponent={(/* props_ */) => ((howToCheckThatICanPop) ? null : (
-      <Pop style={styles.leftHeaderLink} underlayColor="transparent">
-        <Text style={styles.leftHeaderLinkText}>Back</Text>
-      </Pop>
-    ))}
-    renderTitleComponent={({ scene }) => ll('[renderTitleComponent] scene', scene) || (
-      <NavigationHeader.Title>{scene.route.location.pathname}</NavigationHeader.Title>
-    )}
-  />
-);
-
-const YourApplication = ({ children }) => (
-  <View style={{ flex: 1 }}>
-    {children}
-    <YourTabs />
+const Tabs = (
+  <View style={styles.tabs}>
+    <Tab text="Apple" to="/apple" />
+    <Tab text="Banana" to="/banana" />
+    <Tab text="Orange" to="/orange" />
   </View>
 );
-YourApplication.propTypes = {
+
+const App = ({ children }) => (
+  <View style={{ flex: 1 }}>
+    {children}
+    {Tabs}
+  </View>
+);
+App.propTypes = {
   children: PropTypes.node,
 };
+
+const Row = ({ to, text, component: Component = Link }) => (
+  <Component to={to} style={styles.row} underlayColor="#D0D0D0">
+    <Text style={styles.buttonText}>
+        {text}
+    </Text>
+  </Component>
+);
+Row.propTypes = {
+  to: PropTypes.string,
+  text: PropTypes.string.isRequired,
+  component: PropTypes.func,
+};
+
+const createBody = (fruitName) => () => (
+  <View style={styles.body}>
+    <Row to={`/${fruitName}/${Date.now()}`} text="Push Route" />
+    <Row text="Pop Route" component={Pop} />
+  </View>
+);
 
 const redirect = (from, to) => (nextState, replace) => {
   if (nextState.location.pathname === from) {
@@ -115,26 +109,31 @@ const redirect = (from, to) => (nextState, replace) => {
   }
 };
 
-const Foo = () => (
-  <View>
-    <Text>foo</Text>
-  </View>
-);
+const Page = ({ children }) => <View style={{ flex: 1 }}>{children}</View>;
+Page.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
+const createFruityStackRoute = (fruitName) => {
+  const Body = createBody(fruitName);
+  return (
+    <StackRoute
+      path={`/${fruitName}`}
+      component={Page}
+      overlayComponent={Header}
+      transition="horizontal-card-stack"
+    >
+      <IndexRoute component={Body} />
+      <Route path={`/${fruitName}/:id`} component={Body} />
+    </StackRoute>
+  );
+};
 const routes = (
   <Router>
-    <TabsRoute path="/" component={YourApplication} onEnter={redirect('/', '/apple')}>
-      <StackRoute
-        path="/apple"
-        component={YourScene}
-        overlayComponent={YourHeader}
-        transition="horizontal-card-stack"
-      >
-        <Route path="foo" component={Foo} />
-        <Route path="bar" component={Foo} />
-      </StackRoute>
-
-      <Route path="/banana" component={YourScene} overlayComponent={YourHeader} />
+    <TabsRoute path="/" component={App} onEnter={redirect('/', '/apple')}>
+      {createFruityStackRoute('apple')}
+      {createFruityStackRoute('banana')}
+      {createFruityStackRoute('orange')}
     </TabsRoute>
   </Router>
 );

@@ -9,7 +9,7 @@ export default StyleSheet.create({
   navigatorCardStack: {
     flex: 20,
   },
-  scrollView: {
+  body: {
     marginTop: 64,
   },
   // tabs: {
