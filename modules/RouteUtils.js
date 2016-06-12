@@ -24,20 +24,20 @@ export function createRouteFromReactElement(element: ReactElement,
   invariant(
     !element.props.transition || transitionRegistry[element.props.transition] !== undefined,
     '"%s" is not a valid transition. If you are using a custom transition, make sure to ' +
-    'register it with `transitionRegistry`',
+    'register it with `transitionRegistry`.',
     element.props.transition
   );
 
   warning(
     !element.props.overlayComponent || parentRoute
       && (parentRoute.routeType === STACK_ROUTE || parentRoute.routeType === TABS_ROUTE),
-    'overlayComponent does not make sense outside of <StackRoute> or <TabsRoute>'
+    'overlayComponent does not make sense outside of <StackRoute> or <TabsRoute>.'
   );
 
   warning(
     !parentRoute || parentRoute.routeType !== STACK_ROUTE
       || (element.props.routeType !== STACK_ROUTE && element.props.routeType !== TABS_ROUTE),
-    '<TabsRoute> and <StackRoute> cannot be nested within <StackRoute>'
+    '<TabsRoute> and <StackRoute> cannot be nested within <StackRoute>.'
   );
 
   return _createRouteFromReactElement(element);

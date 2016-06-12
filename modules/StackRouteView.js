@@ -2,7 +2,7 @@
 
 import React, { PropTypes, Component } from 'react';
 import { NavigationExperimental } from 'react-native';
-import { warnOutOfSycn } from './warningUtil';
+import { warnOutOfSync } from './warningUtil';
 import withOnNavigate from './withOnNavigate';
 import transitionRegistry from './transitionRegistry';
 import { globalStyles as styles } from './styles';
@@ -10,7 +10,7 @@ import { globalStyles as styles } from './styles';
 import type { EnhancedNavigationRoute } from './TypeDefinition';
 
 const {
-  Card: NavgationCard,
+  Card: NavigationCard,
   AnimatedView: NavigationTransitioner,
   PropTypes: NavigationPropTypes,
 } = NavigationExperimental;
@@ -60,7 +60,7 @@ class StackRouteView extends Component<any, Props, any> {
     );
 
     if (!navigationScene) {
-      warnOutOfSycn('Cannot render overlay', scene.route.path);
+      warnOutOfSync('Cannot render overlay', scene.route.path);
     }
 
     const overlayComponent = navigationScene.props.overlayComponent;
@@ -93,7 +93,7 @@ class StackRouteView extends Component<any, Props, any> {
     const panHandlers = panResponder(props);
 
     return (
-      <NavgationCard
+      <NavigationCard
         key={scene.route.key}
         style={[viewStyle, styles.navigationCard]}
         panHandlers={panHandlers}
@@ -116,7 +116,7 @@ class StackRouteView extends Component<any, Props, any> {
     );
 
     if (!navigationScene) {
-      warnOutOfSycn('Cannot render card', scene.route.path);
+      warnOutOfSync('Cannot render card', scene.route.path);
     }
 
     return React.cloneElement(navigationScene, { navigationState: scene.route });
