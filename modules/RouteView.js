@@ -2,7 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import { NavigationExperimental } from 'react-native';
-import { warnOutOfSycn } from './warningUtil';
+import { warnOutOfSync } from './warningUtil';
 import withOnNavigate from './withOnNavigate';
 import { globalStyles as styles } from './styles';
 
@@ -55,7 +55,7 @@ class RouteView extends Component<any, Props, any> {
     );
 
     if (!navigationScene) {
-      warnOutOfSycn('Cannot render scene', scene.route.path);
+      warnOutOfSync('Cannot render scene', scene.route.path);
     }
 
     const key = scene.route.key;

@@ -57,7 +57,7 @@ export function defaultRouteReducer(
 
   const { nextNavigationState: nextState } = action;
 
-  // `creteState()` always returns a unary tree
+  // `createState()` always returns a unary tree
   const nextLeaf = nextState.routes[0];
 
   if (!nextLeaf) {
@@ -128,7 +128,7 @@ export function defaultTabsRouteReducer(
 
   const { nextNavigationState: nextState } = action;
 
-  // `creteState()` always returns a unary tree
+  // `createState()` always returns a unary tree
   const nextLeaf = nextState.routes[0];
 
   if (!nextLeaf) {
@@ -200,7 +200,7 @@ export function defaultStackRouteReducer(
 
   const { nextNavigationState: nextState } = action;
 
-  // `creteState()` always returns a unary tree
+  // `createState()` always returns a unary tree
   const nextLeaf = nextState.routes[0];
 
   if (!nextLeaf) {
