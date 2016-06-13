@@ -78,6 +78,7 @@ function createNavigationTree(
       indexRouteProps.path = '[index]';
       indexRouteProps.type = 'index';
       indexRouteProps.component = route.indexRoute.component;
+      indexRouteProps.createElement = createElement;
 
       if (route.indexRoute.overlayComponent) {
         indexRouteProps.overlayComponent = route.indexRoute.overlayComponent;
