@@ -15,6 +15,7 @@ A declarative API removes the need to write [boilerplate code](https://github.co
 - URL Driven Development
 - Learn once, write anywhere: knowledge and proven idioms from react-router can be reused while extending them as necessary to allow navigation semantics unique to native platforms
 - First class deep linking support
+- [Cross-platform](#platform-support)
 
 **Note**: This project contains components that are currently under [active](https://github.com/facebook/react-native/commits?author=ericvicenti) [development](https://github.com/facebook/react-native/commits?author=hedgerwang) and considered experimental—aka use in production at your own risk.
 
