@@ -1,5 +1,6 @@
 /* @flow */
 
+import React from 'react';
 import warning from 'warning';
 import invariant from 'invariant';
 import RouteView from './RouteView';
@@ -48,6 +49,7 @@ function createNavigationTree(createElement: ElementProvider,
                               route: RouteDef,
                               positionInParent: number): ?ReactElement {
   const props = {};
+  props.createElement = createElement;
 
   props.path = route.path || `[visual]${positionInParent}`;
   props.type = route.routeType;
@@ -86,7 +88,7 @@ function createNavigationTree(createElement: ElementProvider,
   } else if (route.routeType === TABS_ROUTE) {
     el = createElement(TabsRouteView, props);
   } else {
-    el = createElement(RouteView, props);
+    el = <RouteView {...props} />;
   }
   return el;
 }
