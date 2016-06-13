@@ -30,12 +30,14 @@ const store = createStore(
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(nativeHistory, store)
 
-render((
+const routes = (
   <Provider store={store}>
     /* Tell the Router to use our enhanced history */
     <Router history={nativeHistory}>
       /* ... */
     </Router>
   </Provider>
-), APP_KEY);
+);
+
+AppRegistry.registerComponent('YourApp', () => () => routes);
 ```

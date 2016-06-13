@@ -35,6 +35,7 @@ Do not let npm confuse you: there used to be another project with the same name 
  * index.[ios|android].js
  */
 
+import React from 'react'
 import { AppRegistry } from 'react-native';
 import { Router, Route, TabsRoute } from 'react-router-native';
 
