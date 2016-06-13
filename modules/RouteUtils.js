@@ -1,6 +1,5 @@
 /* @flow */
 
-import React from 'react';
 import warning from 'warning';
 import invariant from 'invariant';
 import RouteView from './RouteView';
@@ -10,7 +9,11 @@ import transitionRegistry from './transitionRegistry';
 import {
   createRouteFromReactElement as _createRouteFromReactElement,
 } from 'react-router/es6/RouteUtils';
-import type { RouteDef, ElementProvider } from './TypeDefinition';
+import type {
+  RouteDef,
+  ElementProvider,
+  PseudoElement,
+} from './TypeDefinition';
 
 export const RouteTypes = {
   STACK_ROUTE: '<StackRoute>',
@@ -20,8 +23,10 @@ export const RouteTypes = {
 
 const { STACK_ROUTE, TABS_ROUTE } = RouteTypes;
 
-export function createRouteFromReactElement(element: ReactElement,
-                                            parentRoute: RouteDef): ReactElement {
+export function createRouteFromReactElement(
+  element: ReactElement,
+  parentRoute: RouteDef
+): ReactElement {
   invariant(
     !element.props.transition || transitionRegistry[element.props.transition] !== undefined,
     '"%s" is not a valid transition. If you are using a custom transition, make sure to ' +
@@ -44,10 +49,12 @@ export function createRouteFromReactElement(element: ReactElement,
   return _createRouteFromReactElement(element);
 }
 
-function createNavigationTree(createElement: ElementProvider,
-                              routes: Array<RouteDef>,
-                              route: RouteDef,
-                              positionInParent: number): ?ReactElement {
+function createNavigationTree(
+  createElement: ElementProvider,
+  routes: Array<RouteDef>,
+  route: RouteDef,
+  positionInParent: number
+): ?PseudoElement {
   const props = {};
 
   props.createElement = createElement;
@@ -60,7 +67,7 @@ function createNavigationTree(createElement: ElementProvider,
   }
 
   if (route.childRoutes) {
-    props.navigationalElements = route.childRoutes.map(
+    props.navigationSubtree = route.childRoutes.map(
       (r, index) => createNavigationTree(createElement, routes, r, index)
     );
 
@@ -76,25 +83,30 @@ function createNavigationTree(createElement: ElementProvider,
         indexRouteProps.overlayComponent = route.indexRoute.overlayComponent;
       }
 
-      const indexRouteEl = createElement(RouteView, indexRouteProps);
+      const indexRoutePseudoElement = {
+        routeViewComponent: RouteView,
+        props: indexRouteProps,
+      };
 
-      props.navigationalElements.unshift(indexRouteEl);
+      props.navigationSubtree.unshift(indexRoutePseudoElement);
     }
   }
 
-  let el;
+  let pseudoElement;
   if (route.routeType === STACK_ROUTE) {
-    el = React.createElement(StackRouteView, props);
+    pseudoElement = { routeViewComponent: StackRouteView, props };
   } else if (route.routeType === TABS_ROUTE) {
-    el = React.createElement(TabsRouteView, props);
+    pseudoElement = { routeViewComponent: TabsRouteView, props };
   } else {
-    el = React.createElement(RouteView, props);
+    pseudoElement = { routeViewComponent: RouteView, props };
   }
-  return el;
+  return pseudoElement;
 }
 
-export function createNavigation(createElement: ElementProvider,
-                                 routes: Array<RouteDef>) {
+export function createNavigation(
+  createElement: ElementProvider,
+  routes: Array<RouteDef>
+): ?PseudoElement {
   const rootRoute = routes && routes.length && routes[0];
 
   if (!rootRoute) {

@@ -6,14 +6,18 @@ import invariant from 'invariant';
 import warnOnce from './warningUtil';
 import AddressBar from './AddressBar';
 import { PAN_RESPONDER_BACK_ACTION } from './transitionRegistry';
-import type { EnhancedNavigationRoute, Location } from './TypeDefinition';
+import type {
+  EnhancedNavigationRoute,
+  Location,
+  PseudoElement,
+} from './TypeDefinition';
 
 import { ADDDRESS_BAR_HEIGHT, globalStyles as styles } from './styles';
 
 const NAVIGATION_HEADER_BACK_BUTTON_BACK_ACTION = 'BackAction';
 
 type Props = {
-  navigationTree: ReactElement,
+  navigationTree: PseudoElement,
   navigationState: EnhancedNavigationRoute,
   location: Location,
   addressBar: boolean,
@@ -26,7 +30,7 @@ type Context = {
 class RootWrapper extends Component<any, Props, any> {
 
   static propTypes = {
-    navigationTree: PropTypes.element.isRequired,
+    navigationTree: PropTypes.object.isRequired,
     navigationState: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     addressBar: PropTypes.bool,
@@ -86,7 +90,16 @@ class RootWrapper extends Component<any, Props, any> {
     if (!navigationState) {
       return null;
     }
-    return React.cloneElement(navigationTree, { navigationState });
+
+    const { routeViewComponent, props: routeViewComponentProps } = navigationTree;
+
+    return React.createElement(
+      routeViewComponent,
+      {
+        ...routeViewComponentProps,
+        navigationState,
+      }
+    );
   }
 
   render(): ReactElement {

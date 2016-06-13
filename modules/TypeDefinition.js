@@ -61,3 +61,8 @@ export type NavigationAction = {
 }
 
 export type Snapshot = EnhancedNavigationRoute;
+
+export type PseudoElement = {
+  routeViewComponent: Object,
+  props: Object,
+};

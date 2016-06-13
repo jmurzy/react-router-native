@@ -21,6 +21,7 @@ import type {
   EnhancedNavigationRoute,
   ElementProvider,
   NavigationAction,
+  PseudoElement,
 } from './TypeDefinition';
 
 type Props = {
@@ -36,13 +37,16 @@ type Props = {
 
 type State = {
   navigationState: EnhancedNavigationRoute,
-  navigationTree: ?ReactElement,
+  navigationTree: ?PseudoElement,
 };
 
 let backwardHistory: Array<Snapshot> = [];
 let forwardHistory: Array<Snapshot> = [];
 
-const { POP: HISTORY_POP, REPLACE: HISTORY_REPLACE } = Actions;
+const {
+  POP: HISTORY_POP,
+  REPLACE: HISTORY_REPLACE,
+} = Actions;
 
 const { TABS_ROUTE } = RouteTypes;
 

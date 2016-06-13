@@ -7,7 +7,10 @@ import withOnNavigate from './withOnNavigate';
 import transitionRegistry from './transitionRegistry';
 import { globalStyles as styles } from './styles';
 
-import type { EnhancedNavigationRoute } from './TypeDefinition';
+import type {
+  EnhancedNavigationRoute,
+  PseudoElement,
+} from './TypeDefinition';
 
 const {
   Card: NavigationCard,
@@ -24,7 +27,7 @@ type Props = {
   type: string,
   component: ReactClass,
   overlayComponent: ?ReactClass,
-  navigationalElements: ?Array<ReactElement>,
+  navigationSubtree: ?Array<PseudoElement>,
   navigationState: EnhancedNavigationRoute,
   createElement: Function,
   onNavigate: Function,
@@ -37,7 +40,7 @@ class TabsRouteView extends Component<any, Props, any> {
     type: PropTypes.string.isRequired,
     component: PropTypes.any.isRequired,
     overlayComponent: PropTypes.any,
-    navigationalElements: PropTypes.arrayOf(PropTypes.element),
+    navigationSubtree: PropTypes.arrayOf(PropTypes.object),
     navigationState: PropTypes.object,
     createElement: PropTypes.func.isRequired,
     onNavigate: PropTypes.func.isRequired,
@@ -52,13 +55,13 @@ class TabsRouteView extends Component<any, Props, any> {
   renderOverlay(props: NavigationSceneRendererProps): ?ReactElement {
     const { scene } = props;
 
-    const { navigationalElements, createElement } = this.props;
-    if (!navigationalElements) {
+    const { navigationSubtree, createElement } = this.props;
+    if (!navigationSubtree) {
       return null;
     }
 
-    const navigationalElement = navigationalElements.find(
-      navScene => navScene.props.path === scene.route.path
+    const navigationalElement = navigationSubtree.find(
+      child => child.props.path === scene.route.path
     );
 
     if (!navigationalElement) {
@@ -116,27 +119,35 @@ class TabsRouteView extends Component<any, Props, any> {
   renderCardScene(props: NavigationSceneRendererProps): ?ReactElement {
     const { scene } = props;
 
-    const { navigationalElements } = this.props;
+    const { navigationSubtree } = this.props;
 
-    if (!navigationalElements) {
+    if (!navigationSubtree) {
       return null;
     }
 
-    const navigationalElement = navigationalElements.find(
-      navScene => navScene.props.path === scene.route.path
+    const pseudoElement = navigationSubtree.find(
+      child => child.props.path === scene.route.path
     );
 
-    if (!navigationalElement) {
+    if (!pseudoElement) {
       warnOutOfSync('Cannot render card', scene.route.path);
     }
 
-    return React.cloneElement(navigationalElement, { navigationState: scene.route });
+    const { routeViewComponent, props: routeViewComponentProps } = pseudoElement;
+
+    return React.createElement(
+      routeViewComponent,
+      {
+        ...routeViewComponentProps,
+        navigationState: scene.route,
+      }
+    );
   }
 
   render(): ReactElement {
     const {
       onNavigate,
-      navigationalElements,
+      navigationSubtree,
       navigationState,
       component,
       createElement,
@@ -157,7 +168,7 @@ class TabsRouteView extends Component<any, Props, any> {
 
     // Create NavigationTransitioner for handling nested routes
     let transitioner;
-    if (navigationalElements && routes && routes.length > 0) {
+    if (navigationSubtree && routes && routes.length > 0) {
       const transitionerProps = {
         configureTransition,
         applyAnimation,

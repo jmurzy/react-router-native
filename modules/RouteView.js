@@ -6,7 +6,10 @@ import { warnOutOfSync } from './warningUtil';
 import withOnNavigate from './withOnNavigate';
 import { globalStyles as styles } from './styles';
 
-import type { EnhancedNavigationRoute } from './TypeDefinition';
+import type {
+  EnhancedNavigationRoute,
+  PseudoElement,
+} from './TypeDefinition';
 
 const {
   AnimatedView: NavigationTransitioner,
@@ -21,7 +24,7 @@ type Props = {
   path: string,
   type: string,
   component: ReactClass,
-  navigationalElements: ?Array<ReactElement>,
+  navigationSubtree: ?Array<PseudoElement>,
   navigationState: EnhancedNavigationRoute,
   createElement: Function,
   onNavigate: Function,
@@ -33,7 +36,7 @@ class RouteView extends Component<any, Props, any> {
     path: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     component: PropTypes.any.isRequired,
-    navigationalElements: PropTypes.arrayOf(PropTypes.element),
+    navigationSubtree: PropTypes.arrayOf(PropTypes.object),
     navigationState: PropTypes.object,
     createElement: PropTypes.func.isRequired,
     onNavigate: PropTypes.func.isRequired,
@@ -46,29 +49,38 @@ class RouteView extends Component<any, Props, any> {
   renderScene(props: NavigationSceneRendererProps): ?ReactElement {
     const { scene } = props;
 
-    const { navigationalElements } = this.props;
+    const { navigationSubtree } = this.props;
 
-    if (!scene.route || !navigationalElements) {
+    if (!scene.route || !navigationSubtree) {
       return null;
     }
 
-    const navigationalElement = navigationalElements.find(
-      navScene => navScene.props.path === scene.route.path
+    const pseudoElement = navigationSubtree.find(
+      child => child.props.path === scene.route.path
     );
 
-    if (!navigationalElement) {
+    if (!pseudoElement) {
       warnOutOfSync('Cannot render scene', scene.route.path);
     }
 
     const key = scene.route.key;
 
-    return React.cloneElement(navigationalElement, { key, navigationState: scene.route });
+    const { routeViewComponent, props: routeViewComponentProps } = pseudoElement;
+
+    return React.createElement(
+      routeViewComponent,
+      {
+        ...routeViewComponentProps,
+        key,
+        navigationState: scene.route,
+      }
+    );
   }
 
   render(): ReactElement {
     const {
       onNavigate,
-      navigationalElements,
+      navigationSubtree,
       navigationState,
       component,
       createElement,
@@ -83,7 +95,7 @@ class RouteView extends Component<any, Props, any> {
 
     // Create NavigationTransitioner for handling nested routes
     let transitioner;
-    if (navigationalElements && routes && routes.length > 0) {
+    if (navigationSubtree && routes && routes.length > 0) {
       // react-native/c3714d7ed7c8ee57e005d51147820456ef8cda3e
       // FIXME Replace `Transitioner` with `View` to reclaim performance
       const transitionerProps = {
