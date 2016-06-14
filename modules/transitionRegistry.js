@@ -1,16 +1,24 @@
-import { /* NavigationExperimental, */ Animated, Easing } from 'react-native';
+import {
+  NavigationExperimental,
+  Animated,
+  Easing,
+} from 'react-native';
 import invariant from 'invariant';
 
-import type { EnhancedNavigationRoute, AnimatedValue } from './TypeDefinition';
+import type {
+  EnhancedNavigationRoute,
+  AnimatedValue,
+} from './TypeDefinition';
 
-/* eslint-disable no-multi-str */
-import NavigationCardStackStyleInterpolator from 'react-native/Libraries/\
-CustomComponents/NavigationExperimental/NavigationCardStackStyleInterpolator';
-import NavigationPagerStyleInterpolator from 'react-native/Libraries/\
-CustomComponents/NavigationExperimental/NavigationPagerStyleInterpolator';
-import NavigationCardStackPanResponder from 'react-native/Libraries/\
-CustomComponents/NavigationExperimental/NavigationCardStackPanResponder';
-/* eslint-enable */
+const {
+  Card: NavigationCard,
+} = NavigationExperimental;
+
+const {
+  PagerStyleInterpolator: NavigationPagerStyleInterpolator,
+  CardStackStyleInterpolator: NavigationCardStackStyleInterpolator,
+  CardStackPanResponder: NavigationCardStackPanResponder,
+} = NavigationCard;
 
 // NavigationExperimental/NavigationCardStackPanResponder.js#L68
 const {
@@ -22,17 +30,6 @@ const {
 } = NavigationCardStackPanResponder;
 
 export { PAN_RESPONDER_BACK_ACTION };
-
-// FIXME react-native/14eb427a8061e0c904ace022535070150c6872d4#commitcomment-17574628
-// const {
-//   Card: NavgationCard,
-// } = NavigationExperimental;
-//
-// const {
-//   PagerStyleInterpolator: NavigationPagerStyleInterpolator,
-//   CardStackStyleInterpolator: NavigationCardStackStyleInterpolator,
-//   CardStackPanResponder: NavigationCardStackPanResponder,
-// } = NavgationCard;
 
 const transitionRegistry = {};
 
