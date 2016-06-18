@@ -47,12 +47,9 @@ class RouteView extends Component<any, Props, any> {
   }
 
   renderScene(props: NavigationSceneRendererProps): ?ReactElement {
-    console.log('RouterNative.RouteView.renderScene');
-    console.log('RouterNative.RouteView.renderScene.props', props);
     const { scene } = props;
 
     const { navigationSubtree } = this.props;
-    console.log('RouterNative.RouteView.renderScene.this.props', this.props);
 
     if (!scene.route || !navigationSubtree) {
       return null;
@@ -61,7 +58,6 @@ class RouteView extends Component<any, Props, any> {
     const pseudoElement = navigationSubtree.find(
       child => child.props.path === scene.route.path
     );
-    console.log(navigationSubtree, scene, pseudoElement);
 
     if (!pseudoElement) {
       warnOutOfSync('Cannot render scene', scene.route.path);
@@ -104,8 +100,6 @@ class RouteView extends Component<any, Props, any> {
       component,
       createElement,
     } = this.props;
-    console.log('RouterNative.RouteView.render');
-    console.log('RouterNative.RouteView.render.props', this.props);
 
     const {
       routes,
@@ -129,8 +123,6 @@ class RouteView extends Component<any, Props, any> {
       transitioner = React.createElement(NavigationTransitioner, transitionerProps);
     }
 
-    console.log('RouterNative.RouteView.render.transitioner', transitioner);
-    console.log('RouterNative.RouteView.render.component', component);
     const componentProps = {
       ...this.getComponentProps(this.props),
       params,
@@ -138,11 +130,8 @@ class RouteView extends Component<any, Props, any> {
       location,
       children: transitioner,
     };
-    console.log('RouterNative.RouteView.render.component.props', componentProps);
 
-    const element = createElement(component, componentProps);
-    console.log('RouterNative.RouteView.render.return', element);
-    return element;
+    return createElement(component, componentProps);
   }
 }
 

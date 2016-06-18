@@ -74,10 +74,8 @@ class RouterContext extends Component<any, any, any> {
   };
 
   constructor(props: Props) {
-    console.log('new RouterNative.RouterContext');
     super(props);
     const { routes, location, params } = props;
-    console.log('RouterNative.RouterContext.props', props);
     const nextNavigationState = createState(routes, location, params);
     const action: NavigationAction = {
       type: LOCATION_CHANGE,
@@ -87,13 +85,11 @@ class RouterContext extends Component<any, any, any> {
       nextNavigationState,
     };
     const navigationState = reducer(null, action);
-    console.log('RouterNative.RouterContext.navigationState', navigationState);
 
     (this: any).createElement = this.createElement.bind(this);
 
     const navigationTree = createNavigation(this.createElement, routes);
 
-    console.log('RouterNative.RouterContext.navigationTree', navigationTree);
     this.state = { navigationState, navigationTree };
     backwardHistory.push(navigationState);
   }
@@ -283,8 +279,6 @@ class RouterContext extends Component<any, any, any> {
   }
 
   render(): ?ReactElement {
-    console.log('RouterNative.RouterContext.render');
-    console.log('RouterNative.RouterContext.render.props', this.props);
     const { location, addressBar } = this.props;
 
     const navigationTree = this.state.navigationTree;
@@ -300,8 +294,6 @@ class RouterContext extends Component<any, any, any> {
         route: {}, // TODO
         routes: this.props.routes,
       };
-      console.log('RouterNative.RouterContext.render.createElement(RootWrapper)');
-      console.log('RouterNative.RouterContext.render.createElement.props', props);
 
       element = React.createElement(RootWrapper, props);
     }
@@ -310,8 +302,6 @@ class RouterContext extends Component<any, any, any> {
       element === null || element === false || React.isValidElement(element),
       'The root route must render a single element'
     );
-
-    console.log('RouterNative.RouterContext.render.element', element);
 
     return element;
   }

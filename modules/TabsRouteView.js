@@ -60,18 +60,11 @@ class TabsRouteView extends Component<any, Props, any> {
       return null;
     }
 
-    console.log('RouterNative.TabsRouteView.renderOverlay');
-    console.log('RouterNative.TabsRouteView.renderOverlay.navigationSubtree', navigationSubtree);
-    console.log('RouterNative.TabsRouteView.renderOverlay.scene', scene);
-    console.log('RouterNative.TabsRouteView.renderOverlay.props', props);
-
     const navigationalElement = navigationSubtree.find(
       child => child.props.path === scene.route.path
     );
-    console.log('RouterNative.TabsRouteView.renderOverlay.navigationalElement', navigationalElement);
 
     if (!navigationalElement) {
-      console.error(new Error('out of sync').stack);
       warnOutOfSync('Cannot render overlay', scene.route.path);
     }
 
@@ -85,19 +78,14 @@ class TabsRouteView extends Component<any, Props, any> {
         params,
         routeParams,
       };
-      console.log('RouterNative.TabsRouteView.renderOverlay.createElement', overlayComponent);
-      console.log('RouterNative.TabsRouteView.renderOverlay.createElement.props', overlayComponentProps);
 
       return createElement(overlayComponent, overlayComponentProps);
-      console.log('RouterNative.TabsRouteView.renderOverlay.createElement.return');
     }
 
     return null;
   }
 
   renderScene(props: NavigationSceneRendererProps): ?ReactElement {
-    console.log('RouterNative.TabsRouteView.renderScene');
-    console.log('RouterNative.TabsRouteView.renderScene.props', props);
     const { scene } = props;
 
     if (!scene.route) {
@@ -124,21 +112,14 @@ class TabsRouteView extends Component<any, Props, any> {
       ...props,
       renderScene: this.renderCardScene,
     };
-    console.log('RouterNative.TabsRouteView.renderScene.key', scene.route.key);
 
-    const element = React.createElement(NavigationCard, navigationCardProps);
-    console.log('RouterNative.TabsRouteView.renderScene.return', element);
-    return element;
+    return React.createElement(NavigationCard, navigationCardProps);
   }
 
   renderCardScene(props: NavigationSceneRendererProps): ?ReactElement {
-    console.log('RouterNative.TabsRouteView.renderCardScene');
-    console.log('RouterNative.TabsRouteView.renderCardScene.props', props);
     const { scene } = props;
 
     const { navigationSubtree } = this.props;
-    console.log('RouterNative.TabsRouteView.renderCardScene.scene', scene);
-
     if (!navigationSubtree) {
       return null;
     }
@@ -146,25 +127,20 @@ class TabsRouteView extends Component<any, Props, any> {
     const pseudoElement = navigationSubtree.find(
       child => child.props.path === scene.route.path
     );
-    console.log('RouterNative.TabsRouteView.renderCardScene.pseudoElement', pseudoElement);
 
     if (!pseudoElement) {
       warnOutOfSync('Cannot render card', scene.route.path);
     }
-    console.log('RouterNative.TabsRouteView.renderCardScene.cloneElement', pseudoElement);
-    console.log('RouterNative.TabsRouteView.renderCardScene.cloneElement.props', { navigationState: scene.route });
 
     const { routeViewComponent, props: routeViewComponentProps } = pseudoElement;
 
-    const element = React.createElement(
+    return React.createElement(
       routeViewComponent,
       {
         ...routeViewComponentProps,
         navigationState: scene.route,
       }
     );
-    console.log('RouterNative.TabsRouteView.renderCardScene.cloneElement.return', element);
-    return element;
   }
 
   getComponentProps(props) {
@@ -191,8 +167,6 @@ class TabsRouteView extends Component<any, Props, any> {
       createElement,
     } = this.props;
 
-    console.log('RouterNative.TabsRouteView.render');
-    console.log('RouterNative.TabsRouteView.render.props', this.props);
     const {
       routes,
       params,
@@ -222,9 +196,6 @@ class TabsRouteView extends Component<any, Props, any> {
       transitioner = React.createElement(NavigationTransitioner, transitionerProps);
     }
 
-    console.log('RouterNative.TabsRouteView.render.transitioner', transitioner);
-
-    console.log('RouterNative.TabsRouteView.render.component', component);
     const componentProps = {
       ...this.getComponentProps(this.props),
       params,
@@ -232,13 +203,9 @@ class TabsRouteView extends Component<any, Props, any> {
       location,
       children: transitioner,
     };
-    console.log('RouterNative.TabsRouteView.render.component.props', componentProps);
 
-    const element = createElement(component, componentProps);
-    console.log('RouterNative.TabsRouteView.render.return', element);
-    return element;
+    return createElement(component, componentProps);
   }
-
 }
 
 export default withOnNavigate(TabsRouteView);

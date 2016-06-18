@@ -70,10 +70,6 @@ function createNavigationTree(
   route: RouteDef,
   positionInParent: number
 ): ?PseudoElement {
-  console.log('RouterNative.RouteUtils.createNavigationTree');
-  // console.log('createElement', createElement);
-  console.log('RouterNative.RouteUtils.createNavigationTree.route', route);
-  console.log('RouterNative.RouteUtils.createNavigationTree.positionInParent', positionInParent);
   const {
     childRoutes,
     component,
@@ -129,9 +125,6 @@ function createNavigationTree(
     }
   }
 
-  console.log(`RouterNative.RouteUtils.createNavigationTree.createElement(${routeType})`);
-  console.log('RouterNative.RouteUtils.createNavigationTree.createElement.props', props);
-
   let pseudoElement;
   if (routeType === STACK_ROUTE) {
     pseudoElement = { routeViewComponent: StackRouteView, props };
@@ -148,11 +141,7 @@ export function createNavigation(
   createElement: ElementProvider,
   routes: Array<RouteDef>
 ): ?PseudoElement {
-  console.log('RouterNative.RouteUtils.createNavigation');
   const rootRoute = routes && routes.length && routes[0];
-  console.log('RouterNative.RouteUtils.createNavigation.rootRoute', rootRoute);
-  console.log('RouterNative.RouteUtils.createNavigation.routes', routes);
-
   if (!rootRoute) {
     return null;
   }
