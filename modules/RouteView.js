@@ -77,7 +77,7 @@ class RouteView extends Component<any, Props, any> {
     );
   }
 
-  getComponentProps(props) {
+  getComponentProps(props: Object): Object {
     const {
       path,
       type,
