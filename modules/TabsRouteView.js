@@ -66,7 +66,7 @@ class TabsRouteView extends Component<any, Props, any> {
     console.log('RouterNative.TabsRouteView.renderOverlay.props', props);
 
     const navigationalElement = navigationSubtree.find(
-      child => child.props.routerProps.path === scene.route.path
+      child => child.props.path === scene.route.path
     );
     console.log('RouterNative.TabsRouteView.renderOverlay.navigationalElement', navigationalElement);
 
@@ -79,6 +79,7 @@ class TabsRouteView extends Component<any, Props, any> {
     if (overlayComponent) {
       const { location, params, routeParams } = scene.route;
       const overlayComponentProps = {
+        ...this.getComponentProps(navigationalElement.props),
         ...props,
         location,
         params,
@@ -143,7 +144,7 @@ class TabsRouteView extends Component<any, Props, any> {
     }
 
     const pseudoElement = navigationSubtree.find(
-      child => child.props.routerProps.path === scene.route.path
+      child => child.props.path === scene.route.path
     );
     console.log('RouterNative.TabsRouteView.renderCardScene.pseudoElement', pseudoElement);
 
@@ -166,7 +167,7 @@ class TabsRouteView extends Component<any, Props, any> {
     return element;
   }
 
-  getComponentProps() {
+  getComponentProps(props) {
     const {
       path,
       type,
@@ -177,7 +178,7 @@ class TabsRouteView extends Component<any, Props, any> {
       createElement,
       onNavigate,
       ...rest,
-    } = this.props;
+    } = props;
     return rest;
   }
 
@@ -221,11 +222,11 @@ class TabsRouteView extends Component<any, Props, any> {
       transitioner = React.createElement(NavigationTransitioner, transitionerProps);
     }
 
-    console.log('RouterNative.TabsRouteView.render.wrappedChildren', wrappedChildren);
+    console.log('RouterNative.TabsRouteView.render.transitioner', transitioner);
 
     console.log('RouterNative.TabsRouteView.render.component', component);
     const componentProps = {
-      ...this.getComponentProps(),
+      ...this.getComponentProps(this.props),
       params,
       routeParams,
       location,

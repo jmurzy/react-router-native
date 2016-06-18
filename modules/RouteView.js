@@ -59,7 +59,7 @@ class RouteView extends Component<any, Props, any> {
     }
 
     const pseudoElement = navigationSubtree.find(
-      child => child.props.routerProps.path === scene.route.path
+      child => child.props.path === scene.route.path
     );
     console.log(navigationSubtree, scene, pseudoElement);
 
@@ -81,7 +81,7 @@ class RouteView extends Component<any, Props, any> {
     );
   }
 
-  getComponentProps() {
+  getComponentProps(props) {
     const {
       path,
       type,
@@ -92,7 +92,7 @@ class RouteView extends Component<any, Props, any> {
       createElement,
       onNavigate,
       ...rest,
-    } = this.props;
+    } = props;
     return rest;
   }
 
@@ -132,7 +132,7 @@ class RouteView extends Component<any, Props, any> {
     console.log('RouterNative.RouteView.render.transitioner', transitioner);
     console.log('RouterNative.RouteView.render.component', component);
     const componentProps = {
-      ...this.getComponentProps(),
+      ...this.getComponentProps(this.props),
       params,
       routeParams,
       location,
