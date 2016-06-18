@@ -93,17 +93,30 @@ class RootWrapper extends Component<any, Props, any> {
 
     const { routeViewComponent, props: routeViewComponentProps } = navigationTree;
 
-    return React.createElement(
+    console.log('RouterNative.RootWrapper.renderNavigation');
+    console.log('RouterNative.RootWrapper.renderNavigation.props', this.props);
+    console.log('RouterNative.RootWrapper.renderNavigation.routeViewComponent', routeViewComponent);
+    console.log('RouterNative.RootWrapper.renderNavigation.routeViewComponentProps', routeViewComponentProps);
+    console.log('RouterNative.RootWrapper.renderNavigation.createElement(routeViewComponent)');
+    console.log('RouterNative.RootWrapper.renderNavigation.createElement.props', {
+      ...routeViewComponentProps,
+      navigationState,
+    });
+    const element = React.createElement(
       routeViewComponent,
       {
         ...routeViewComponentProps,
         navigationState,
       }
     );
+    console.log('RouterNative.RootWrapper.renderNavigation.createElement.return', element);
+    return element;
   }
 
   render(): ReactElement {
     const { navigationState, addressBar: isShown, location } = this.props;
+    console.log('RouterNative.RootWrapper.render');
+    console.log('RouterNative.RootWrapper.render.props', this.props);
 
     // TODO react-native does not accept `-reverse` values for `flex-direction`. We need to render
     // <AddressBar /> after navigational components to keep it on top. See

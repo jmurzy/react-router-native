@@ -26,6 +26,7 @@ import { render } from './render';
 export { RouterContext, createNativeContext, Reducer, render };
 
 /* histories */
+import applyRouterMiddleware from './applyRouterMiddleware';
 import nativeHistory from './nativeHistory';
 
-export { nativeHistory };
+export { applyRouterMiddleware, nativeHistory };
