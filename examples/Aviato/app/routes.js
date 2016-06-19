@@ -6,6 +6,7 @@ import {
   StackRoute,
   TabsRoute,
   Router,
+  nativeHistory,
 } from 'react-router-native';
 import {
   component,
@@ -136,7 +137,7 @@ const swapRoute = (
 );
 
 const routes = (
-  <Router addressBar>
+  <Router history={nativeHistory} addressBar>
     <TabsRoute path="master" component={Master}>
 			{homeRoute}
       {discoverRoute}

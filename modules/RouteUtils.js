@@ -49,7 +49,7 @@ export function createRouteFromReactElement(
   return _createRouteFromReactElement(element);
 }
 
-function createNavigationTree(
+function createNavigationTreeAtIndex(
   createElement: ElementProvider,
   routes: Array<RouteDef>,
   route: RouteDef,
@@ -68,7 +68,7 @@ function createNavigationTree(
 
   if (route.childRoutes) {
     props.navigationSubtree = route.childRoutes.map(
-      (r, index) => createNavigationTree(createElement, routes, r, index)
+      (r, index) => createNavigationTreeAtIndex(createElement, routes, r, index)
     );
 
     // index route is given in `routes` but not in `childRoutes`
@@ -104,7 +104,7 @@ function createNavigationTree(
   return pseudoElement;
 }
 
-export function createNavigation(
+export function createNavigationTree(
   createElement: ElementProvider,
   routes: Array<RouteDef>
 ): ?PseudoElement {
@@ -114,5 +114,5 @@ export function createNavigation(
     return null;
   }
 
-  return createNavigationTree(createElement, routes, rootRoute, 0);
+  return createNavigationTreeAtIndex(createElement, routes, rootRoute, 0);
 }

@@ -19,11 +19,10 @@ export { IndexRoute, Route, StackRoute, TabsRoute };
 
 /* utils */
 import RouterContext from './RouterContext';
-import createNativeContext from './createNativeContext';
 import Reducer from './Reducer';
 import { render } from './render';
 
-export { RouterContext, createNativeContext, Reducer, render };
+export { RouterContext, Reducer, render };
 
 /* histories */
 import nativeHistory from './nativeHistory';

@@ -38,7 +38,7 @@ Do not let npm confuse you: there used to be another project with the same name 
 
 import React from 'react'
 import { AppRegistry } from 'react-native';
-import { Router, Route, TabsRoute } from 'react-router-native';
+import { Router, Route, TabsRoute, nativeHistory } from 'react-router-native';
 
 const App = (props) => (/*...*/);
 const About = (props) => (/*...*/);
@@ -50,7 +50,7 @@ const NoMatch = (props) => (/*...*/);
 
 const routes = (
   /* Address Bar can be toggled on or off by setting the addressBar prop */
-  <Router addressBar>
+  <Router history={nativeHistory} addressBar>
     <TabsRoute
       path="app"
       component={App}
