@@ -8,114 +8,104 @@ export const ADDDRESS_BAR_ROW_HEIGHT = 30;
 
 const { width } = Dimensions.get('window');
 
+const { absoluteFillObject } = StyleSheet;
+
 // Used across all navigational components i.e StackRouteView
 const globalStyles = StyleSheet.create({
   wrapper: {
     flex: 1,
   },
   navigationCard: {
-    overflow: 'hidden',
-    position: 'absolute',
+    ...absoluteFillObject,
     backgroundColor: '#E9E9EF',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    top: 0,
+    overflow: 'hidden',
   },
 });
 
 const addressBarStyles = StyleSheet.create({
   wrapper: {
-    position: 'absolute',
-    top: -ADDDRESS_BAR_HEIGHT,
-    left: 0,
-    right: 0,
-    bottom: 0,
     backgroundColor: 'transparent',
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: -ADDDRESS_BAR_HEIGHT,
   },
   addressBar: {
-    position: 'absolute',
-    height: ADDDRESS_BAR_HEIGHT,
-    paddingTop: 18,
-    top: 0,
-    left: 0,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: BTN_UNDERLAY_COLOR,
+    flexDirection: 'row',
+    height: ADDDRESS_BAR_HEIGHT,
+    justifyContent: 'center',
+    left: 0,
+    paddingTop: 18,
+    position: 'absolute',
+    right: 0,
+    top: 0,
   },
   field: {
-    flex: 1,
-    height: 40,
-    fontSize: 18,
+    alignSelf: 'center',
     backgroundColor: '#FFFFFF',
     borderColor: '#C1C2C2',
-    borderWidth: 1,
-    padding: 4,
-    alignSelf: 'center',
     borderRadius: 2,
+    borderWidth: 1,
+    flex: 1,
+    fontSize: 18,
+    height: 40,
     marginLeft: 6,
+    padding: 4,
   },
   forwardBtn: {
-    width: 34,
     alignItems: 'center',
+    width: 34,
   },
   forwardBtnText: {
-    fontSize: 20,
     color: '#585858',
+    fontSize: 20,
     marginTop: 6,
   },
   forwardBtnTextDisabled: {
     color: '#C1C2C2',
   },
   backBtn: {
-    width: 34,
     alignItems: 'center',
     marginLeft: 6,
+    width: 34,
   },
   backBtnText: {
-    fontSize: 20,
     color: '#585858',
+    fontSize: 20,
     transform: [{ rotate: '180deg' }],
   },
   backBtnTextDisabled: {
     color: '#C1C2C2',
   },
   docsLink: {
-    width: 60,
+    color: '#585858',
     fontSize: 16,
     textAlign: 'center',
-    color: '#585858',
+    width: 60,
   },
 });
 
 const addressBarHistoryStyles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    ...absoluteFillObject,
   },
   backdrop: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    ...absoluteFillObject,
   },
   listViewWrapper: {
-    position: 'absolute',
+    backgroundColor: '#FFFFFF',
     marginBottom: 20,
-    width: Math.max(width * 0.60, 180),
     marginLeft: 4,
     marginTop: ADDDRESS_BAR_HEIGHT - 2,
+    position: 'absolute',
     shadowColor: '#929292',
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 2,
-    shadowOffset: { width: 0, height: 0 },
-    backgroundColor: '#FFFFFF',
+    width: Math.max(width * 0.60, 180),
   },
   listView: {
     flex: 1,
@@ -123,9 +113,9 @@ const addressBarHistoryStyles = StyleSheet.create({
   listViewContent: {
   },
   row: {
-    paddingLeft: 10,
-    lineHeight: 24,
     height: ADDDRESS_BAR_ROW_HEIGHT,
+    lineHeight: 24,
+    paddingLeft: 10,
   },
 });
 
