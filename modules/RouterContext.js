@@ -2,7 +2,7 @@
 
 import React, { PropTypes, Component } from 'react';
 import invariant from 'invariant';
-import RootWrapper from './RootWrapper';
+import RootContainer from './RootContainer';
 
 import { createNavigationTree } from './RouteUtils';
 
@@ -90,7 +90,7 @@ class RouterContext extends Component<any, any, any> {
         location,
       };
 
-      element = React.createElement(RootWrapper, props);
+      element = React.createElement(RootContainer, props);
     }
 
     invariant(

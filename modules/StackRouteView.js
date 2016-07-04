@@ -1,9 +1,8 @@
 /* @flow */
 
 import React, { PropTypes, Component } from 'react';
-import { NavigationExperimental } from 'react-native';
+import { NavigationExperimental, View } from 'react-native';
 import { warnOutOfSync } from './warningUtil';
-import withOnNavigate from './withOnNavigate';
 import transitionRegistry from './transitionRegistry';
 import { globalStyles as styles } from './styles';
 
@@ -14,7 +13,7 @@ import type {
 
 const {
   Card: NavigationCard,
-  AnimatedView: NavigationTransitioner,
+  Transitioner: NavigationTransitioner,
   PropTypes: NavigationPropTypes,
 } = NavigationExperimental;
 
@@ -30,7 +29,6 @@ type Props = {
   navigationSubtree: ?Array<PseudoElement>,
   navigationState: EnhancedNavigationRoute,
   createElement: Function,
-  onNavigate: Function,
 };
 
 class StackRouteView extends Component<any, Props, any> {
@@ -43,10 +41,10 @@ class StackRouteView extends Component<any, Props, any> {
     navigationSubtree: PropTypes.arrayOf(PropTypes.object),
     navigationState: PropTypes.object,
     createElement: PropTypes.func.isRequired,
-    onNavigate: PropTypes.func.isRequired,
   };
 
   componentWillMount(): void {
+    (this: any).renderTransition = this.renderTransition.bind(this);
     (this: any).renderScene = this.renderScene.bind(this);
     (this: any).renderOverlay = this.renderOverlay.bind(this);
     (this: any).renderCardScene = this.renderCardScene.bind(this);
@@ -143,9 +141,36 @@ class StackRouteView extends Component<any, Props, any> {
     );
   }
 
+  /* NavigationTransitionProps = NavigationSceneRendererProps */
+  renderTransition(props: NavigationSceneRendererProps): ReactElement<any> {
+    const overlay = this.renderOverlay({
+      ...props,
+      scene: props.scene,
+    });
+
+    const scenes = props.scenes.map(
+     scene => this.renderScene({
+       ...props,
+       scene,
+     })
+    );
+
+    return (
+      <View
+        style={styles.wrapper}
+      >
+        <View
+          style={styles.wrapper}
+        >
+          {scenes}
+        </View>
+        {overlay}
+      </View>
+    );
+  }
+
   render(): ReactElement {
     const {
-      onNavigate,
       navigationSubtree,
       navigationState,
       component,
@@ -173,9 +198,7 @@ class StackRouteView extends Component<any, Props, any> {
         applyAnimation,
         style: styles.wrapper,
         navigationState,
-        renderScene: this.renderScene,
-        renderOverlay: this.renderOverlay,
-        onNavigate,
+        render: this.renderTransition,
       };
 
       transitioner = React.createElement(NavigationTransitioner, transitionerProps);
@@ -192,4 +215,4 @@ class StackRouteView extends Component<any, Props, any> {
   }
 }
 
-export default withOnNavigate(StackRouteView);
+export default StackRouteView;

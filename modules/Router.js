@@ -1,6 +1,7 @@
 /* @flow */
 
 import React, { Component, PropTypes } from 'react';
+import warnOnce from './warningUtil';
 
 import { Actions } from 'history';
 
@@ -77,6 +78,15 @@ class NativeRouter extends Component<any, any, any> {
     };
 
     const { routes, children } = props;
+
+    warnOnce(
+      false,
+      'Master build is experiencing a performance degradation of transition animations due to ' +
+      'recent breaking changes in NavigationExperimental. Please run ' +
+      '`git checkout v2.0.0-alpha.0` and `npm install` before running the example. This notice ' +
+      'will be removed once the upstream issue is fixed. The issue is also being tracked ' +
+      'in react-router-native#3.'
+    );
 
     this.routes = createRoutes(routes || children);
   }

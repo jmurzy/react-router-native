@@ -1,14 +1,8 @@
 import {
   NavigationExperimental,
-  Animated,
   Easing,
 } from 'react-native';
 import invariant from 'invariant';
-
-import type {
-  EnhancedNavigationRoute,
-  AnimatedValue,
-} from './TypeDefinition';
 
 const {
   Card: NavigationCard,
@@ -19,17 +13,6 @@ const {
   CardStackStyleInterpolator: NavigationCardStackStyleInterpolator,
   CardStackPanResponder: NavigationCardStackPanResponder,
 } = NavigationCard;
-
-// NavigationExperimental/NavigationCardStackPanResponder.js#L68
-const {
-  Actions: {
-    BACK: {
-      type: PAN_RESPONDER_BACK_ACTION,
-    },
-  },
-} = NavigationCardStackPanResponder;
-
-export { PAN_RESPONDER_BACK_ACTION };
 
 const transitionRegistry = {};
 
@@ -46,50 +29,14 @@ function configureDefaultTransition() {
 
 function configureSkipTransition() {
   // The new Transitioner abstracts away the `AnimatedValue` so there is no way to `setValue` on
-  // `position`
+  // `position` See facebook/react-native#8306
   return {
-    duration: 0,
+    duration: 0.000000001,
+    easing: Easing.linear,
   };
-}
-
-// deprecated
-function skipAnimation( // eslint-disable-line no-unused-vars
-  position: AnimatedValue,
-  navigationRoute: EnhancedNavigationRoute,
-): void {
-  position.setValue(navigationRoute.index);
-}
-
-// deprecated
-function applyDefaultAnimation( // eslint-disable-line no-unused-vars
-  position: AnimatedValue,
-  navigationRoute: EnhancedNavigationRoute,
-): void {
-  Animated.spring(
-    position,
-    {
-      bounciness: 0,
-      toValue: navigationRoute.index,
-    }
-  ).start();
 }
 
 const noPanResponder = () => null;
-
-function createApplyAnimation(transitionSpec: Object) {
-  return (
-    position: AnimatedValue,
-    navigationRoute: EnhancedNavigationRoute,
-  ): void => {
-    Animated.timing(
-      position,
-      {
-        ...transitionSpec,
-        toValue: navigationRoute.index,
-      }
-    ).start();
-  };
-}
 
 export function addHandler(
   key: string,
@@ -113,9 +60,6 @@ export function addHandler(
     styleInterpolator,
     panResponder: panResponder || noPanResponder,
     configureTransition,
-    // Create Transitioner compatible API for AnimatedView until issues are sorted out
-    // jmurzy/react-router-native/issues/3
-    applyAnimation: createApplyAnimation(configureTransition()),
   };
 }
 
