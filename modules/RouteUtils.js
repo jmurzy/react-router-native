@@ -24,9 +24,9 @@ export const RouteTypes = {
 const { STACK_ROUTE, TABS_ROUTE } = RouteTypes;
 
 export function createRouteFromReactElement(
-  element: ReactElement,
+  element: ReactElement<any>,
   parentRoute: RouteDef
-): ReactElement {
+): ReactElement<any> {
   invariant(
     !element.props.transition || transitionRegistry[element.props.transition] !== undefined,
     '"%s" is not a valid transition. If you are using a custom transition, make sure to ' +

@@ -56,7 +56,7 @@ class Go extends Component<any, Props, any> {
 
   props: Props;
 
-  render(): ReactElement {
+  render(): ReactElement<any> {
     const { ...props } = this.props;
 
     return (

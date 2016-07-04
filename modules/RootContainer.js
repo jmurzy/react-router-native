@@ -60,7 +60,7 @@ class RootContainer extends Component<any, Props, any> {
     );
   }
 
-  render(): ReactElement {
+  render(): ReactElement<any> {
     const { navigationState, addressBar: isShown, location } = this.props;
 
     // TODO react-native does not accept `-reverse` values for `flex-direction`. We need to render

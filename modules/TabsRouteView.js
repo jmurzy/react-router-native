@@ -9,6 +9,7 @@ import { globalStyles as styles } from './styles';
 import type {
   EnhancedNavigationRoute,
   PseudoElement,
+  NavigationTransitionProps,
 } from './TypeDefinition';
 
 const {
@@ -139,8 +140,7 @@ class TabsRouteView extends Component<any, Props, any> {
     );
   }
 
-  // $FlowFixMe NavigationTransitionProps
-  renderTransition(props): ReactElement<any> {
+  renderTransition(props: NavigationTransitionProps): ReactElement<any> {
     const overlay = this.renderOverlay({
       ...props,
       scene: props.scene,
@@ -167,7 +167,7 @@ class TabsRouteView extends Component<any, Props, any> {
     );
   }
 
-  render(): ReactElement {
+  render(): ReactElement<any> {
     const {
       navigationSubtree,
       navigationState,

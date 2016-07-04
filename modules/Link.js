@@ -56,7 +56,7 @@ class Link extends Component<DefaultProps, Props, any> {
     }
   }
 
-  render(): ReactElement {
+  render(): ReactElement<any> {
     const { to, activeStyle, onlyActiveOnIndex, ...props } = this.props;
 
     const { router } = this.context;
