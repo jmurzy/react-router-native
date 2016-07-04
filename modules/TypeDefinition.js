@@ -1,6 +1,11 @@
 /* @flow */
 import { Animated } from 'react-native';
 
+export type {
+  NavigationTransitionProps,
+  NavigationSceneRendererProps,
+} from 'react-native/Libraries/NavigationExperimental/NavigationTypeDefinition';
+
 export type RouteType = '<Route>' | '<StackRoute>' | '<TabsRoute>';
 
 export type AnimatedValue = Animated.Value;

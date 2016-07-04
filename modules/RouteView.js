@@ -12,12 +12,7 @@ import type {
 
 const {
   Transitioner: NavigationTransitioner,
-  PropTypes: NavigationPropTypes,
 } = NavigationExperimental;
-
-const {
-  SceneRenderer: NavigationSceneRendererProps,
-} = NavigationPropTypes;
 
 type Props = {
   path: string,
@@ -44,7 +39,8 @@ class RouteView extends Component<any, Props, any> {
     (this: any).renderScene = this.renderScene.bind(this);
   }
 
-  renderScene(props: NavigationSceneRendererProps): ?ReactElement {
+  // $FlowFixMe NavigationSceneRendererProps
+  renderScene(props): ?ReactElement {
     const { scene } = props;
 
     const { navigationSubtree } = this.props;
@@ -75,8 +71,8 @@ class RouteView extends Component<any, Props, any> {
     );
   }
 
-  /* NavigationTransitionProps = NavigationSceneRendererProps */
-  renderTransition(props: NavigationSceneRendererProps): ReactElement<any> {
+  // $FlowFixMe NavigationTransitionProps
+  renderTransition(props): ReactElement<any> {
     const scenes = props.scenes.map(
      scene => this.renderScene({
        ...props,

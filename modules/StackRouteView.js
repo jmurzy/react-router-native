@@ -14,12 +14,7 @@ import type {
 const {
   Card: NavigationCard,
   Transitioner: NavigationTransitioner,
-  PropTypes: NavigationPropTypes,
 } = NavigationExperimental;
-
-const {
-  SceneRenderer: NavigationSceneRendererProps,
-} = NavigationPropTypes;
 
 type Props = {
   path: string,
@@ -50,7 +45,8 @@ class StackRouteView extends Component<any, Props, any> {
     (this: any).renderCardScene = this.renderCardScene.bind(this);
   }
 
-  renderOverlay(props: NavigationSceneRendererProps): ?ReactElement {
+  // $FlowFixMe NavigationSceneRendererProps
+  renderOverlay(props): ?ReactElement {
     const { scene } = props;
 
     const { navigationSubtree, createElement } = this.props;
@@ -83,7 +79,8 @@ class StackRouteView extends Component<any, Props, any> {
     return null;
   }
 
-  renderScene(props: NavigationSceneRendererProps): ?ReactElement {
+  // $FlowFixMe NavigationSceneRendererProps
+  renderScene(props): ?ReactElement {
     const { scene } = props;
 
     if (!scene.route) {
@@ -114,7 +111,8 @@ class StackRouteView extends Component<any, Props, any> {
     return React.createElement(NavigationCard, navigationCardProps);
   }
 
-  renderCardScene(props: NavigationSceneRendererProps): ?ReactElement {
+  // $FlowFixMe NavigationSceneRendererProps
+  renderCardScene(props): ?ReactElement {
     const { scene } = props;
 
     const { navigationSubtree } = this.props;
@@ -141,8 +139,8 @@ class StackRouteView extends Component<any, Props, any> {
     );
   }
 
-  /* NavigationTransitionProps = NavigationSceneRendererProps */
-  renderTransition(props: NavigationSceneRendererProps): ReactElement<any> {
+  // $FlowFixMe NavigationTransitionProps
+  renderTransition(props): ReactElement<any> {
     const overlay = this.renderOverlay({
       ...props,
       scene: props.scene,
