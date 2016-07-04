@@ -110,7 +110,7 @@ Want to hack on React Router Native? Awesome! We welcome contributions from anyo
 
 ### Questions?
 
-Feel free to reach out to me on Twitter [@jmurzy](https://twitter.com/jmurzy). If you have any questions, please submit an Issue with the "question" tag or come hang out in the React Router [Reactiflux Channel](https://discord.gg/0ZcbPKXt5bYaNQ46) and post your request there.
+Feel free to reach out to me on Twitter [@jmurzy](https://twitter.com/jmurzy). If you have any questions, please submit an Issue with the "[question](https://github.com/jmurzy/react-router-native/issues?utf8=%E2%9C%93&q=label%3Aquestion%20)" tag or come hang out in the React Router [Reactiflux Channel](https://discord.gg/0ZcbPKXt5bYaNQ46) and post your request there.
 
 ### Thanks
 
