@@ -15,7 +15,12 @@ import { NAVIGATION_HEADER_HEIGHT } from './components/styles';
 const SECOND_HEADER = NAVIGATION_HEADER_HEIGHT;
 const THIRD_HEADER = NAVIGATION_HEADER_HEIGHT * 2;
 
+const redirectToNotifications = (nextState, replace) => {
+  replace('/notifications');
+};
+
 const routes = (
+  /* Address Bar can be toggled on or off by setting the addressBar prop */
   <Router history={nativeHistory} addressBar>
     <TabsRoute path="master" component={Master}>
 
@@ -64,7 +69,6 @@ const routes = (
         path="/profile/:userId"
         component={component('#000000')}
         overlayComponent={ProfileHeader}
-        transition="vertical-card-stack"
       >
         <Route
           path="settings"
@@ -76,13 +80,14 @@ const routes = (
           path="settings/info"
           component={component('#EF4E5E')}
           overlayComponent={stackHeaderComponent('#F5807B', SECOND_HEADER)}
+          transition="vertical-card-stack"
         />
       </StackRoute>
 
     </TabsRoute>
 
     <Route path="swap" component={component('#DABF55')}>
-      <Route path="nested" component={component('#41BDE2')} />
+      <Route path="nested" onEnter={redirectToNotifications} component={component('#41BDE2')} />
     </Route>
 
   </Router>

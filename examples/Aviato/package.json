@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/react-native start",
-    "ios": "./node_modules/.bin/react-native run-ios"
+    "ios": "./node_modules/.bin/react-native run-ios",
+    "android": "./node_modules/.bin/react-native run-android"
   },
   "dependencies": {
     "react": "^15.2.0",
