@@ -54,6 +54,7 @@ gulp.task('load-require-hooks', (done) => {
 gulp.task('lint', () => gulp
      .src([
        `${SRCDIR}/**/*.js`,
+       `${SPECDIR}/**/*.js`,
        'gulpfile.js',
      ])
     .pipe(gulpESlint())
