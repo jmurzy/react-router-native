@@ -5,12 +5,12 @@
  * https://github.com/reactjs/react-router/blob/master/LICENSE.md
  */
 
-import React, { createElement } from 'react'
-import RouterContext from './RouterContext'
+import React, { createElement } from 'react';
+import RouterContext from './RouterContext';
 
 export default (...middlewares) => {
-  const withContext = middlewares.map(m => m.renderRouterContext).filter(f => f)
-  const withComponent = middlewares.map(m => m.renderRouteComponent).filter(f => f)
+  const withContext = middlewares.map(m => m.renderRouterContext).filter(f => f);
+  const withComponent = middlewares.map(m => m.renderRouteComponent).filter(f => f);
   const makeCreateElement = (baseCreateElement = createElement) => (
     (Component, props) => (
       withComponent.reduceRight(
@@ -19,7 +19,7 @@ export default (...middlewares) => {
         ), baseCreateElement(Component, props)
       )
     )
-  )
+  );
 
   return (renderProps) => (
     withContext.reduceRight(
@@ -32,6 +32,6 @@ export default (...middlewares) => {
         />
       )
     )
-  )
-}
+  );
+};
 

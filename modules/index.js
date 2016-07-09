@@ -21,11 +21,11 @@ export { IndexRoute, Route, StackRoute, TabsRoute };
 import RouterContext from './RouterContext';
 import Reducer from './Reducer';
 import { render } from './render';
+import applyRouterMiddleware from './applyRouterMiddleware';
 
-export { RouterContext, Reducer, render };
+export { RouterContext, Reducer, render, applyRouterMiddleware };
 
 /* histories */
-import applyRouterMiddleware from './applyRouterMiddleware';
 import nativeHistory from './nativeHistory';
 
-export { applyRouterMiddleware, nativeHistory };
+export { nativeHistory };
