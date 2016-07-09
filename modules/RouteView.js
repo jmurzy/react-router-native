@@ -1,24 +1,19 @@
 /* @flow */
 
 import React, { Component, PropTypes } from 'react';
-import { NavigationExperimental } from 'react-native';
+import { NavigationExperimental, View } from 'react-native';
 import { warnOutOfSync } from './warningUtil';
-import withOnNavigate from './withOnNavigate';
 import { globalStyles as styles } from './styles';
 
 import type {
   EnhancedNavigationRoute,
   PseudoElement,
+  NavigationTransitionProps,
 } from './TypeDefinition';
 
 const {
-  AnimatedView: NavigationTransitioner,
-  PropTypes: NavigationPropTypes,
+  Transitioner: NavigationTransitioner,
 } = NavigationExperimental;
-
-const {
-  SceneRenderer: NavigationSceneRendererProps,
-} = NavigationPropTypes;
 
 type Props = {
   path: string,
@@ -27,7 +22,6 @@ type Props = {
   navigationSubtree: ?Array<PseudoElement>,
   navigationState: EnhancedNavigationRoute,
   createElement: Function,
-  onNavigate: Function,
 };
 
 class RouteView extends Component<any, Props, any> {
@@ -39,14 +33,15 @@ class RouteView extends Component<any, Props, any> {
     navigationSubtree: PropTypes.arrayOf(PropTypes.object),
     navigationState: PropTypes.object,
     createElement: PropTypes.func.isRequired,
-    onNavigate: PropTypes.func.isRequired,
   };
 
   componentWillMount(): void {
+    (this: any).renderTransition = this.renderTransition.bind(this);
     (this: any).renderScene = this.renderScene.bind(this);
   }
 
-  renderScene(props: NavigationSceneRendererProps): ?ReactElement {
+  // $FlowFixMe NavigationSceneRendererProps
+  renderScene(props): ?ReactElement {
     const { scene } = props;
 
     const { navigationSubtree } = this.props;
@@ -92,9 +87,25 @@ class RouteView extends Component<any, Props, any> {
     return rest;
   }
 
-  render(): ReactElement {
+  renderTransition(props: NavigationTransitionProps): ReactElement<any> {
+    const scenes = props.scenes.map(
+     scene => this.renderScene({
+       ...props,
+       scene,
+     })
+    );
+
+    return (
+      <View
+        style={styles.wrapper}
+      >
+        {scenes}
+      </View>
+    );
+  }
+
+  render(): ReactElement<any> {
     const {
-      onNavigate,
       navigationSubtree,
       navigationState,
       component,
@@ -116,8 +127,7 @@ class RouteView extends Component<any, Props, any> {
       const transitionerProps = {
         style: styles.wrapper,
         navigationState,
-        renderScene: this.renderScene,
-        onNavigate,
+        render: this.renderTransition,
       };
 
       transitioner = React.createElement(NavigationTransitioner, transitionerProps);
@@ -135,4 +145,4 @@ class RouteView extends Component<any, Props, any> {
   }
 }
 
-export default withOnNavigate(RouteView);
+export default RouteView;

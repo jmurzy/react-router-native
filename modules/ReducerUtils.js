@@ -57,7 +57,7 @@ export function defaultRouteReducer(
 
   const { nextNavigationState: nextState } = action;
 
-  // `createState()` always returns a unary tree
+  // `createPartialState()` always returns a unary tree
   const nextLeaf = nextState.routes[0];
 
   if (!nextLeaf) {
@@ -70,7 +70,7 @@ export function defaultRouteReducer(
 
   if (foundNextLeaf) {
     const foundLeaf = state.routes[foundIndex];
-    // `nextLeaf` has one child, always. See `createState()`
+    // `nextLeaf` has one child, always. See `createPartialState()`
     if (hasNextChild(nextLeaf)) {
       const nextAction: NavigationAction = {
         ...action,
@@ -128,7 +128,7 @@ export function defaultTabsRouteReducer(
 
   const { nextNavigationState: nextState } = action;
 
-  // `createState()` always returns a unary tree
+  // `createPartialState()` always returns a unary tree
   const nextLeaf = nextState.routes[0];
 
   if (!nextLeaf) {
@@ -141,7 +141,7 @@ export function defaultTabsRouteReducer(
 
   if (foundNextLeaf) {
     const foundLeaf = state.routes[foundIndex];
-    // `nextLeaf` has one child, always. See `createState()`
+    // `nextLeaf` has one child, always. See `createPartialState()`
     if (hasNextChild(nextLeaf)) {
       const nextAction: NavigationAction = {
         ...action,
@@ -200,7 +200,7 @@ export function defaultStackRouteReducer(
 
   const { nextNavigationState: nextState } = action;
 
-  // `createState()` always returns a unary tree
+  // `createPartialState()` always returns a unary tree
   const nextLeaf = nextState.routes[0];
 
   if (!nextLeaf) {
@@ -213,7 +213,7 @@ export function defaultStackRouteReducer(
 
   if (foundNextLeaf) {
     const foundLeaf = state.routes[foundIndex];
-    // `nextLeaf` has one child, always. See `createState()`
+    // `nextLeaf` has one child, always. See `createPartialState()`
     if (hasNextChild(nextLeaf)) {
       const nextAction: NavigationAction = {
         ...action,
@@ -279,7 +279,7 @@ function getNoPathRoute(route: RouteDef): ?NoPathRouteDef {
   return null;
 }
 
-export function createState(
+export function createPartialState(
   routes: any,
   location: Location,
   params: Object

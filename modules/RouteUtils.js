@@ -24,9 +24,9 @@ export const RouteTypes = {
 const { STACK_ROUTE, TABS_ROUTE } = RouteTypes;
 
 export function createRouteFromReactElement(
-  element: ReactElement,
+  element: ReactElement<any>,
   parentRoute: RouteDef
-): ReactElement {
+): ReactElement<any> {
   invariant(
     !element.props.transition || transitionRegistry[element.props.transition] !== undefined,
     '"%s" is not a valid transition. If you are using a custom transition, make sure to ' +
@@ -64,7 +64,7 @@ function getPropsFromRoute(route: RouteDef): Object {
   return rest;
 }
 
-function createNavigationTree(
+function createNavigationTreeAtIndex(
   createElement: ElementProvider,
   routes: Array<RouteDef>,
   route: RouteDef,
@@ -96,7 +96,7 @@ function createNavigationTree(
 
   if (childRoutes) {
     props.navigationSubtree = childRoutes.map(
-      (r, index) => createNavigationTree(createElement, routes, r, index)
+      (r, index) => createNavigationTreeAtIndex(createElement, routes, r, index)
     );
 
     // index route is given in `routes` but not in `childRoutes`
@@ -137,7 +137,7 @@ function createNavigationTree(
   return pseudoElement;
 }
 
-export function createNavigation(
+export function createNavigationTree(
   createElement: ElementProvider,
   routes: Array<RouteDef>
 ): ?PseudoElement {
@@ -146,5 +146,5 @@ export function createNavigation(
     return null;
   }
 
-  return createNavigationTree(createElement, routes, rootRoute, 0);
+  return createNavigationTreeAtIndex(createElement, routes, rootRoute, 0);
 }

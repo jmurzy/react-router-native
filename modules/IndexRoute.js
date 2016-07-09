@@ -3,7 +3,10 @@
 import { Component } from 'react';
 import warning from 'warning';
 import invariant from 'invariant';
-import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
+import {
+  createRouteFromReactElement as _createRouteFromReactElement,
+  RouteTypes,
+} from './RouteUtils';
 import { notImplemented, falsy, component } from './PropTypes';
 
 const { TABS_ROUTE } = RouteTypes;
@@ -37,7 +40,7 @@ class IndexRoute extends Component<any, Props, any> {
 
     if (parentRoute) {
       /* eslint-disable no-param-reassign */
-      parentRoute.indexRoute = createRouteFromReactElement(element, parentRoute);
+      parentRoute.indexRoute = _createRouteFromReactElement(element, parentRoute);
       /* eslint-enable */
     } else {
       warning(

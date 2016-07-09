@@ -1,14 +1,8 @@
 import {
-  NavigationExperimental,
   Animated,
-  Easing,
+  NavigationExperimental,
 } from 'react-native';
 import invariant from 'invariant';
-
-import type {
-  EnhancedNavigationRoute,
-  AnimatedValue,
-} from './TypeDefinition';
 
 const {
   Card: NavigationCard,
@@ -20,76 +14,50 @@ const {
   CardStackPanResponder: NavigationCardStackPanResponder,
 } = NavigationCard;
 
-// NavigationExperimental/NavigationCardStackPanResponder.js#L68
-const {
-  Actions: {
-    BACK: {
-      type: PAN_RESPONDER_BACK_ACTION,
-    },
-  },
-} = NavigationCardStackPanResponder;
-
-export { PAN_RESPONDER_BACK_ACTION };
-
 const transitionRegistry = {};
 
 const defaultTransitionSpec = {
-  duration: 250,
-  // Similar to spring
-  easing: Easing.elastic(0),
+  bounciness: 0,
+  duration: undefined,
+  easing: undefined,
+  timing: Animated.spring,
+  useNativeDriver: true,
 };
 
 function configureDefaultTransition() {
-  // FIXME react-native/7db7f78dc7d2b85843707f75565bcfcb538e8e51#commitcomment-17575647
   return defaultTransitionSpec;
 }
 
+const noAnimation = (value, config) => ({
+  start(callback) {
+    const setValue = () => {
+      value.setValue(config.toValue);
+
+      const result = {
+        finished: true,
+      };
+
+      if (callback) {
+        callback(result);
+      }
+    };
+
+    setTimeout(setValue);
+  },
+  stop: () => {
+    value.stopAnimation();
+  },
+});
+
 function configureSkipTransition() {
-  // The new Transitioner abstracts away the `AnimatedValue` so there is no way to `setValue` on
-  // `position`
   return {
-    duration: 0,
+    duration: undefined,
+    easing: undefined,
+    timing: noAnimation,
   };
-}
-
-// deprecated
-function skipAnimation( // eslint-disable-line no-unused-vars
-  position: AnimatedValue,
-  navigationRoute: EnhancedNavigationRoute,
-): void {
-  position.setValue(navigationRoute.index);
-}
-
-// deprecated
-function applyDefaultAnimation( // eslint-disable-line no-unused-vars
-  position: AnimatedValue,
-  navigationRoute: EnhancedNavigationRoute,
-): void {
-  Animated.spring(
-    position,
-    {
-      bounciness: 0,
-      toValue: navigationRoute.index,
-    }
-  ).start();
 }
 
 const noPanResponder = () => null;
-
-function createApplyAnimation(transitionSpec: Object) {
-  return (
-    position: AnimatedValue,
-    navigationRoute: EnhancedNavigationRoute,
-  ): void => {
-    Animated.timing(
-      position,
-      {
-        ...transitionSpec,
-        toValue: navigationRoute.index,
-      }
-    ).start();
-  };
-}
 
 export function addHandler(
   key: string,
@@ -113,9 +81,6 @@ export function addHandler(
     styleInterpolator,
     panResponder: panResponder || noPanResponder,
     configureTransition,
-    // Create Transitioner compatible API for AnimatedView until issues are sorted out
-    // jmurzy/react-router-native/issues/3
-    applyAnimation: createApplyAnimation(configureTransition()),
   };
 }
 
@@ -143,7 +108,7 @@ addHandler(
 
 addHandler(
   NONE,
-  NavigationCardStackStyleInterpolator.forVertical,
+  NavigationCardStackStyleInterpolator.forHorizontal,
   null,
   null,
 );

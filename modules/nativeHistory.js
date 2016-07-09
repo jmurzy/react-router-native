@@ -1,32 +1,37 @@
 /* @flow */
 
-import { canPopActiveStack } from './ReducerUtils';
+import {
+  canPopActiveStack,
+  getActiveParentRouteType,
+} from './ReducerUtils';
 import { Actions } from 'history';
-
 import { createMemoryHistory } from 'react-router';
-import { DEFAULT_KEY_LENGTH, createRandomKey } from './LocationUtils';
-
+import {
+  createRandomKey,
+  DEFAULT_KEY_LENGTH,
+} from './LocationUtils';
 import { RouteTypes } from './RouteUtils';
 
 const { STACK_ROUTE } = RouteTypes;
 
-import type {
-  Location,
-  RouteType,
-  EnhancedNavigationRoute,
-} from './TypeDefinition';
+const {
+  PUSH: HISTORY_PUSH,
+  REPLACE: HISTORY_REPLACE,
+} = Actions;
 
-const { PUSH: HISTORY_PUSH, REPLACE: HISTORY_REPLACE } = Actions;
+let routerState = {};
 
 const useNavState = (createHistory: Function) => (options = {}) => {
   const {
-    replace: baseReplace,
-    push: basePush,
     transitionTo: baseTransitionTo,
     ...history,
   } = createHistory(options);
 
-  const createPop = (navigationState: EnhancedNavigationRoute) => (n = -1) => {
+  const pop = (n = -1) => {
+    const {
+      navigationState,
+    } = routerState;
+
     if (!n || n > -1) {
       return false;
     }
@@ -45,62 +50,66 @@ const useNavState = (createHistory: Function) => (options = {}) => {
     return false;
   };
 
-  const createTransitionTo = (currentLocation, activeRouteType: RouteType) => (nextLocation) => {
+  const transitionTo = (nextLocation) => {
+    const {
+      location: currentLocation,
+      routes: currentRoutes,
+    } = routerState;
+
+    const activeRouteType = getActiveParentRouteType(currentRoutes);
+
     // History API treats HISTORY_PUSH to current path like HISTORY_REPLACE to be consistent with
     // browser behavior. (mjackson/history/blob/v2.0.1/modules/createHistory.js#L126) This is not
-    // reasonable when performing `router.pop()` on <StackRoute />. A unique stateKey is needed
-    // for each `location` to (1) bust the default 'HISTORY_REPLACE' behavior, (2) location
-    // objects that are passed to reducer during a `pop` needs a stateKey to be able to use a
-    // previous state for the newly HISTORY_PUSH'ed pointer to an older scene, (3) History needs a
-    // unique `location.key` for each location entry. So cannot be used as stateKey.
-    const nLocation = nextLocation;
+    // reasonable when performing `router.pop()` on <StackRoute />. A unique stateKey is needed for
+    // each `location` to:
+    // 1. bust the default 'HISTORY_REPLACE' behavior,
+    // 2. location objects that are passed to reducer during a `pop` needs a stateKey to be able to
+    // use a previous state for the newly HISTORY_PUSH'ed pointer to an older scene,
+    // 3. History needs a unique `location.key` for each location entry. So cannot be used as
+    // stateKey.
+    const location = nextLocation;
     const stateKey = history.createKey();
-    nLocation.state = { ...nLocation.state, stateKey };
+    location.state = { ...location.state, stateKey };
 
-    if (nLocation.action === HISTORY_PUSH) {
+    // e.g `transitionTo` is invoked via transition hooks
+    // TODO Normalize history behavior to remove $routerReplace
+    if (location.action === HISTORY_REPLACE) {
+      location.state = { ...location.state, $routerReplace: true };
+    }
+
+    if (location.action === HISTORY_PUSH) {
       const currentPath = history.createPath(currentLocation);
-      const nextPath = history.createPath(nLocation);
+      const nextPath = history.createPath(location);
       const currentStateKey = currentLocation.state.stateKey;
-      const nextStateKey = nLocation.state.stateKey;
+      const nextStateKey = location.state.stateKey;
 
       if (currentPath === nextPath && currentStateKey !== nextStateKey) {
         if (activeRouteType !== STACK_ROUTE) {
-          nLocation.action = HISTORY_REPLACE;
+          location.action = HISTORY_REPLACE;
         }
       }
     }
 
-    baseTransitionTo(nLocation);
+    baseTransitionTo(location);
   };
 
-  const createPush = (currentLocation: Location, activeRouteType: RouteType) => (input) =>
-          createTransitionTo(currentLocation,
-                             activeRouteType)(history.createLocation(input, HISTORY_PUSH));
+  const push = (input) =>
+          transitionTo(history.createLocation(input, HISTORY_PUSH));
 
-  const createReplace = (currentLocation: Location, activeRouteType: RouteType) => (input) =>
-          createTransitionTo(currentLocation,
-                             activeRouteType)(history.createLocation(input, HISTORY_REPLACE));
+  const replace = (input) =>
+          transitionTo(history.createLocation(input, HISTORY_REPLACE));
 
-  // Used when `transitionTo` is invoked via transition hooks
-  const replace = (location) => {
-    const redirectInfo = history.createLocation(history.createPath(location), HISTORY_REPLACE);
-
-    const stateKey = createRandomKey(DEFAULT_KEY_LENGTH);
-    redirectInfo.state = { ...location.state, stateKey, $routerReplace: true };
-
-    baseTransitionTo(redirectInfo);
+  const syncRouterState = (state) => {
+    routerState = state;
   };
 
   return {
     ...history,
-    baseTransitionTo,
-    transitionTo: replace,
-    basePush,
-    baseReplace,
-    createTransitionTo,
-    createPop,
-    createPush,
-    createReplace,
+    transitionTo,
+    pop,
+    push,
+    replace,
+    syncRouterState,
   };
 };
 

@@ -79,7 +79,7 @@ class AddressBarHistory extends Component<any, Props, State> {
   props: Props;
   context: Context;
 
-  renderRow(rowData: string, sectionID: string, rowID: string): ReactElement {
+  renderRow(rowData: string, sectionID: string, rowID: string): ReactElement<any> {
     const { onPressSnapshot, historyType } = this.props;
 
     let offset = 0;

@@ -1,26 +1,21 @@
 /* @flow */
 
 import React, { Component, PropTypes } from 'react';
-import { NavigationExperimental } from 'react-native';
+import { NavigationExperimental, View } from 'react-native';
 import { warnOutOfSync } from './warningUtil';
-import withOnNavigate from './withOnNavigate';
 import transitionRegistry from './transitionRegistry';
 import { globalStyles as styles } from './styles';
 
 import type {
   EnhancedNavigationRoute,
   PseudoElement,
+  NavigationTransitionProps,
 } from './TypeDefinition';
 
 const {
   Card: NavigationCard,
-  AnimatedView: NavigationTransitioner,
-  PropTypes: NavigationPropTypes,
+  Transitioner: NavigationTransitioner,
 } = NavigationExperimental;
-
-const {
-  SceneRenderer: NavigationSceneRendererProps,
-} = NavigationPropTypes;
 
 type Props = {
   path: string,
@@ -30,7 +25,6 @@ type Props = {
   navigationSubtree: ?Array<PseudoElement>,
   navigationState: EnhancedNavigationRoute,
   createElement: Function,
-  onNavigate: Function,
 };
 
 class TabsRouteView extends Component<any, Props, any> {
@@ -43,16 +37,17 @@ class TabsRouteView extends Component<any, Props, any> {
     navigationSubtree: PropTypes.arrayOf(PropTypes.object),
     navigationState: PropTypes.object,
     createElement: PropTypes.func.isRequired,
-    onNavigate: PropTypes.func.isRequired,
   };
 
   componentWillMount(): void {
-    (this: any).renderCardScene = this.renderCardScene.bind(this);
+    (this: any).renderTransition = this.renderTransition.bind(this);
     (this: any).renderScene = this.renderScene.bind(this);
     (this: any).renderOverlay = this.renderOverlay.bind(this);
+    (this: any).renderCardScene = this.renderCardScene.bind(this);
   }
 
-  renderOverlay(props: NavigationSceneRendererProps): ?ReactElement {
+  // $FlowFixMe NavigationSceneRendererProps
+  renderOverlay(props): ?ReactElement {
     const { scene } = props;
 
     const { navigationSubtree, createElement } = this.props;
@@ -85,7 +80,8 @@ class TabsRouteView extends Component<any, Props, any> {
     return null;
   }
 
-  renderScene(props: NavigationSceneRendererProps): ?ReactElement {
+  // $FlowFixMe NavigationSceneRendererProps
+  renderScene(props): ?ReactElement {
     const { scene } = props;
 
     if (!scene.route) {
@@ -116,7 +112,8 @@ class TabsRouteView extends Component<any, Props, any> {
     return React.createElement(NavigationCard, navigationCardProps);
   }
 
-  renderCardScene(props: NavigationSceneRendererProps): ?ReactElement {
+  // $FlowFixMe NavigationSceneRendererProps
+  renderCardScene(props): ?ReactElement {
     const { scene } = props;
 
     const { navigationSubtree } = this.props;
@@ -158,9 +155,35 @@ class TabsRouteView extends Component<any, Props, any> {
     return rest;
   }
 
-  render(): ReactElement {
+  renderTransition(props: NavigationTransitionProps): ReactElement<any> {
+    const overlay = this.renderOverlay({
+      ...props,
+      scene: props.scene,
+    });
+
+    const scenes = props.scenes.map(
+     scene => this.renderScene({
+       ...props,
+       scene,
+     })
+    );
+
+    return (
+      <View
+        style={styles.wrapper}
+      >
+        <View
+          style={styles.wrapper}
+        >
+          {scenes}
+        </View>
+        {overlay}
+      </View>
+    );
+  }
+
+  render(): ReactElement<any> {
     const {
-      onNavigate,
       navigationSubtree,
       navigationState,
       component,
@@ -188,9 +211,7 @@ class TabsRouteView extends Component<any, Props, any> {
         applyAnimation,
         style: styles.wrapper,
         navigationState,
-        renderScene: this.renderScene,
-        renderOverlay: this.renderOverlay,
-        onNavigate,
+        render: this.renderTransition,
       };
 
       transitioner = React.createElement(NavigationTransitioner, transitionerProps);
@@ -208,4 +229,4 @@ class TabsRouteView extends Component<any, Props, any> {
   }
 }
 
-export default withOnNavigate(TabsRouteView);
+export default TabsRouteView;

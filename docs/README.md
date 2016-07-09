@@ -4,7 +4,7 @@ Documentation is still a [work-in-progress](https://github.com/jmurzy/react-rout
 
 One of the the primary goals of this project is to keep its API as close to [React Router](https://github.com/reactjs/react-router) as makes sense. However, navigation on native platforms is a broader topic and we have introduced new concepts and options to accommodate for richer animations, the lack of hyperlinks, scene transitions, gestures et al. For a quick and dirty introduction to these additions, please refer to the [examples](Examples.md).
 
-Surely a proper documentation is forthcoming. In the meantime, you can refer to the [React Router docs](https://github.com/reactjs/react-router/tree/master/docs) as all React Router functionality, except for a few route configuration props that are [not yet implemented](https://github.com/jmurzy/react-router-native/blob/800622777e0dac89461e378d7e6d4e0d37872215/modules/Route.js#L31-L33), is supported by React Router Native.
+Surely a proper documentation is forthcoming. In the meantime, you can refer to the [React Router docs](https://github.com/reactjs/react-router/tree/master/docs) as all React Router functionality, except for a few route configuration props that are [not yet implemented](https://github.com/jmurzy/react-router-native/blob/800622777e0dac89461e378d7e6d4e0d37872215/modules/Route.js#L31-L33), is supported by React Router Native. Also look for issues tagged with the "[question](https://github.com/jmurzy/react-router-native/issues?utf8=%E2%9C%93&q=label%3Aquestion%20)" label.
 
 ### Redux Support
 

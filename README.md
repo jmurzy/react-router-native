@@ -38,7 +38,7 @@ Do not let npm confuse you: there used to be another project with the same name 
 
 import React from 'react'
 import { AppRegistry } from 'react-native';
-import { Router, Route, TabsRoute } from 'react-router-native';
+import { Router, Route, TabsRoute, nativeHistory } from 'react-router-native';
 
 const App = (props) => (/*...*/);
 const About = (props) => (/*...*/);
@@ -50,7 +50,7 @@ const NoMatch = (props) => (/*...*/);
 
 const routes = (
   /* Address Bar can be toggled on or off by setting the addressBar prop */
-  <Router addressBar>
+  <Router history={nativeHistory} addressBar>
     <TabsRoute
       path="app"
       component={App}
@@ -110,7 +110,7 @@ Want to hack on React Router Native? Awesome! We welcome contributions from anyo
 
 ### Questions?
 
-Feel free to reach out to me on Twitter [@jmurzy](https://twitter.com/jmurzy). If you have any questions, please submit an Issue with the "question" tag or come hang out in the React Router [Reactiflux Channel](https://discord.gg/0ZcbPKXt5bYaNQ46) and post your request there.
+Feel free to reach out to me on Twitter [@jmurzy](https://twitter.com/jmurzy). If you have any questions, please submit an Issue with the "[question](https://github.com/jmurzy/react-router-native/issues?utf8=%E2%9C%93&q=label%3Aquestion%20)" tag or come hang out in the React Router [Reactiflux Channel](https://discord.gg/0ZcbPKXt5bYaNQ46) and post your request there.
 
 ### Thanks
 
