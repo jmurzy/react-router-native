@@ -1,7 +1,12 @@
 /* @flow */
 
 import React, { PropTypes, Component } from 'react';
-import { TouchableHighlight } from 'react-native';
+import {
+  TouchableHighlight,
+} from 'react-native';
+
+// Until facebook/flow#1967 is fixed, don't use polyfill
+import requestAnimationFrame from 'fbjs/lib/requestAnimationFrame';
 
 type Props = {
   to: any,
@@ -47,12 +52,15 @@ class Link extends Component<DefaultProps, Props, any> {
       onPress(event);
     }
 
-    // TODO Wrap this in requestAnimationFrame with TimerMixin
-    // docs/performance.html#my-touchablex-view-isn-t-very-responsive
     if (event.defaultPrevented !== true) {
       const { to } = this.props;
       const { router } = this.context;
-      router.push(to);
+
+      // TODO Use TimerMixin
+      // docs/performance.html#my-touchablex-view-isn-t-very-responsive
+      requestAnimationFrame(() => {
+        router.push(to);
+      });
     }
   }
 

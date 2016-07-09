@@ -1,7 +1,13 @@
 /* @flow */
 
-import React, { PropTypes, Component, Element as ReactElement } from 'react';
-import { TouchableHighlight } from 'react-native';
+import React, {
+  PropTypes,
+  Component,
+  Element as ReactElement,
+} from 'react';
+import {
+  TouchableHighlight,
+} from 'react-native';
 import warning from 'warning';
 
 type Props = {
@@ -17,10 +23,6 @@ class Go extends Component<any, Props, any> {
     onPress: PropTypes.func,
     type: PropTypes.string.isRequired,
   };
-
-  // static defaultProps = {
-  //   type: 'back',
-  // };
 
   static contextTypes = {
     router: PropTypes.object,
@@ -48,7 +50,7 @@ class Go extends Component<any, Props, any> {
       } else {
         warning(
           false,
-          'You should use <Pop /> or <Back /> instead.'
+          'You should use `<Pop>` or `<Back>` instead.'
         );
       }
     }

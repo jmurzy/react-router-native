@@ -1,6 +1,6 @@
 import {
+  Animated,
   NavigationExperimental,
-  Easing,
 } from 'react-native';
 import invariant from 'invariant';
 
@@ -17,22 +17,42 @@ const {
 const transitionRegistry = {};
 
 const defaultTransitionSpec = {
-  duration: 250,
-  // Similar to spring
-  easing: Easing.elastic(0),
+  bounciness: 0,
+  duration: undefined,
+  easing: undefined,
+  timing: Animated.spring,
 };
 
 function configureDefaultTransition() {
-  // FIXME react-native/7db7f78dc7d2b85843707f75565bcfcb538e8e51#commitcomment-17575647
   return defaultTransitionSpec;
 }
 
+const noAnimation = (value, config) => ({
+  start(callback) {
+    const setValue = () => {
+      value.setValue(config.toValue);
+
+      const result = {
+        finished: true,
+      };
+
+      if (callback) {
+        callback(result);
+      }
+    };
+
+    setTimeout(setValue);
+  },
+  stop: () => {
+    value.stopAnimation();
+  },
+});
+
 function configureSkipTransition() {
-  // The new Transitioner abstracts away the `AnimatedValue` so there is no way to `setValue` on
-  // `position` See facebook/react-native#8306
   return {
-    duration: 0.000000001,
-    easing: Easing.linear,
+    duration: undefined,
+    easing: undefined,
+    timing: noAnimation,
   };
 }
 
@@ -87,7 +107,7 @@ addHandler(
 
 addHandler(
   NONE,
-  NavigationCardStackStyleInterpolator.forVertical,
+  NavigationCardStackStyleInterpolator.forHorizontal,
   null,
   null,
 );
