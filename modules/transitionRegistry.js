@@ -21,6 +21,7 @@ const defaultTransitionSpec = {
   duration: undefined,
   easing: undefined,
   timing: Animated.spring,
+  useNativeDriver: true,
 };
 
 function configureDefaultTransition() {
