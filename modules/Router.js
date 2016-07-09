@@ -1,7 +1,6 @@
 /* @flow */
 
 import React, { Component, PropTypes } from 'react';
-import warnOnce from './warningUtil';
 
 import { Actions } from 'history';
 
@@ -193,10 +192,8 @@ class NativeRouter extends Component<any, any, any> {
       const activeLocation = getActiveLocation(nextNavState);
 
       if (activeLocation) {
-        const { router } = this;
-
-        const nextPath = router.createPath(nextLocation);
-        const redirectPath = router.createPath(activeLocation);
+        const nextPath = this.router.createPath(nextLocation);
+        const redirectPath = this.router.createPath(activeLocation);
 
         if (redirectPath !== nextPath) {
           return activeLocation;
@@ -220,12 +217,12 @@ class NativeRouter extends Component<any, any, any> {
   createRouterObject(state: Object) {
     const {
       matchContext: {
-        router,
+        router: _router,
       },
     } = this.props;
 
-    if (router) {
-      return router;
+    if (_router) {
+      return _router;
     }
 
     const { history } = this.props;
@@ -235,12 +232,12 @@ class NativeRouter extends Component<any, any, any> {
   createTransitionManager(): Object {
     const {
       matchContext: {
-        transitionManager,
+        transitionManager: _transitionManager,
       },
     } = this.props;
 
-    if (transitionManager) {
-      return transitionManager;
+    if (_transitionManager) {
+      return _transitionManager;
     }
 
     const { history } = this.props;
@@ -250,7 +247,7 @@ class NativeRouter extends Component<any, any, any> {
   render(): ?ReactElement {
     const {
       location,
-      routes,
+      routes: _routes,
       params,
       components,
       navigationState,
@@ -259,7 +256,7 @@ class NativeRouter extends Component<any, any, any> {
     const {
       createElement,
       render,
-      ...props,
+      ...passProps,
     } = this.props;
 
     if (location == null) {
@@ -267,15 +264,15 @@ class NativeRouter extends Component<any, any, any> {
     }
 
     // React Router only forwards non-Router-specific props to routing context
-    Object.keys(NativeRouter.propTypes).forEach(propType => delete props[propType]);
-
-    const { router } = this;
+    Object.keys(NativeRouter.propTypes).forEach(
+      propType => delete passProps[propType]
+    );
 
     return render({
-      ...props,
-      router,
+      ...passProps,
+      router: this.router,
       location,
-      routes,
+      routes: _routes,
       params,
       components,
       navigationState,

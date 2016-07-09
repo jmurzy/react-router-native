@@ -2,7 +2,10 @@
 
 import { PropTypes, Component } from 'react';
 import invariant from 'invariant';
-import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
+import {
+  createRouteFromReactElement as _createRouteFromReactElement,
+  RouteTypes,
+} from './RouteUtils';
 import { defaultRouteReducer } from './ReducerUtils';
 import { notImplemented, component } from './PropTypes';
 
@@ -22,7 +25,7 @@ const { ROUTE } = RouteTypes;
 /* eslint-disable react/require-render-return */
 class Route extends Component<any, Props, any> {
 
-  static createRouteFromReactElement = createRouteFromReactElement;
+  static createRouteFromReactElement = _createRouteFromReactElement;
 
   static propTypes = {
     path: PropTypes.string,

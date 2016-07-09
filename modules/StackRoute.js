@@ -2,7 +2,10 @@
 
 import { PropTypes, Component } from 'react';
 import invariant from 'invariant';
-import { createRouteFromReactElement, RouteTypes } from './RouteUtils';
+import {
+  createRouteFromReactElement as _createRouteFromReactElement,
+  RouteTypes,
+} from './RouteUtils';
 import { defaultStackRouteReducer } from './ReducerUtils';
 import { notImplemented, component } from './PropTypes';
 import { HORIZONTAL_PAGER } from './transitionRegistry';
@@ -23,7 +26,7 @@ const { STACK_ROUTE } = RouteTypes;
 /* eslint-disable react/require-render-return */
 class StackRoute extends Component<any, Props, any> {
 
-  static createRouteFromReactElement = createRouteFromReactElement;
+  static createRouteFromReactElement = _createRouteFromReactElement;
 
   static propTypes = {
     path: PropTypes.string.isRequired, // StackRoute and TabsRoute cannot be used as no-path routes.

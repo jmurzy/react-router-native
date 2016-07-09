@@ -59,10 +59,8 @@ class Go extends Component<any, Props, any> {
   props: Props;
 
   render(): ReactElement<any> {
-    const { ...props } = this.props;
-
     return (
-      <TouchableHighlight {...props} onPress={this.handlePress} />
+      <TouchableHighlight {...this.props} onPress={this.handlePress} />
     );
   }
 }

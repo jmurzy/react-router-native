@@ -70,8 +70,8 @@ class RouterContext extends Component<any, any, any> {
 
   props: Props;
 
-  createElement(component: ReactClass<any>, props: any): ?ReactElement {
-    return component == null ? null : this.props.createElement(component, props);
+  createElement(component: ReactClass<any>, passProps: any): ?ReactElement {
+    return component == null ? null : this.props.createElement(component, passProps);
   }
 
   render(): ?ReactElement {
@@ -83,14 +83,14 @@ class RouterContext extends Component<any, any, any> {
     let element = null;
 
     if (navigationTree) {
-      const props = {
+      const passProps = {
         addressBar,
         navigationTree,
         navigationState,
         location,
       };
 
-      element = React.createElement(RootContainer, props);
+      element = React.createElement(RootContainer, passProps);
     }
 
     invariant(

@@ -65,7 +65,7 @@ class Link extends Component<DefaultProps, Props, any> {
   }
 
   render(): ReactElement<any> {
-    const { to, activeStyle, onlyActiveOnIndex, ...props } = this.props;
+    const { to, activeStyle, onlyActiveOnIndex, ...passProps } = this.props;
 
     const { router } = this.context;
 
@@ -74,14 +74,14 @@ class Link extends Component<DefaultProps, Props, any> {
       if (activeStyle != null) {
         if (router.isActive(location, onlyActiveOnIndex)) {
           if (activeStyle) {
-            props.style = [props.style, activeStyle];
+            passProps.style = [passProps.style, activeStyle];
           }
         }
       }
     }
 
     return (
-      <TouchableHighlight {...props} onPress={this.handlePress} />
+      <TouchableHighlight {...passProps} onPress={this.handlePress} />
     );
   }
 }
