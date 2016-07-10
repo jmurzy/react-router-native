@@ -19,7 +19,7 @@ const {
   REPLACE: HISTORY_REPLACE,
 } = Actions;
 
-let routerState = {};
+let routerState = null;
 
 const useNavState = (createHistory: Function) => (options = {}) => {
   const {
@@ -27,7 +27,11 @@ const useNavState = (createHistory: Function) => (options = {}) => {
     ...history,
   } = createHistory(options);
 
-  const pop = (n = -1) => {
+  const pop = (n = -1): boolean => {
+    if (!routerState) {
+      return false;
+    }
+
     const {
       navigationState,
     } = routerState;
@@ -51,13 +55,6 @@ const useNavState = (createHistory: Function) => (options = {}) => {
   };
 
   const transitionTo = (nextLocation) => {
-    const {
-      location: currentLocation,
-      routes: currentRoutes,
-    } = routerState;
-
-    const activeRouteType = getActiveParentRouteType(currentRoutes);
-
     // History API treats HISTORY_PUSH to current path like HISTORY_REPLACE to be consistent with
     // browser behavior. (mjackson/history/blob/v2.0.1/modules/createHistory.js#L126) This is not
     // reasonable when performing `router.pop()` on <StackRoute />. A unique stateKey is needed for
@@ -77,13 +74,20 @@ const useNavState = (createHistory: Function) => (options = {}) => {
       location.state = { ...location.state, $routerReplace: true };
     }
 
-    if (location.action === HISTORY_PUSH) {
+    if (routerState && location.action === HISTORY_PUSH) {
+      const {
+        location: currentLocation,
+        routes: currentRoutes,
+      } = routerState;
+
       const currentPath = history.createPath(currentLocation);
       const nextPath = history.createPath(location);
       const currentStateKey = currentLocation.state.stateKey;
       const nextStateKey = location.state.stateKey;
 
       if (currentPath === nextPath && currentStateKey !== nextStateKey) {
+        const activeRouteType = getActiveParentRouteType(currentRoutes);
+
         if (activeRouteType !== STACK_ROUTE) {
           location.action = HISTORY_REPLACE;
         }
