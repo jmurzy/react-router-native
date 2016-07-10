@@ -1,7 +1,7 @@
 /* @flow */
 
 import React, { PropTypes, Component, Element as ReactElement } from 'react';
-import { View } from 'react-native';
+import { View, BackAndroid } from 'react-native';
 import AddressBar from './AddressBar';
 import type {
   EnhancedNavigationRoute,
@@ -39,8 +39,28 @@ class RootContainer extends Component<any, Props, any> {
     router: PropTypes.object,
   };
 
-  props: Props;
+  componentWillMount(): void {
+    (this: any).handleHardwareBackPress = this.handleHardwareBackPress.bind(this);
+  }
+
+  componentDidMount(): void {
+    BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackPress);
+  }
+
+  componentWillUnmount(): void {
+    BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackPress);
+  }
+
+  handleHardwareBackPress(): boolean {
+    const {
+      router,
+    } = this.context;
+
+    return router.pop();
+  }
+
   context: Context;
+  props: Props;
 
   renderNavigation(navigationState: EnhancedNavigationRoute): ?ReactElement {
     const { navigationTree } = this.props;
