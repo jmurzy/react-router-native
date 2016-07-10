@@ -24,4 +24,4 @@ To deploy to Android simulator:
 ```bash
 npm run android
 ```
-Please note that the __address bar__ is used for development only and can be disabled by removing the [`addressBar`](https://github.com/jmurzy/react-router-native/blob/9f68616c22a4d8b525eb19e960c25314f85dd7f8/examples/Aviato/app/routes.js#L139) prop from the ``<Router>`` component.
+Please note that the __address bar__ is used for development only and can be disabled by removing the [`addressBar`](https://github.com/jmurzy/react-router-native/blob/b988ea696cca272296c424e7381df00944c9d062/examples/Aviato/app/routes.js#L23-L24) prop from the ``<Router>`` component.
