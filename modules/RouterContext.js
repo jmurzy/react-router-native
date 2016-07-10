@@ -24,6 +24,8 @@ type Props = {
   createElement: ElementProvider,
   addressBar: boolean,
 
+  onHardwareBackPress: (router: Object, exit: Function) => boolean,
+
   backwardHistory: Array<Snapshot>,
   forwardHistory: Array<Snapshot>,
 };
@@ -39,6 +41,8 @@ class RouterContext extends Component<any, any, any> {
     navigationState: PropTypes.object.isRequired,
     createElement: PropTypes.func.isRequired,
     addressBar: PropTypes.bool,
+
+    onHardwareBackPress: PropTypes.func,
 
     backwardHistory: PropTypes.array.isRequired,
     forwardHistory: PropTypes.array.isRequired,
@@ -75,7 +79,12 @@ class RouterContext extends Component<any, any, any> {
   }
 
   render(): ?ReactElement {
-    const { routes, location, addressBar } = this.props;
+    const {
+      routes,
+      location,
+      addressBar,
+      onHardwareBackPress,
+    } = this.props;
 
     const navigationTree = createNavigationTree(this.createElement, routes);
     const navigationState = this.props.navigationState;
@@ -88,6 +97,7 @@ class RouterContext extends Component<any, any, any> {
         navigationTree,
         navigationState,
         location,
+        onHardwareBackPress,
       };
 
       element = React.createElement(RootContainer, passProps);

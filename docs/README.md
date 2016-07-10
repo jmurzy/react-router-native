@@ -6,6 +6,29 @@ One of the the primary goals of this project is to keep its API as close to [Rea
 
 Surely a proper documentation is forthcoming. In the meantime, you can refer to the [React Router docs](https://github.com/reactjs/react-router/tree/master/docs) as all React Router functionality, except for a few route configuration props that are [not yet implemented](https://github.com/jmurzy/react-router-native/blob/800622777e0dac89461e378d7e6d4e0d37872215/modules/Route.js#L31-L33), is supported by React Router Native. Also look for issues tagged with the "[question](https://github.com/jmurzy/react-router-native/issues?utf8=%E2%9C%93&q=label%3Aquestion%20)" label.
 
+### Hardware Back Button
+
+React Router Native provides sensible defaults to handle the user pressing the hardware back button on an Android device. If you want to customize the behavior of the hardware back button, you can do so as follows:
+
+```js
+/* Will be called when hardware back button is pressed */
+function handleHardwareBackPress(router) {
+  // Pop currently active stack
+  const didPop = router.pop();
+
+  if (didPop) {
+    return true;
+  } else {
+    // App should exit
+    return false;
+  }
+}
+
+<Router history={nativeHistory} onHardwareBackPress={handleHardwareBackPress}>
+  /* ... */
+</Router>
+```
+
 ### Redux Support
 
 Redux is supported via [react-router-redux](https://github.com/reactjs/react-router-redux). The following example was adopted from the package's [README](https://github.com/reactjs/react-router-redux/blob/master/README.md):

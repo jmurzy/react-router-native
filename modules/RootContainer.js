@@ -16,6 +16,7 @@ type Props = {
   navigationState: EnhancedNavigationRoute,
   location: Location,
   addressBar: boolean,
+  onHardwareBackPress: (router: Object, exit: Function) => boolean,
 };
 
 type Context = {
@@ -29,10 +30,12 @@ class RootContainer extends Component<any, Props, any> {
     navigationState: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     addressBar: PropTypes.bool,
+    onHardwareBackPress: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     addressBar: false,
+    onHardwareBackPress: (router) => router.pop(),
   };
 
   static contextTypes = {
@@ -53,10 +56,14 @@ class RootContainer extends Component<any, Props, any> {
 
   handleHardwareBackPress(): boolean {
     const {
+      onHardwareBackPress,
+    } = this.props;
+
+    const {
       router,
     } = this.context;
 
-    return router.pop();
+    return onHardwareBackPress(router, BackAndroid.exitApp);
   }
 
   context: Context;
