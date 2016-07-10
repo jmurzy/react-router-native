@@ -41,6 +41,7 @@ export type RouteDef = {
   routeType: ?RouteType,
   transition: ?string,
   reducer: Function,
+  indexRoute: ?Object,
 };
 
 export type IndexRouteDef = {

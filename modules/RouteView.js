@@ -72,6 +72,21 @@ class RouteView extends Component<any, Props, any> {
     );
   }
 
+  getComponentProps(props: Object): Object {
+    const {
+      path,
+      type,
+      component,
+      overlayComponent,
+      navigationSubtree,
+      navigationState,
+      createElement,
+      onNavigate,
+      ...rest,
+    } = props;
+    return rest;
+  }
+
   renderTransition(props: NavigationTransitionProps): ReactElement<any> {
     const scenes = props.scenes.map(
      scene => this.renderScene({
@@ -119,6 +134,7 @@ class RouteView extends Component<any, Props, any> {
     }
 
     const componentProps = {
+      ...this.getComponentProps(this.props),
       params,
       routeParams,
       location,

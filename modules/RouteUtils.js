@@ -49,39 +49,71 @@ export function createRouteFromReactElement(
   return _createRouteFromReactElement(element);
 }
 
+function getPropsFromRoute(route: RouteDef): Object {
+  const {
+    childRoutes,
+    component,
+    overlayComponent,
+    path,
+    routeType,
+    transition,
+    reducer,
+    indexRoute,
+    ...rest,
+  } = route;
+  return rest;
+}
+
 function createNavigationTreeAtIndex(
   createElement: ElementProvider,
   routes: Array<RouteDef>,
   route: RouteDef,
   positionInParent: number
 ): ?PseudoElement {
-  const props = {};
+  const {
+    childRoutes,
+    component,
+    overlayComponent,
+    path,
+    routeType,
+    indexRoute,
+  } = route;
+
+  const props = {
+    ...getPropsFromRoute(route),
+    route,
+    routes,
+  };
 
   props.createElement = createElement;
-  props.path = route.path || `[visual]${positionInParent}`;
-  props.type = route.routeType;
-  props.component = route.component;
+  props.path = path || `[visual]${positionInParent}`;
+  props.type = routeType;
+  props.component = component;
 
-  if (route.overlayComponent) {
-    props.overlayComponent = route.overlayComponent;
+  if (overlayComponent) {
+    props.overlayComponent = overlayComponent;
   }
 
-  if (route.childRoutes) {
-    props.navigationSubtree = route.childRoutes.map(
+  if (childRoutes) {
+    props.navigationSubtree = childRoutes.map(
       (r, index) => createNavigationTreeAtIndex(createElement, routes, r, index)
     );
 
     // index route is given in `routes` but not in `childRoutes`
-    if (route.indexRoute) {
-      const indexRouteProps = {};
+    if (indexRoute) {
+      const indexRouteProps = {
+        ...getPropsFromRoute(indexRoute),
+        route: indexRoute,
+        routes,
+      };
 
       indexRouteProps.path = '[index]';
       indexRouteProps.type = 'index';
-      indexRouteProps.component = route.indexRoute.component;
+      indexRouteProps.component = indexRoute.component;
       indexRouteProps.createElement = createElement;
 
-      if (route.indexRoute.overlayComponent) {
-        indexRouteProps.overlayComponent = route.indexRoute.overlayComponent;
+      if (indexRoute.overlayComponent) {
+        indexRouteProps.overlayComponent = indexRoute.overlayComponent;
       }
 
       const indexRoutePseudoElement = {
@@ -94,13 +126,14 @@ function createNavigationTreeAtIndex(
   }
 
   let pseudoElement;
-  if (route.routeType === STACK_ROUTE) {
+  if (routeType === STACK_ROUTE) {
     pseudoElement = { routeViewComponent: StackRouteView, props };
-  } else if (route.routeType === TABS_ROUTE) {
+  } else if (routeType === TABS_ROUTE) {
     pseudoElement = { routeViewComponent: TabsRouteView, props };
   } else {
     pseudoElement = { routeViewComponent: RouteView, props };
   }
+
   return pseudoElement;
 }
 
@@ -109,7 +142,6 @@ export function createNavigationTree(
   routes: Array<RouteDef>
 ): ?PseudoElement {
   const rootRoute = routes && routes.length && routes[0];
-
   if (!rootRoute) {
     return null;
   }

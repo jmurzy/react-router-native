@@ -88,6 +88,8 @@ class RouterContext extends Component<any, any, any> {
         navigationTree,
         navigationState,
         location,
+        route: {}, // TODO
+        routes: this.props.routes,
       };
 
       element = React.createElement(RootContainer, passProps);
