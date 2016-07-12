@@ -11,14 +11,15 @@ import { notImplemented, component } from './PropTypes';
 import { HORIZONTAL_PAGER } from './transitionRegistry';
 
 type Props = {
-  path: string,
   component: ReactClass,
-  overlayComponent: ?ReactClass,
   components: ?any,
   getComponent: ?any,
   getComponents: ?any,
-  transition: ?string,
-  reducer: ?Function
+  overlayComponent: ?ReactClass,
+  path: string,
+  reducer: Function,
+  routeType: string,
+  transition: string,
 };
 
 const { STACK_ROUTE } = RouteTypes;
@@ -29,20 +30,21 @@ class StackRoute extends Component<any, Props, any> {
   static createRouteFromReactElement = _createRouteFromReactElement;
 
   static propTypes = {
-    path: PropTypes.string.isRequired, // StackRoute and TabsRoute cannot be used as no-path routes.
     component,
-    overlayComponent: component,
     components: notImplemented,
     getComponent: notImplemented,
     getComponents: notImplemented,
-    transition: PropTypes.string,
-    reducer: PropTypes.func,
+    overlayComponent: component,
+    path: PropTypes.string.isRequired, // StackRoute and TabsRoute cannot be used as no-path routes.
+    reducer: PropTypes.func.isRequired,
+    routeType: PropTypes.string.isRequired,
+    transition: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
+    reducer: defaultStackRouteReducer,
     routeType: STACK_ROUTE,
     transition: HORIZONTAL_PAGER,
-    reducer: defaultStackRouteReducer,
   };
 
   props: Props;

@@ -10,14 +10,15 @@ import { defaultRouteReducer } from './ReducerUtils';
 import { notImplemented, component } from './PropTypes';
 
 type Props = {
-  path: ?string,
   component: ReactClass,
-  overlayComponent: ?ReactClass,
   components: ?any,
   getComponent: ?any,
   getComponents: ?any,
+  overlayComponent: ?ReactClass,
+  path: ?string,
+  reducer: Function,
+  routeType: string,
   transition: ?string,
-  reducer: ?Function
 };
 
 const { ROUTE } = RouteTypes;
@@ -28,14 +29,15 @@ class Route extends Component<any, Props, any> {
   static createRouteFromReactElement = _createRouteFromReactElement;
 
   static propTypes = {
-    path: PropTypes.string,
     component,
-    overlayComponent: component,
     components: notImplemented,
     getComponent: notImplemented,
     getComponents: notImplemented,
+    overlayComponent: component,
+    path: PropTypes.string,
+    reducer: PropTypes.func.isRequired,
+    routeType: PropTypes.string.isRequired,
     transition: PropTypes.string,
-    reducer: PropTypes.func,
   };
 
   static defaultProps = {

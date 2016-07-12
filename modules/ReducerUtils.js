@@ -334,33 +334,35 @@ export function createPartialState(
       key = `${key}_${stateKey}`;
     }
 
-    if (key && path && type) {
-      const state = {
-        key,
-        index: 0,
-        routes: [],
-        path,
-        type,
-        routeParams,
-        params,
-        location,
-        transition,
-        reducer,
-      };
-
-      if (prevState) {
-        return {
-          ...state,
-          index: 0,
-          routes: [prevState],
-        };
-      }
-
-      return state;
-    }
-    invariant(false,
-      'Incompatible route definition. Make sure peer dependecy requirements are met.',
+    invariant(
+      key && path && type && reducer && (transition || type === ROUTE),
+      'Incompatible route definition. Make sure peer dependecy requirements are met. If you are ' +
+      'using plain objects to define your routes, in addition to the options required by React ' +
+      'Router, each route has to specify the following: `routeType`, `reducer`, `transition`.'
     );
+
+    const state = {
+      key,
+      index: 0,
+      routes: [],
+      path,
+      type,
+      routeParams,
+      params,
+      location,
+      transition,
+      reducer,
+    };
+
+    if (prevState) {
+      return {
+        ...state,
+        index: 0,
+        routes: [prevState],
+      };
+    }
+
+    return state;
   }
   /* eslint-enable */
   return routes.reduceRight(reduceRoutes, null);
