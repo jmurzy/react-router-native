@@ -17,7 +17,7 @@ const globalStyles = StyleSheet.create({
   },
   navigationCard: {
     ...absoluteFillObject,
-    backgroundColor: '#E9E9EF',
+    backgroundColor: 'transparent',
     overflow: 'hidden',
   },
 });
