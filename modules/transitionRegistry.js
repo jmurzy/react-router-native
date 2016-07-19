@@ -85,6 +85,7 @@ export function addHandler(
 }
 
 export const VERTICAL_CARD_STACK = 'vertical-card-stack';
+export const VERTICAL_PAGER = 'vertical-pager';
 export const HORIZONTAL_CARD_STACK = 'horizontal-card-stack';
 export const HORIZONTAL_PAGER = 'horizontal-pager';
 export const NONE = 'none';
@@ -93,6 +94,11 @@ addHandler(
   VERTICAL_CARD_STACK,
   NavigationCardStackStyleInterpolator.forVertical,
   NavigationCardStackPanResponder.forVertical
+);
+
+addHandler(
+  VERTICAL_PAGER,
+  NavigationCardStackStyleInterpolator.forVertical
 );
 
 addHandler(
