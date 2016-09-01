@@ -14,6 +14,7 @@ const { absoluteFillObject } = StyleSheet;
 const globalStyles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    flexDirection: 'column-reverse',
   },
   navigationCard: {
     ...absoluteFillObject,
