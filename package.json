@@ -59,11 +59,11 @@
     "url": "https://github.com/jmurzy/react-router-native/issues"
   },
   "peerDependencies": {
-    "react-native": "0.30.0-rc.0",
-    "react-router": "3.0.0-alpha.1"
+    "react-native": "0.32.0",
+    "react-router": "3.0.0-alpha.3",
+    "history": "3.2.1"
   },
   "dependencies": {
-    "history": "^2.0.1",
     "invariant": "^2.2.1",
     "warning": "^3.0.0"
   },
@@ -75,19 +75,19 @@
     "babel-preset-react-native": "^1.9.0",
     "chai": "^3.5.0",
     "eslint": "^3.0.1",
-    "eslint-config-airbnb": "^9.0.1",
+    "eslint-config-airbnb": "^10.0.1",
     "eslint-plugin-flowtype": "^2.3.0",
-    "eslint-plugin-import": "^1.10.2",
-    "eslint-plugin-jsx-a11y": "^1.5.5",
-    "eslint-plugin-react": "^5.2.2",
-    "flow-bin": "^0.27.0",
+    "eslint-plugin-import": "^1.14.0",
+    "eslint-plugin-jsx-a11y": "^2.2.1",
+    "eslint-plugin-react": "^6.2.0",
+    "flow-bin": "^0.30.0",
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1",
-    "gulp-mocha": "^2.2.0",
-    "react": "^15.2.0",
-    "react-native": "0.30.0-rc.0",
-    "react-native-mock": "^0.2.4",
-    "react-router": "3.0.0-alpha.1",
+    "gulp-mocha": "^3.0.1",
+    "react": "^15.3.0",
+    "react-native": "0.32.0",
+    "react-native-mock": "^0.2.5",
+    "react-router": "3.0.0-alpha.3",
     "rimraf": "^2.5.2",
     "run-sequence": "^1.2.2"
   }

@@ -1,7 +1,7 @@
-import reducer from './Reducer';
 import {
   Actions,
 } from 'history';
+import reducer from './Reducer';
 import {
   createPartialState,
   LOCATION_CHANGE,
@@ -16,10 +16,12 @@ const {
   REPLACE: HISTORY_REPLACE,
 } = Actions;
 
+/* eslint-disable import/prefer-default-export */
 export function createNavigationState(
   navigationState: EnhancedNavigationRoute,
   routerState
 ): EnhancedNavigationRoute {
+/* eslint-enable */
   const {
     routes,
     location,

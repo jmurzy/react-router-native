@@ -1,11 +1,11 @@
 /* @flow */
+import { Actions } from 'history';
 
 import {
   canPopActiveStack,
   getActiveParentRouteType,
 } from './ReducerUtils';
-import { Actions } from 'history';
-import { createMemoryHistory } from 'react-router';
+import createMemoryHistory from './createMemoryHistory';
 import {
   createRandomKey,
   DEFAULT_KEY_LENGTH,
@@ -82,7 +82,7 @@ const useNavState = (createHistory: Function) => (options = {}) => {
 
       const currentPath = history.createPath(currentLocation);
       const nextPath = history.createPath(location);
-      const currentStateKey = currentLocation.state.stateKey;
+      const currentStateKey = currentLocation.state ? currentLocation.state.stateKey : 0;
       const nextStateKey = location.state.stateKey;
 
       if (currentPath === nextPath && currentStateKey !== nextStateKey) {

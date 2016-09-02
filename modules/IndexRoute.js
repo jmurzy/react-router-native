@@ -13,8 +13,8 @@ const { TABS_ROUTE } = RouteTypes;
 
 type Props = {
   path: ?any,
-  component: ReactClass,
-  overlayComponent: ?ReactClass,
+  component: ReactClass<any>,
+  overlayComponent: ?ReactClass<any>,
   components: ?any,
   getComponent: ?any,
   getComponents: ?any,
@@ -52,7 +52,7 @@ class IndexRoute extends Component<any, Props, any> {
 
   props: Props;
 
-  render(): ?ReactElement {
+  render(): ?ReactElement<any> {
     invariant(
       false,
       '<IndexRoute> elements are for router configuration only and should not be rendered'

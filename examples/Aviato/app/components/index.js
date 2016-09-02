@@ -25,8 +25,8 @@ export const component = (backgroundColor) => (props) => (
   </View>
 );
 
-export const stackHeaderComponent = (backgroundColor, marginTop = 0) => {
-  const headerStyle = { backgroundColor, marginTop };
+export const stackHeaderComponent = (backgroundColor) => {
+  const headerStyle = { backgroundColor };
 
   return class extends Component {
 
@@ -78,8 +78,8 @@ export const stackHeaderComponent = (backgroundColor, marginTop = 0) => {
   };
 };
 
-export const tabHeaderComponent = (backgroundColor, marginTop = 0) => {
-  const headerStyle = { backgroundColor, marginTop };
+export const tabHeaderComponent = (backgroundColor) => {
+  const headerStyle = { backgroundColor };
 
   return class extends Component {
 

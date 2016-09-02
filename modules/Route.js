@@ -10,11 +10,11 @@ import { defaultRouteReducer } from './ReducerUtils';
 import { notImplemented, component } from './PropTypes';
 
 type Props = {
-  component: ReactClass,
+  component: ReactClass<any>,
   components: ?any,
   getComponent: ?any,
   getComponents: ?any,
-  overlayComponent: ?ReactClass,
+  overlayComponent: ?ReactClass<any>,
   path: ?string,
   reducer: Function,
   routeType: string,

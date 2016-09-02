@@ -22,9 +22,19 @@
     "$Exports": false,
     "$FlowIssue": false,
     "$FlowFixMe": false,
-    "$FixMe": false
+    "$FixMe": false,
+    // Polyfill
+    "requestAnimationFrame": false,
   },
   "rules": {
-    'no-underscore-dangle': [2, { allowAfterThis: true }]
+    // TODO: Remove this override when airbnb bumps `import` to v1.14.0
+    "import/no-extraneous-dependencies": [
+      "error", {
+        "devDependencies": true,
+        "peerDependencies": true
+      },
+    ],
+    "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
+    "no-underscore-dangle": [2, { allowAfterThis: true }]
   }
 }

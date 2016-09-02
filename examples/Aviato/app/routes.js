@@ -10,11 +10,6 @@ import { Notifications } from './components/Notifications';
 import { UserOverlay } from './components/User';
 import { ProfileHeader } from './components/Profile';
 
-import { NAVIGATION_HEADER_HEIGHT } from './components/styles';
-
-const SECOND_HEADER = NAVIGATION_HEADER_HEIGHT;
-const THIRD_HEADER = NAVIGATION_HEADER_HEIGHT * 2;
-
 const redirectToNotifications = (nextState, replace) => {
   replace('/notifications');
 };
@@ -34,23 +29,23 @@ const routes = (
           <Route
             path="/"
             component={component('#F5807B')}
-            overlayComponent={tabHeaderComponent('#89B2FD', SECOND_HEADER)}
+            overlayComponent={tabHeaderComponent('#89B2FD')}
           />
           <StackRoute
             path="private"
             component={component('#FFFFFF')}
-            overlayComponent={tabHeaderComponent('#89B2FD', SECOND_HEADER)}
+            overlayComponent={tabHeaderComponent('#89B2FD')}
             transition="horizontal-card-stack"
           >
             <Route
               path="settings"
               component={component('#FFF0D1')}
-              overlayComponent={stackHeaderComponent('#C8D574', THIRD_HEADER)}
+              overlayComponent={stackHeaderComponent('#C8D574')}
             />
             <Route
               path="settings/info"
               component={component('#EF4E5E')}
-              overlayComponent={stackHeaderComponent('#F5807B', THIRD_HEADER)}
+              overlayComponent={stackHeaderComponent('#F5807B')}
             />
           </StackRoute>
         </TabsRoute>
@@ -73,13 +68,13 @@ const routes = (
         <Route
           path="settings"
           component={component('#FFF0D1')}
-          overlayComponent={stackHeaderComponent('beige', SECOND_HEADER)}
+          overlayComponent={stackHeaderComponent('beige')}
           transition="horizontal-card-stack"
         />
         <Route
           path="settings/info"
           component={component('#EF4E5E')}
-          overlayComponent={stackHeaderComponent('#F5807B', SECOND_HEADER)}
+          overlayComponent={stackHeaderComponent('#F5807B')}
           transition="vertical-card-stack"
         />
       </StackRoute>

@@ -3,16 +3,10 @@
 import {
   StyleSheet,
   Platform,
-  NavigationExperimental,
 } from 'react-native';
 
 const { hairlineWidth } = StyleSheet;
 
-const {
-  Header: NavigationHeader,
-} = NavigationExperimental;
-
-export const NAVIGATION_HEADER_HEIGHT = NavigationHeader.HEIGHT;
 export const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0;
 
 export default StyleSheet.create({

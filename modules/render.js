@@ -3,8 +3,7 @@
 import { Component } from 'react';
 import { AppRegistry } from 'react-native';
 
-// eslint/eslint/issues/5211
-/* eslint-disable space-infix-ops */
+/* eslint-disable import/prefer-default-export */
 export const render = (component: ReactElement<any>, appKey: string = 'App'): void => {
 /* eslint-enable */
   AppRegistry.registerComponent(appKey, (): ReactClass<any> =>

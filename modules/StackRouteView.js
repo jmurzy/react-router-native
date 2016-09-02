@@ -20,8 +20,8 @@ const {
 type Props = {
   path: string,
   type: string,
-  component: ReactClass,
-  overlayComponent: ?ReactClass,
+  component: ReactClass<any>,
+  overlayComponent: ?ReactClass<any>,
   navigationSubtree: ?Array<PseudoElement>,
   navigationState: EnhancedNavigationRoute,
   createElement: Function,
@@ -47,7 +47,7 @@ class StackRouteView extends Component<any, Props, any> {
   }
 
   // $FlowFixMe NavigationSceneRendererProps
-  renderOverlay(props): ?ReactElement {
+  renderOverlay(props): ?ReactElement<any> {
     const { scene } = props;
 
     const { navigationSubtree, createElement } = this.props;
@@ -81,7 +81,7 @@ class StackRouteView extends Component<any, Props, any> {
   }
 
   // $FlowFixMe NavigationSceneRendererProps
-  renderScene(props): ?ReactElement {
+  renderScene(props): ?ReactElement<any> {
     const { scene } = props;
 
     if (!scene.route) {
@@ -155,7 +155,7 @@ class StackRouteView extends Component<any, Props, any> {
 
     return (
       <View
-        style={styles.wrapper}
+        style={styles.wrapperReverse}
       >
         <View
           style={styles.wrapper}

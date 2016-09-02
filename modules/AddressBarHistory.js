@@ -101,7 +101,7 @@ class AddressBarHistory extends Component<any, Props, State> {
     );
   }
 
-  render(): ?ReactElement {
+  render(): ?ReactElement<any> {
     const { historyType, onPressBackdrop, history } = this.props;
 
     if (!historyType) {
