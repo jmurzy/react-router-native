@@ -27,8 +27,6 @@ A declarative API removes the need to write [boilerplate code](https://github.co
 $ npm install --save react-router-native react-router
 ```
 
-Do not let npm confuse you: there used to be another project with the same name that the previous owner nuked. Unfortunately, removing or re-publishing old versions is no longer supported by npm. So packages that are tagged __< v2.0.0__ on npm *are artifacts of a different project*, and the first stable version of this library *will be released as __v2.0.0__* and strictly follow the [React Versioning Scheme](https://facebook.github.io/react/blog/2016/02/19/new-versioning-scheme.html) afterwards.
-
 ### Usage
 
 ```javascript
