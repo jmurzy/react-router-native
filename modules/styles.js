@@ -14,7 +14,6 @@ const { absoluteFillObject } = StyleSheet;
 const globalStyles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    flexDirection: 'column-reverse',
   },
   wrapperReverse: {
     flex: 1,
