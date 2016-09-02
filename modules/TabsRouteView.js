@@ -20,8 +20,8 @@ const {
 type Props = {
   path: string,
   type: string,
-  component: ReactClass,
-  overlayComponent: ?ReactClass,
+  component: ReactClass<any>,
+  overlayComponent: ?ReactClass<any>,
   navigationSubtree: ?Array<PseudoElement>,
   navigationState: EnhancedNavigationRoute,
   createElement: Function,
@@ -155,7 +155,7 @@ class TabsRouteView extends Component<any, Props, any> {
 
     return (
       <View
-        style={styles.wrapper}
+        style={styles.wrapperReverse}
       >
         <View
           style={styles.wrapper}

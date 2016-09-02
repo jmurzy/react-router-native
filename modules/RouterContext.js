@@ -19,7 +19,7 @@ type Props = {
   location: Location,
   routes: Array<RouteDef>,
   params: Object,
-  components: Array<ReactClass>,
+  components: Array<ReactClass<any>>,
   navigationState: EnhancedNavigationRoute,
   createElement: ElementProvider,
   addressBar: boolean,
@@ -74,11 +74,11 @@ class RouterContext extends Component<any, any, any> {
 
   props: Props;
 
-  createElement(component: ReactClass<any>, passProps: any): ?ReactElement {
+  createElement(component: ReactClass<any>, passProps: any): ?ReactElement<any> {
     return component == null ? null : this.props.createElement(component, passProps);
   }
 
-  render(): ?ReactElement {
+  render(): ?ReactElement<any> {
     const {
       routes,
       location,

@@ -69,7 +69,7 @@ class RootContainer extends Component<any, Props, any> {
   context: Context;
   props: Props;
 
-  renderNavigation(navigationState: EnhancedNavigationRoute): ?ReactElement {
+  renderNavigation(navigationState: EnhancedNavigationRoute): ?ReactElement<any> {
     const { navigationTree } = this.props;
 
     if (!navigationState) {

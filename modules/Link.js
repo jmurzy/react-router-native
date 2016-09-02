@@ -5,9 +5,6 @@ import {
   TouchableHighlight,
 } from 'react-native';
 
-// Until facebook/flow#1967 is fixed, don't use polyfill
-import requestAnimationFrame from 'fbjs/lib/requestAnimationFrame';
-
 type Props = {
   to: any,
   state: ?Object,

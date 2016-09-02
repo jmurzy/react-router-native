@@ -18,7 +18,7 @@ const {
 type Props = {
   path: string,
   type: string,
-  component: ReactClass,
+  component: ReactClass<any>,
   navigationSubtree: ?Array<PseudoElement>,
   navigationState: EnhancedNavigationRoute,
   createElement: Function,

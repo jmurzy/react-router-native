@@ -105,7 +105,7 @@ class AddressBar extends Component<DefaultProps, Props, State> {
     });
   }
 
-  render(): ?ReactElement {
+  render(): ?ReactElement<any> {
     const { show } = this.props;
 
     if (!show) {

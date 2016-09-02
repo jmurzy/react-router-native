@@ -2,13 +2,13 @@
 
 import warning from 'warning';
 import invariant from 'invariant';
+import {
+  createRouteFromReactElement as _createRouteFromReactElement,
+} from 'react-router/es/RouteUtils';
 import RouteView from './RouteView';
 import StackRouteView from './StackRouteView';
 import TabsRouteView from './TabsRouteView';
 import transitionRegistry from './transitionRegistry';
-import {
-  createRouteFromReactElement as _createRouteFromReactElement,
-} from 'react-router/es6/RouteUtils';
 import type {
   RouteDef,
   ElementProvider,
@@ -35,8 +35,8 @@ export function createRouteFromReactElement(
   );
 
   warning(
-    !element.props.overlayComponent || parentRoute
-      && (parentRoute.routeType === STACK_ROUTE || parentRoute.routeType === TABS_ROUTE),
+    !element.props.overlayComponent || (parentRoute
+      && (parentRoute.routeType === STACK_ROUTE || parentRoute.routeType === TABS_ROUTE)),
     'overlayComponent does not make sense outside of <StackRoute> or <TabsRoute>.'
   );
 

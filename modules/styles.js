@@ -16,9 +16,16 @@ const globalStyles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column-reverse',
   },
+  wrapperReverse: {
+    flex: 1,
+    // Header is physically rendered after scenes so that Header won't be
+    // covered by the shadows of the scenes.
+    // That said, we'd have use `flexDirection: 'column-reverse'` to move
+    // Header above the scenes.
+    flexDirection: 'column-reverse',
+  },
   navigationCard: {
     ...absoluteFillObject,
-    backgroundColor: 'transparent',
     overflow: 'hidden',
   },
 });

@@ -5,8 +5,8 @@ import React, { Component, PropTypes } from 'react';
 import { Actions } from 'history';
 
 import { createRoutes } from 'react-router';
-import { createRouterObject, assignRouterState } from 'react-router/es6/RouterUtils';
-import createTransitionManager from 'react-router/es6/createTransitionManager';
+import { createRouterObject, assignRouterState } from 'react-router/es/RouterUtils';
+import createTransitionManager from 'react-router/es/createTransitionManager';
 
 import { createNavigationState } from './RouterUtils';
 import { getActiveLocation, getActiveRouteType } from './ReducerUtils';
@@ -14,13 +14,6 @@ import { getActiveLocation, getActiveRouteType } from './ReducerUtils';
 import RouterContext from './RouterContext';
 
 import { RouteTypes } from './RouteUtils';
-
-const { TABS_ROUTE } = RouteTypes;
-
-const {
-  POP: HISTORY_POP,
-  REPLACE: HISTORY_REPLACE,
-} = Actions;
 
 import type {
   RouteDef,
@@ -31,7 +24,7 @@ import type {
 
 type Props = {
   history: Object,
-  children: ?Array<ReactElement>,
+  children: ?Array<ReactElement<any>>,
   routes: ?Array<RouteDef>,
   render: Function,
   createElement: ?Function,
@@ -39,6 +32,13 @@ type Props = {
   onUpdate?: () => void,
   matchContext: Object,
 };
+
+const { TABS_ROUTE } = RouteTypes;
+
+const {
+  POP: HISTORY_POP,
+  REPLACE: HISTORY_REPLACE,
+} = Actions;
 
 const route = PropTypes.oneOfType([PropTypes.object, PropTypes.element]);
 
@@ -244,7 +244,7 @@ class NativeRouter extends Component<any, any, any> {
     return createTransitionManager(history, this.routes);
   }
 
-  render(): ?ReactElement {
+  render(): ?ReactElement<any> {
     const {
       location,
       routes: _routes,

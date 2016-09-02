@@ -2,7 +2,7 @@
 
 import warning from 'warning';
 import invariant from 'invariant';
-import getRouteParams from 'react-router/es6/getRouteParams';
+import getRouteParams from 'react-router/es/getRouteParams';
 import { RouteTypes } from './RouteUtils';
 
 import type {
@@ -328,18 +328,18 @@ export function createPartialState(
       type = currentRoute.routeType; // || 'visual'
     }
 
-    const stateKey = location.state.stateKey;
-
-    if (parentRoute && parentRoute.routeType === STACK_ROUTE) {
-      key = `${key}_${stateKey}`;
-    }
-
     invariant(
       key && path && type && reducer && (transition || type === ROUTE),
       'Incompatible route definition. Make sure peer dependecy requirements are met. If you are ' +
       'using plain objects to define your routes, in addition to the options required by React ' +
       'Router, each route has to specify the following: `routeType`, `reducer`, `transition`.'
     );
+
+    const stateKey = location.state ? location.state.stateKey : 0;
+
+    if (parentRoute && parentRoute.routeType === STACK_ROUTE) {
+      key = `${key}_${stateKey}`;
+    }
 
     const state = {
       key,

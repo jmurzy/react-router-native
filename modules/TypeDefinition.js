@@ -55,7 +55,7 @@ export type NoPathRouteDef = {
   routeType: RouteType,
 };
 
-export type ElementProvider = (component: ReactClass<any>, props: any) => ?ReactElement;
+export type ElementProvider = (component: ReactClass<any>, props: any) => ?ReactElement<any>;
 
 export type NavigationAction = {
   type: string,
