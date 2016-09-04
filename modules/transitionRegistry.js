@@ -1,8 +1,11 @@
 import {
   Animated,
+  Easing,
+  NativeModules,
   NavigationExperimental,
 } from 'react-native';
 import invariant from 'invariant';
+import { warnOnce } from './warningUtil';
 
 const {
   Card: NavigationCard,
@@ -16,15 +19,21 @@ const {
 
 const transitionRegistry = {};
 
+const useNativeDriver = !!NativeModules.NativeAnimatedModule;
+
 const defaultTransitionSpec = {
-  bounciness: 0,
-  duration: undefined,
-  easing: undefined,
-  timing: Animated.spring,
-  useNativeDriver: true,
+  duration: 250,
+  easing: Easing.inOut(Easing.ease),
+  timing: Animated.timing,
+  useNativeDriver,
 };
 
 function configureDefaultTransition() {
+  warnOnce(
+    useNativeDriver,
+    'Native animated module is not available. You may experience performance issues ' +
+    'with animations since they will be performed on the JavaScript thread.'
+  );
   return defaultTransitionSpec;
 }
 

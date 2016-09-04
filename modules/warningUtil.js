@@ -12,7 +12,7 @@ export function warnOutOfSync(context: string, path: string) {
   );
 }
 
-export default function warnOnce(falseToWarn: boolean, message: string, ...args: Array<any>) {
+export function warnOnce(falseToWarn: boolean, message: string, ...args: Array<any>) {
   if (warned[message]) {
     return;
   }
