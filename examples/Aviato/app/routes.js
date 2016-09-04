@@ -3,12 +3,12 @@
 import React from 'react';
 import { Route, StackRoute, TabsRoute, Router, nativeHistory } from 'react-router-native';
 import { component, tabHeaderComponent, stackHeaderComponent } from './components';
-import { Master } from './components/Master';
-import { HomeHeader } from './components/Home';
 import { Discover, DiscoverHeader } from './components/Discover';
+import { HomeHeader } from './components/Home';
+import { Master } from './components/Master';
 import { Notifications } from './components/Notifications';
-import { UserOverlay } from './components/User';
 import { ProfileHeader } from './components/Profile';
+import { UserOverlay } from './components/User';
 
 const redirectToNotifications = (nextState, replace) => {
   replace('/notifications');

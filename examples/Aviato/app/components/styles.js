@@ -46,7 +46,7 @@ export default StyleSheet.create({
   tabs: {
     flexDirection: 'row',
     backgroundColor: 'white',
-    height: 60
+    height: 60,
   },
   tabsActiveStyle: {
     backgroundColor: '#B185FD',

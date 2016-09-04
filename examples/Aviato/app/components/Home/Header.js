@@ -11,11 +11,11 @@ import {
   Link,
 } from 'react-router-native';
 
+import styles from '../styles';
+
 const {
   Header: NavigationHeader,
 } = NavigationExperimental;
-
-import styles from '../styles';
 
 const HomeSwitcher = () => (
   <View style={[styles.switcher, styles.homeSwitcher]}>

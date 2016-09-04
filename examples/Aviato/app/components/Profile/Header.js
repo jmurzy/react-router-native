@@ -1,6 +1,6 @@
 /* @noflow */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import {
   NavigationExperimental,
   Text,
@@ -9,6 +9,8 @@ import {
   Link,
 } from 'react-router-native';
 
+import styles from '../styles';
+
 const {
   Header: NavigationHeader,
 } = NavigationExperimental;
@@ -16,8 +18,6 @@ const {
 const {
   Title: NavigationHeaderTitle,
 } = NavigationHeader;
-
-import styles from '../styles';
 
 export default class Header extends Component {
 

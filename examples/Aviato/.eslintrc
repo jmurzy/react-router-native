@@ -2,8 +2,13 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": ['.ios.js', '.android.js', '.js', '.jsx', '.babel.jsx', '.babel.js']
+        "extensions": [".ios.js", ".android.js", ".js"]
       }
     }
+  },
+  "rules": {
+    "import/prefer-default-export": "off",
+    "react/prop-types": "off",
+    "react/no-multi-comp": "off",
   }
 }

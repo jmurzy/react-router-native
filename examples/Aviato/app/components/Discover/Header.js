@@ -5,6 +5,8 @@ import {
   NavigationExperimental,
 } from 'react-native';
 
+import styles from '../styles';
+
 const {
   Header: NavigationHeader,
 } = NavigationExperimental;
@@ -12,8 +14,6 @@ const {
 const {
   Title: NavigationHeaderTitle,
 } = NavigationHeader;
-
-import styles from '../styles';
 
 export default class Header extends Component {
 

@@ -3,7 +3,10 @@ import gulpESlint from 'gulp-eslint';
 import gulpMocha from 'gulp-mocha';
 import runSequence from 'run-sequence';
 
+const IGNOREDDIRS = ['!**/node_modules/**'];
+
 const SRCDIR = 'modules';
+const EXAMPLESDIR = 'examples';
 const SPECDIR = 'spec';
 const defaultLoader = require.extensions['.js'];
 
@@ -55,7 +58,9 @@ gulp.task('lint', () => gulp
      .src([
        `${SRCDIR}/**/*.js`,
        `${SPECDIR}/**/*.js`,
+       `${EXAMPLESDIR}/**/*.js`,
        'gulpfile.js',
+       ...IGNOREDDIRS,
      ])
     .pipe(gulpESlint())
     .pipe(gulpESlint.format())
