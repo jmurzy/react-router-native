@@ -1,11 +1,11 @@
 /* @flow */
 
 /* components */
-import Router from './Router';
-import Link from './Link';
-import IndexLink from './IndexLink';
 import Back from './Back';
+import IndexLink from './IndexLink';
+import Link from './Link';
 import Pop from './Pop';
+import Router from './Router';
 
 /* components (configuration) */
 import IndexRoute from './IndexRoute';
@@ -14,34 +14,25 @@ import StackRoute from './StackRoute';
 import TabsRoute from './TabsRoute';
 
 /* utils */
-import RouterContext from './RouterContext';
-import Reducer from './Reducer';
 import { render } from './render';
+import Reducer from './Reducer';
+import RouterContext from './RouterContext';
 
 /* histories */
 import nativeHistory from './nativeHistory';
 
 export {
-  Link,
-  IndexLink,
   Back,
+  IndexLink,
+  Link,
   Pop,
   Router,
-};
-
-export {
   IndexRoute,
   Route,
   StackRoute,
   TabsRoute,
-};
-
-export {
-  RouterContext,
   Reducer,
   render,
-};
-
-export {
+  RouterContext,
   nativeHistory,
 };
