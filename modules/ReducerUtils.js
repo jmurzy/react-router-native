@@ -302,6 +302,8 @@ export function createPartialState(
     let type = currentRoute.routeType;
     let routeParams = getRouteParams(currentRoute, params);
     const transition = currentRoute.transition;
+    const onSwipeBack = currentRoute.onSwipeBack;
+    const onSwipeForward = currentRoute.onSwipeForward;
     const reducer = currentRoute.reducer;
 
     const indexRoute = getIndexRoute(currentRoute);
@@ -352,6 +354,8 @@ export function createPartialState(
       location,
       transition,
       reducer,
+      onSwipeBack,
+      onSwipeForward,
     };
 
     if (prevState) {

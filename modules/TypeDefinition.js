@@ -31,6 +31,8 @@ export type EnhancedNavigationRoute = {
   routeParams: Object,
   transition: ?string,
   reducer: Function,
+  onSwipeBack: ?Function,
+  onSwipeForward: ?Function,
 };
 
 export type RouteDef = {
@@ -41,6 +43,8 @@ export type RouteDef = {
   routeType: ?RouteType,
   transition: ?string,
   reducer: Function,
+  onSwipeBack: ?Function,
+  onSwipeForward: ?Function,
 };
 
 export type IndexRouteDef = {

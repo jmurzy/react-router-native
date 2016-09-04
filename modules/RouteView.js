@@ -40,8 +40,7 @@ class RouteView extends Component<any, Props, any> {
     (this: any).renderScene = this.renderScene.bind(this);
   }
 
-  // $FlowFixMe NavigationSceneRendererProps
-  renderScene(props): ?ReactElement {
+  renderScene(props: Object): ?ReactElement<any> {
     const { scene } = props;
 
     const { navigationSubtree } = this.props;

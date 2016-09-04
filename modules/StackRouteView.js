@@ -6,6 +6,8 @@ import { warnOutOfSync } from './warningUtil';
 import transitionRegistry from './transitionRegistry';
 import { globalStyles as styles } from './styles';
 
+import withRouter from './withRouter';
+
 import type {
   EnhancedNavigationRoute,
   PseudoElement,
@@ -25,6 +27,7 @@ type Props = {
   navigationSubtree: ?Array<PseudoElement>,
   navigationState: EnhancedNavigationRoute,
   createElement: Function,
+  router: Object,
 };
 
 class StackRouteView extends Component<any, Props, any> {
@@ -37,6 +40,7 @@ class StackRouteView extends Component<any, Props, any> {
     navigationSubtree: PropTypes.arrayOf(PropTypes.object),
     navigationState: PropTypes.object,
     createElement: PropTypes.func.isRequired,
+    router: PropTypes.object.isRequired,
   };
 
   componentWillMount(): void {
@@ -46,8 +50,7 @@ class StackRouteView extends Component<any, Props, any> {
     (this: any).renderCardScene = this.renderCardScene.bind(this);
   }
 
-  // $FlowFixMe NavigationSceneRendererProps
-  renderOverlay(props): ?ReactElement<any> {
+  renderOverlay(props: Object): ?ReactElement<any> {
     const { scene } = props;
 
     const { navigationSubtree, createElement } = this.props;
@@ -80,8 +83,7 @@ class StackRouteView extends Component<any, Props, any> {
     return null;
   }
 
-  // $FlowFixMe NavigationSceneRendererProps
-  renderScene(props): ?ReactElement<any> {
+  renderScene(props: Object): ?ReactElement<any> {
     const { scene } = props;
 
     if (!scene.route) {
@@ -89,7 +91,11 @@ class StackRouteView extends Component<any, Props, any> {
     }
 
     const { transition: parentTransition } = props.navigationState;
-    const { transition: sceneTransition } = scene.route;
+    const {
+      transition: sceneTransition,
+      onSwipeBack,
+      onSwipeForward,
+    } = scene.route;
 
     const transition = sceneTransition || parentTransition;
 
@@ -98,8 +104,16 @@ class StackRouteView extends Component<any, Props, any> {
       panResponder,
     } = transitionRegistry[transition];
 
+    const {
+      router,
+    } = this.props;
+
     const viewStyle = styleInterpolator(props);
-    const panHandlers = panResponder(props);
+    const panHandlers = panResponder({
+      ...props,
+      onNavigateBack: () => onSwipeBack && onSwipeBack(router),
+      onNavigateForward: () => onSwipeForward && onSwipeForward(router),
+    });
 
     const navigationCardProps = {
       key: scene.route.key,
@@ -112,8 +126,7 @@ class StackRouteView extends Component<any, Props, any> {
     return React.createElement(NavigationCard, navigationCardProps);
   }
 
-  // $FlowFixMe NavigationSceneRendererProps
-  renderCardScene(props): ?ReactElement {
+  renderCardScene(props: Object): ?ReactElement<any> {
     const { scene } = props;
 
     const { navigationSubtree } = this.props;
@@ -213,4 +226,4 @@ class StackRouteView extends Component<any, Props, any> {
   }
 }
 
-export default StackRouteView;
+export default withRouter(StackRouteView);

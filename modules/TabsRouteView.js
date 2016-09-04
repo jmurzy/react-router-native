@@ -5,6 +5,7 @@ import { NavigationExperimental, View } from 'react-native';
 import { warnOutOfSync } from './warningUtil';
 import transitionRegistry from './transitionRegistry';
 import { globalStyles as styles } from './styles';
+import withRouter from './withRouter';
 
 import type {
   EnhancedNavigationRoute,
@@ -25,6 +26,7 @@ type Props = {
   navigationSubtree: ?Array<PseudoElement>,
   navigationState: EnhancedNavigationRoute,
   createElement: Function,
+  router: Object,
 };
 
 class TabsRouteView extends Component<any, Props, any> {
@@ -37,6 +39,7 @@ class TabsRouteView extends Component<any, Props, any> {
     navigationSubtree: PropTypes.arrayOf(PropTypes.object),
     navigationState: PropTypes.object,
     createElement: PropTypes.func.isRequired,
+    router: PropTypes.object.isRequired,
   };
 
   componentWillMount(): void {
@@ -46,8 +49,7 @@ class TabsRouteView extends Component<any, Props, any> {
     (this: any).renderCardScene = this.renderCardScene.bind(this);
   }
 
-  // $FlowFixMe NavigationSceneRendererProps
-  renderOverlay(props): ?ReactElement {
+  renderOverlay(props: Object): ?ReactElement<any> {
     const { scene } = props;
 
     const { navigationSubtree, createElement } = this.props;
@@ -80,8 +82,7 @@ class TabsRouteView extends Component<any, Props, any> {
     return null;
   }
 
-  // $FlowFixMe NavigationSceneRendererProps
-  renderScene(props): ?ReactElement {
+  renderScene(props: Object): ?ReactElement<any> {
     const { scene } = props;
 
     if (!scene.route) {
@@ -89,7 +90,11 @@ class TabsRouteView extends Component<any, Props, any> {
     }
 
     const { transition: parentTransition } = props.navigationState;
-    const { transition: sceneTransition } = scene.route;
+    const {
+      transition: sceneTransition,
+      onSwipeBack,
+      onSwipeForward,
+     } = scene.route;
 
     const transition = sceneTransition || parentTransition;
 
@@ -98,8 +103,16 @@ class TabsRouteView extends Component<any, Props, any> {
       panResponder,
     } = transitionRegistry[transition];
 
+    const {
+      router,
+    } = this.props;
+
     const viewStyle = styleInterpolator(props);
-    const panHandlers = panResponder(props);
+    const panHandlers = panResponder({
+      ...props,
+      onNavigateBack: () => onSwipeBack && onSwipeBack(router),
+      onNavigateForward: () => onSwipeForward && onSwipeForward(router),
+    });
 
     const navigationCardProps = {
       key: scene.route.key,
@@ -112,8 +125,7 @@ class TabsRouteView extends Component<any, Props, any> {
     return React.createElement(NavigationCard, navigationCardProps);
   }
 
-  // $FlowFixMe NavigationSceneRendererProps
-  renderCardScene(props): ?ReactElement {
+  renderCardScene(props: Object): ?ReactElement<any> {
     const { scene } = props;
 
     const { navigationSubtree } = this.props;
@@ -213,4 +225,4 @@ class TabsRouteView extends Component<any, Props, any> {
   }
 }
 
-export default TabsRouteView;
+export default withRouter(TabsRouteView);

@@ -19,6 +19,8 @@ type Props = {
   reducer: Function,
   routeType: string,
   transition: ?string,
+  onSwipeBack: Function,
+  onSwipeForward: Function,
 };
 
 const { ROUTE } = RouteTypes;
@@ -38,11 +40,17 @@ class Route extends Component<any, Props, any> {
     reducer: PropTypes.func.isRequired,
     routeType: PropTypes.string.isRequired,
     transition: PropTypes.string,
+    onSwipeBack: PropTypes.func,
+    onSwipeForward: PropTypes.func,
   };
 
   static defaultProps = {
     routeType: ROUTE,
     reducer: defaultRouteReducer,
+    onSwipeBack: (router) => {
+      router.pop();
+    },
+    onSwipeForward: () => {},
   };
 
   props: Props;
