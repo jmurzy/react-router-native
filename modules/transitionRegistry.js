@@ -39,19 +39,15 @@ function configureDefaultTransition() {
 
 const noAnimation = (value, config) => ({
   start(callback) {
-    const setValue = () => {
-      value.setValue(config.toValue);
+    value.setValue(config.toValue);
 
-      const result = {
-        finished: true,
-      };
-
-      if (callback) {
-        callback(result);
-      }
+    const result = {
+      finished: true,
     };
 
-    setTimeout(setValue);
+    if (callback) {
+      callback(result);
+    }
   },
   stop: () => {
     value.stopAnimation();
