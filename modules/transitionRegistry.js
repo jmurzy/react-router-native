@@ -3,6 +3,7 @@ import {
   Easing,
   NativeModules,
   NavigationExperimental,
+  Platform,
 } from 'react-native';
 import invariant from 'invariant';
 import { warnOnce } from './warningUtil';
@@ -19,7 +20,12 @@ const {
 
 const transitionRegistry = {};
 
-const useNativeDriver = !!NativeModules.NativeAnimatedModule;
+const hasNativeDriver = !!NativeModules.NativeAnimatedModule;
+
+// FIXME `Animated.setValue` via NativeAnimated for iOS is buggy and causes
+// panResponders to fail.
+// Also See facebook/react-native#9729
+const useNativeDriver = Platform.OS === 'android' ? hasNativeDriver : false;
 
 const defaultTransitionSpec = {
   duration: 250,
@@ -30,9 +36,9 @@ const defaultTransitionSpec = {
 
 function configureDefaultTransition() {
   warnOnce(
-    useNativeDriver,
+    Platform.OS === 'ios' || useNativeDriver,
     'Native animated module is not available. You may experience performance issues ' +
-    'with animations since they will be performed on the JavaScript thread.'
+    'with transition animations since they will be performed on the JavaScript thread.'
   );
   return defaultTransitionSpec;
 }
