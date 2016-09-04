@@ -89,7 +89,7 @@ class AddressBar extends Component<DefaultProps, Props, State> {
   context: Context;
 
   openDocs(): void {
-    Linking.openURL('http://github.com/jmurzy/react-router-native')
+    Linking.openURL('https://github.com/jmurzy/react-router-native/blob/master/docs/README.md')
            .catch(err => {
              warning(
                false,
