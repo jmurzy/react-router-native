@@ -1,6 +1,9 @@
 /* @noflow */
 
-import React, { Component, PropTypes } from 'react';
+import React, {
+  Component,
+  PropTypes,
+} from 'react';
 import {
   View,
   Text,

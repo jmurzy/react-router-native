@@ -2,22 +2,15 @@
 
 import React, { Component } from 'react';
 import {
-  NavigationExperimental,
   Text,
 } from 'react-native';
 import {
   Link,
+  AnimatedHeader,
+  AnimatedHeaderTitle,
 } from 'react-router-native';
 
 import styles from '../styles';
-
-const {
-  Header: NavigationHeader,
-} = NavigationExperimental;
-
-const {
-  Title: NavigationHeaderTitle,
-} = NavigationHeader;
 
 export default class Header extends Component {
 
@@ -31,9 +24,9 @@ export default class Header extends Component {
     const title = `Profile ${routeParams.userId}`;
 
     return (
-      <NavigationHeaderTitle>
+      <AnimatedHeaderTitle>
         {title}
-      </NavigationHeaderTitle>
+      </AnimatedHeaderTitle>
     );
   }
 
@@ -55,7 +48,7 @@ export default class Header extends Component {
 
   render() {
     return (
-      <NavigationHeader
+      <AnimatedHeader
         style={styles.profileHeader}
         {...this.props}
         renderLeftComponent={this.renderLeftComponent}

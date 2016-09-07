@@ -2,20 +2,16 @@
 
 import React, { Component, PropTypes } from 'react';
 import {
-  NavigationExperimental,
   View,
   Text,
   TouchableHighlight,
 } from 'react-native';
 import {
   Link,
+  AnimatedHeader,
 } from 'react-router-native';
 
 import styles from '../styles';
-
-const {
-  Header: NavigationHeader,
-} = NavigationExperimental;
 
 const HomeSwitcher = () => (
   <View style={[styles.switcher, styles.homeSwitcher]}>
@@ -81,7 +77,7 @@ export default class Header extends Component {
 
   render() {
     return (
-      <NavigationHeader
+      <AnimatedHeader
         style={styles.homeHeader}
         {...this.props}
         renderLeftComponent={this.renderMenuComponent}

@@ -1,23 +1,15 @@
 /* @noflow */
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  NavigationExperimental,
   View,
-  Text,
 } from 'react-native';
+
 import {
-  Pop,
+  Header,
 } from 'react-router-native';
+
 import styles from './styles';
-
-const {
-  Header: NavigationHeader,
-} = NavigationExperimental;
-
-const {
-  Title: NavigationHeaderTitle,
-} = NavigationHeader;
 
 export const component = (backgroundColor) => (props) => (
   <View style={[styles.component, { backgroundColor }]}>
@@ -25,96 +17,29 @@ export const component = (backgroundColor) => (props) => (
   </View>
 );
 
-export const stackHeaderComponent = (backgroundColor) => {
-  const headerStyle = { backgroundColor };
+export const stackHeaderComponent = (backgroundColor) => (props) => {
+  const { scene } = props;
+  const title = String(scene.route.key || '');
 
-  return class extends Component {
-
-    componentWillMount() {
-      this.renderTitleComponent = this.renderTitleComponent.bind(this);
-      this.renderBackButtonComponent = this.renderBackButtonComponent.bind(this);
-    }
-
-    renderTitleComponent(props) {
-      const { scene } = props;
-      const title = String(scene.route.key || '');
-      return (
-        <NavigationHeaderTitle>
-          {title}
-        </NavigationHeaderTitle>
-      );
-    }
-
-    renderBackButtonComponent(props) {
-      if (props.scene.index === 0) {
-        return null;
-      }
-
-      return (
-        <Pop
-          style={styles.leftHeaderLink}
-          underlayColor="transparent"
-        >
-          <Text style={styles.leftHeaderLinkText}>Back</Text>
-        </Pop>
-      );
-    }
-
-    renderRightComponent() {
-      return null;
-    }
-
-    render() {
-      return (
-        <NavigationHeader
-          style={headerStyle}
-          {...this.props}
-          renderTitleComponent={this.renderTitleComponent}
-          renderLeftComponent={this.renderBackButtonComponent}
-          renderRightComponent={this.renderRightComponent}
-        />
-      );
-    }
-  };
+  return (
+    <Header
+      {...props}
+      title={title}
+      leftButtonText="Back"
+      style={{ backgroundColor }}
+    />
+  );
 };
 
-export const tabHeaderComponent = (backgroundColor) => {
-  const headerStyle = { backgroundColor };
+export const tabHeaderComponent = (backgroundColor) => (props) => {
+  const { scene } = props;
+  const title = String(scene.route.key || '');
 
-  return class extends Component {
-
-    componentWillMount() {
-      this.renderTitleComponent = this.renderTitleComponent.bind(this);
-    }
-
-    renderTitleComponent(props) {
-      const { scene } = props;
-      const title = String(scene.route.key || '');
-      return (
-        <NavigationHeaderTitle>
-          {title}
-        </NavigationHeaderTitle>
-      );
-    }
-
-    renderLeftComponent() {
-      return null;
-    }
-
-    renderRightComponent() {
-      return null;
-    }
-
-    render() {
-      return (
-        <NavigationHeader
-          style={headerStyle}
-          {...this.props}
-          renderTitleComponent={this.renderTitleComponent}
-          renderLeftComponent={this.renderLeftComponent}
-          renderRightComponent={this.renderRightComponent}
-        />
-      );
-    }
-  };
+  return (
+    <Header
+      {...props}
+      title={title}
+      style={{ backgroundColor }}
+    />
+  );
 };

@@ -1,53 +1,21 @@
 /* @noflow */
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  NavigationExperimental,
-} from 'react-native';
+  Header,
+} from 'react-router-native';
 
 import styles from '../styles';
 
-const {
-  Header: NavigationHeader,
-} = NavigationExperimental;
+export default (props) => {
+  const { scene } = props;
+  const title = String(scene.route.key || '');
 
-const {
-  Title: NavigationHeaderTitle,
-} = NavigationHeader;
-
-export default class Header extends Component {
-
-  componentWillMount() {
-    this.renderTitleComponent = this.renderTitleComponent.bind(this);
-  }
-
-  renderTitleComponent(props) {
-    const { scene } = props;
-    const title = String(scene.route.key || '');
-    return (
-      <NavigationHeaderTitle>
-        {title}
-      </NavigationHeaderTitle>
-    );
-  }
-
-  renderRightComponent() {
-    return;
-  }
-
-  renderLeftComponent() {
-    return;
-  }
-
-  render() {
-    return (
-      <NavigationHeader
-        style={styles.discoverHeader}
-        {...this.props}
-        renderLeftComponent={this.renderLeftComponent}
-        renderRightComponent={this.renderRightComponent}
-        renderTitleComponent={this.renderTitleComponent}
-      />
-    );
-  }
-}
+  return (
+    <Header
+      {...props}
+      title={title}
+      style={styles.discoverHeader}
+    />
+  );
+};
