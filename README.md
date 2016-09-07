@@ -24,7 +24,7 @@ A declarative API removes the need to write [boilerplate code](https://github.co
 #### Using npm:
 
 ```sh
-$ npm install --save react-router-native@v2.0.0-alpha.4 react-router@3.0.0-alpha.3
+$ npm install --save react-router-native@v2.0.0-alpha.5 react-router@3.0.0-alpha.3
 ```
 
 ### Usage
