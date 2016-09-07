@@ -81,7 +81,10 @@ gulp.task('copy', () =>
     `${SRCDIR}/**/*.js`,
   ])
   .pipe(gulp.dest(
-    'examples/Aviato/node_modules/react-router-native/modules',
+    'examples/Aviato/node_modules/react-router-native/modules'
+  ))
+  .pipe(gulp.dest(
+    'examples/Simple/node_modules/react-router-native/modules'
   ))
 );
 
