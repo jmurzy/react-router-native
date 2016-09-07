@@ -170,8 +170,8 @@ const reducer = (
 <TabsRoute path="/" component={Component} reducer={reducer}/>
 ```
 
-### Example
-The example app from the GIF can be found at `examples/Aviato`. You can run it as follows:
+### Examples
+The source includes a few [examples](/examples) that should help you get started. The example app from the GIF above can be found at `examples/Aviato`. You can run it as follows:
 
 ```bash
 git clone https://github.com/jmurzy/react-router-native
