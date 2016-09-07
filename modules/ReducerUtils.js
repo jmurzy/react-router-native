@@ -337,6 +337,7 @@ export function createPartialState(
       'Router, each route has to specify the following: `routeType`, `reducer`, `transition`.'
     );
 
+    // FIXME move `stateKey` management into `history/nativeHistory`
     const stateKey = location.state ? location.state.stateKey : 0;
 
     if (parentRoute && parentRoute.routeType === STACK_ROUTE) {

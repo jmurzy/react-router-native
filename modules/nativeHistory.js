@@ -6,10 +6,6 @@ import {
   getActiveParentRouteType,
 } from './ReducerUtils';
 import createMemoryHistory from './createMemoryHistory';
-import {
-  createRandomKey,
-  DEFAULT_KEY_LENGTH,
-} from './LocationUtils';
 import { RouteTypes } from './RouteUtils';
 
 const { STACK_ROUTE } = RouteTypes;
@@ -43,7 +39,8 @@ const useNavState = (createHistory: Function) => (options = {}) => {
     const prevLocation = canPopActiveStack(n, navigationState);
 
     if (prevLocation) {
-      const stateKey = prevLocation.state.stateKey;
+      // FIXME move `stateKey` management into `history/nativeHistory`
+      const stateKey = prevLocation.state ? prevLocation.state.stateKey : 0;
       const location = history.createLocation(history.createPath(prevLocation), HISTORY_PUSH);
       location.state = { stateKey };
 
@@ -117,12 +114,8 @@ const useNavState = (createHistory: Function) => (options = {}) => {
   };
 };
 
-const stateKey = createRandomKey(DEFAULT_KEY_LENGTH);
-const rootEntry = { pathname: '/', state: { stateKey } };
+const rootEntry = { pathname: '/' };
 const entries = [rootEntry];
-const nativeHistory = useNavState(createMemoryHistory)({
-  entries,
-  keyLength: DEFAULT_KEY_LENGTH,
-});
+const nativeHistory = useNavState(createMemoryHistory)({ entries });
 
 export default nativeHistory;
