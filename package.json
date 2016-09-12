@@ -80,7 +80,7 @@
     "eslint-plugin-import": "^1.14.0",
     "eslint-plugin-jsx-a11y": "^2.2.1",
     "eslint-plugin-react": "^6.2.0",
-    "flow-bin": "^0.30.0",
+    "flow-bin": "^0.32.0",
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1",
     "gulp-mocha": "^3.0.1",

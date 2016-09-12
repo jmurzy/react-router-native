@@ -73,15 +73,16 @@ function createNavigationTreeAtIndex(
 
     // index route is given in `routes` but not in `childRoutes`
     if (route.indexRoute) {
+      const indexRoute = route.indexRoute;
       const indexRouteProps = {};
 
       indexRouteProps.path = '[index]';
       indexRouteProps.type = 'index';
-      indexRouteProps.component = route.indexRoute.component;
+      indexRouteProps.component = indexRoute.component;
       indexRouteProps.createElement = createElement;
 
-      if (route.indexRoute.overlayComponent) {
-        indexRouteProps.overlayComponent = route.indexRoute.overlayComponent;
+      if (indexRoute.overlayComponent) {
+        indexRouteProps.overlayComponent = indexRoute.overlayComponent;
       }
 
       const indexRoutePseudoElement = {

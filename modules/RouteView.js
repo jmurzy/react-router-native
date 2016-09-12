@@ -55,6 +55,7 @@ class RouteView extends Component<any, Props, any> {
 
     if (!pseudoElement) {
       warnOutOfSync('Cannot render scene', scene.route.path);
+      return null;
     }
 
     const key = scene.route.key;

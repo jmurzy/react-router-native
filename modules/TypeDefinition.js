@@ -35,9 +35,15 @@ export type EnhancedNavigationRoute = {
   onSwipeForward: ?Function,
 };
 
+export type IndexRouteDef = {
+  component: Function,
+  overlayComponent: ?Function,
+};
+
 export type RouteDef = {
   childRoutes: ?Array<RouteDef>,
   component: Function,
+  indexRoute: ?IndexRouteDef,
   overlayComponent: ?Function,
   path: ?string,
   routeType: ?RouteType,
@@ -45,11 +51,6 @@ export type RouteDef = {
   reducer: Function,
   onSwipeBack: ?Function,
   onSwipeForward: ?Function,
-};
-
-export type IndexRouteDef = {
-  component: Function,
-  overlayComponent: ?Function,
 };
 
 export type NoPathRouteDef = {

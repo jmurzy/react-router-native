@@ -63,6 +63,7 @@ class TabsRouteView extends Component<any, Props, any> {
 
     if (!navigationalElement) {
       warnOutOfSync('Cannot render overlay', scene.route.path);
+      return null;
     }
 
     const overlayComponent = navigationalElement.props.overlayComponent;
@@ -139,6 +140,7 @@ class TabsRouteView extends Component<any, Props, any> {
 
     if (!pseudoElement) {
       warnOutOfSync('Cannot render card', scene.route.path);
+      return null;
     }
 
     const { routeViewComponent, props: routeViewComponentProps } = pseudoElement;
