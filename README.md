@@ -2,6 +2,11 @@
 
 A routing library for [React Native](https://github.com/facebook/react-native) that strives for sensible API parity with [react-router](https://github.com/reactjs/react-router/).
 
+```
+Please note that React Router v4 was just released. Over the next few weeks,
+React Router Native will be refactored to make it fully compatible with v4.
+```
+
 <img align="right" width="360px" src="https://raw.githubusercontent.com/jmurzy/react-router-native/master/docs/screenshot.gif">
 
 ### Background
