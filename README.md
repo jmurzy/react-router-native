@@ -176,30 +176,9 @@ const reducer = (
 ```
 
 ### Examples
-The source includes a few [examples](/examples) that should help you get started. The example app from the GIF above can be found at `examples/Aviato`. You can run it as follows:
+The source includes a few [examples](/examples) that should help you get started. The example app from the GIF above can be found at `examples/Aviato`. You can also [view it with Exponent](https://exp.host/@rncommunity/aviato).
 
-```bash
-git clone https://github.com/jmurzy/react-router-native
-
-cd react-router-native/examples/Aviato
-npm install
-```
-
-To deploy to iOS simulator:
-
-```bash
-npm run ios
-```
-
-—or—
-
-To deploy to Android simulator:
-
-```bash
-npm run android
-```
-
-Route configuration for the example app can be found in `app/routes.js`. The __address bar__ shown in the demo is used for development only and can be disabled by removing the [`addressBar`](https://github.com/jmurzy/react-router-native/blob/b988ea696cca272296c424e7381df00944c9d062/examples/Aviato/app/routes.js#L23-L24) prop from the ``<Router>`` component.
+Route configuration for the example apps can be found in `app/routes.js`. The __address bar__ shown in the demo is used for development only and can be disabled by removing the [`addressBar`](https://github.com/jmurzy/react-router-native/blob/b988ea696cca272296c424e7381df00944c9d062/examples/Aviato/app/routes.js#L23-L24) prop from the ``<Router>`` component.
 
 ### Documentation
 Documentation can be found [here](/docs).

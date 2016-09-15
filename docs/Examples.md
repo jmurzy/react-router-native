@@ -27,6 +27,9 @@ To deploy to Android simulator:
 npm run android
 ```
 
+Or, [view the simple example with Exponent](
+https://exp.host/@rncommunity/react-native-router-simple-example).
+
 ### Aviato
 
 To build and run the Aviato app:
@@ -51,3 +54,6 @@ To deploy to Android simulator:
 ```bash
 npm run android
 ```
+
+Or, [view Aviato with Exponent](
+https://exp.host/@rncommunity/aviato).
