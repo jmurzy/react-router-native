@@ -25,6 +25,7 @@ import {
 import { render } from './render';
 import Reducer from './Reducer';
 import RouterContext from './RouterContext';
+import transitionRegistry from './transitionRegistry';
 
 /* histories */
 import nativeHistory from './nativeHistory';
@@ -47,4 +48,5 @@ export {
   render,
   RouterContext,
   nativeHistory,
+  transitionRegistry,
 };
