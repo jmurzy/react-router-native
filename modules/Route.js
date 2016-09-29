@@ -21,6 +21,7 @@ type Props = {
   transition: ?string,
   onSwipeBack: Function,
   onSwipeForward: Function,
+  gestureResponseDistance?: ?number,
 };
 
 const { ROUTE } = RouteTypes;
@@ -42,6 +43,7 @@ class Route extends Component<any, Props, any> {
     transition: PropTypes.string,
     onSwipeBack: PropTypes.func,
     onSwipeForward: PropTypes.func,
+    gestureResponseDistance: PropTypes.number,
   };
 
   static defaultProps = {

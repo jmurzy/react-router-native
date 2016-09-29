@@ -20,6 +20,7 @@ type Props = {
   reducer: Function,
   routeType: string,
   transition: string,
+  gestureResponseDistance?: ?number,
 };
 
 const { TABS_ROUTE } = RouteTypes;
@@ -39,6 +40,7 @@ class TabsRoute extends Component<any, Props, any> {
     reducer: PropTypes.func.isRequired,
     routeType: PropTypes.string.isRequired,
     transition: PropTypes.string.isRequired,
+    gestureResponseDistance: PropTypes.number,
   };
 
   static defaultProps = {

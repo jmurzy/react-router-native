@@ -91,9 +91,14 @@ class StackRouteView extends Component<any, Props, any> {
       return null;
     }
 
-    const { transition: parentTransition } = props.navigationState;
+    const {
+      transition: parentTransition,
+      gestureResponseDistance: parentGestureResponseDistance,
+    } = props.navigationState;
+
     const {
       transition: sceneTransition,
+      gestureResponseDistance,
       onSwipeBack,
       onSwipeForward,
     } = scene.route;
@@ -112,6 +117,9 @@ class StackRouteView extends Component<any, Props, any> {
     const viewStyle = styleInterpolator(props);
     const panHandlers = panResponder({
       ...props,
+      // NavigationCardStackPanResponder defaults to 30; this is not enough to conform to the
+      // touch area provided by the native IOS back swipe behaviour => double the default to 60
+      gestureResponseDistance: gestureResponseDistance || parentGestureResponseDistance || 60,
       onNavigateBack: () => onSwipeBack && onSwipeBack(router),
       onNavigateForward: () => onSwipeForward && onSwipeForward(router),
     });
