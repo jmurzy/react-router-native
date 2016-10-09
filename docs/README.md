@@ -52,11 +52,13 @@ const store = createStore(
 
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(nativeHistory, store)
+// Set current path to '/'
+history.push('/')
 
 const routes = (
   <Provider store={store}>
     /* Tell the Router to use our enhanced history */
-    <Router history={nativeHistory}>
+    <Router history={history}>
       /* ... */
     </Router>
   </Provider>
