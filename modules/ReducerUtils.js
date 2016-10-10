@@ -332,7 +332,7 @@ export function createPartialState(
 
     invariant(
       key && path && type && reducer && (transition || type === ROUTE),
-      'Incompatible route definition. Make sure peer dependecy requirements are met. If you are ' +
+      'Incompatible route definition. Make sure peer dependency requirements are met. If you are ' +
       'using plain objects to define your routes, in addition to the options required by React ' +
       'Router, each route has to specify the following: `routeType`, `reducer`, `transition`.'
     );
