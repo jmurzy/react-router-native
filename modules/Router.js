@@ -90,7 +90,7 @@ class NativeRouter extends Component<any, any, any> {
     this.transitionManager = this.createTransitionManager();
     const {
       syncRouterState,
-      ...router,
+      ...router
     } = this.createRouterObject(this.state);
 
     this.router = router;
@@ -256,7 +256,7 @@ class NativeRouter extends Component<any, any, any> {
     const {
       createElement,
       render,
-      ...passProps,
+      ...passProps
     } = this.props;
 
     if (location == null) {

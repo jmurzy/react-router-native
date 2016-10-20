@@ -8,8 +8,8 @@
     "android": "./node_modules/.bin/react-native run-android"
   },
   "dependencies": {
-    "react": "15.3.1-rc.2",
-    "react-native": "0.34.0-rc.0",
+    "react": "~15.3.1",
+    "react-native": "0.36.0-rc.1",
     "react-router-native": "file:../../"
   }
 }

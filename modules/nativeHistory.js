@@ -20,7 +20,7 @@ let routerState = null;
 const useNavState = (createHistory: Function) => (options = {}) => {
   const {
     transitionTo: baseTransitionTo,
-    ...history,
+    ...history
   } = createHistory(options);
 
   const pop = (n = -1): boolean => {

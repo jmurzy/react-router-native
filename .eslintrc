@@ -35,6 +35,10 @@
       },
     ],
     "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
-    "no-underscore-dangle": [2, { allowAfterThis: true }]
+    "react/no-unused-prop-types": ["off"],
+    "react/forbid-prop-types": ["off"],
+    "class-methods-use-this": ["off"],
+    "arrow-parens": ["off"],
+    "no-underscore-dangle": [2, { allowAfterThis: true }],
   }
 }
