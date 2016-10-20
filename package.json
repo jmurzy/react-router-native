@@ -59,12 +59,12 @@
     "url": "https://github.com/jmurzy/react-router-native/issues"
   },
   "peerDependencies": {
-    "react-native": "0.34.0-rc.0",
-    "react-router": "3.0.0-alpha.3",
-    "history": "3.2.1"
+    "react-native": "0.34.0-rc.0"
   },
   "dependencies": {
+    "history": "3.2.1",
     "invariant": "^2.2.1",
+    "react-router": "3.0.0-alpha.3",
     "warning": "^3.0.0"
   },
   "devDependencies": {
