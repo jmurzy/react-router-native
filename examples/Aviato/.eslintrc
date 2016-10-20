@@ -9,6 +9,7 @@
   "rules": {
     "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
+    "import/extensions": "off",
     "react/no-multi-comp": "off",
     "react/prop-types": "off"
   }
