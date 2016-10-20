@@ -12,24 +12,24 @@ import { notImplemented, falsy, component } from './PropTypes';
 const { TABS_ROUTE } = RouteTypes;
 
 type Props = {
-  path: ?any,
   component: ReactClass<any>,
-  overlayComponent: ?ReactClass<any>,
   components: ?any,
   getComponent: ?any,
   getComponents: ?any,
+  overlayComponent: ?ReactClass<any>,
+  path: ?any,
 };
 
 /* eslint-disable react/require-render-return */
 class IndexRoute extends Component<any, Props, any> {
 
   static propTypes = {
-    path: falsy,
     component,
-    overlayComponent: component,
     components: notImplemented,
     getComponent: notImplemented,
     getComponents: notImplemented,
+    overlayComponent: component,
+    path: falsy,
   };
 
   static createRouteFromReactElement = (element, parentRoute) => {

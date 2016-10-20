@@ -306,15 +306,6 @@ export function createPartialState(
     const onSwipeForward = currentRoute.onSwipeForward;
     const reducer = currentRoute.reducer;
 
-    const indexRoute = getIndexRoute(currentRoute);
-
-    if (indexRoute) {
-      path = '[index]';
-      key = '__index__';
-      type = 'index';
-      routeParams = getRouteParams(parentRoute, params);
-    }
-
     const noPathRoute = getNoPathRoute(currentRoute);
 
     if (noPathRoute) {
@@ -330,12 +321,22 @@ export function createPartialState(
       type = currentRoute.routeType; // || 'visual'
     }
 
-    invariant(
-      key && path && type && reducer && (transition || type === ROUTE),
-      'Incompatible route definition. Make sure peer dependency requirements are met. If you are ' +
-      'using plain objects to define your routes, in addition to the options required by React ' +
-      'Router, each route has to specify the following: `routeType`, `reducer`, `transition`.'
-    );
+    const indexRoute = getIndexRoute(currentRoute);
+
+    if (indexRoute) {
+      path = '[index]';
+      key = '__index__';
+      type = 'index';
+      routeParams = getRouteParams(parentRoute, params);
+    } else {
+      invariant(
+        key && path && type && reducer && (transition || type === ROUTE),
+        'Incompatible route definition. Make sure peer dependency requirements are met. If you ' +
+        'are using plain objects to define your routes, in addition to the options required by ' +
+        'React Router, each route has to specify the following: `routeType`, `reducer`, ' +
+        '`transition`.'
+      );
+    }
 
     // FIXME move `stateKey` management into `history/nativeHistory`
     const stateKey = location.state ? location.state.stateKey : 0;
