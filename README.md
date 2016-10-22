@@ -32,6 +32,12 @@ A declarative API removes the need to write [boilerplate code](https://github.co
 $ npm install --save react-router-native
 ```
 
+#### Using yarn:
+
+```sh
+$ yarn add react-router-native
+```
+
 ### Usage
 
 ```javascript
