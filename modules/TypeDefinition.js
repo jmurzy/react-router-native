@@ -33,6 +33,7 @@ export type EnhancedNavigationRoute = {
   reducer: Function,
   onSwipeBack: ?Function,
   onSwipeForward: ?Function,
+  gestureResponseDistance: ?number,
 };
 
 export type IndexRouteDef = {
@@ -51,6 +52,7 @@ export type RouteDef = {
   reducer: Function,
   onSwipeBack: ?Function,
   onSwipeForward: ?Function,
+  gestureResponseDistance?: number,
 };
 
 export type NoPathRouteDef = {
