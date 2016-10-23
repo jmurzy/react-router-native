@@ -17,6 +17,16 @@ const {
 
 let routerState = null;
 
+/* eslint-disable max-len */
+/**
+ * This enhances a given history
+ * (see https://github.com/ReactJSTraining/history/blob/master/docs/Glossary.md#createhistoryenhancer )
+ * by adding the methods `create(Pop|TransitionTo|Push|Replace)`.
+ * These are used in RouterContext::getChildContext to produce the actual methods (`pop`, `transitionTo` etc.)
+ * with closured information about the current routing state
+ * (e.g. the current `navigationState` or `location`)
+ */
+/* eslint-enable max-len */
 const useNavState = (createHistory: Function) => (options = {}) => {
   const {
     transitionTo: baseTransitionTo,
