@@ -37,7 +37,7 @@ Redux is supported via [react-router-redux](https://github.com/reactjs/react-rou
 import React from 'react'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
-import { Router, nativeHistory } from 'react-router-native';
+import { Router, nativeHistory } from 'react-router-native'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 import reducers from '<project-path>/reducers'
@@ -62,7 +62,7 @@ const routes = (
       /* ... */
     </Router>
   </Provider>
-);
+)
 
-AppRegistry.registerComponent('YourApp', () => () => routes);
+AppRegistry.registerComponent('YourApp', () => () => routes)
 ```
