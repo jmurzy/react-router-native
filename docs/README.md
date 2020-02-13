@@ -31,38 +31,4 @@ function handleHardwareBackPress(router) {
 
 ### Redux Support
 
-Redux is supported via [react-router-redux](https://github.com/reactjs/react-router-redux). The following example was adopted from the package's [README](https://github.com/reactjs/react-router-redux/blob/master/README.md):
-
-```javascript
-import React from 'react'
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'
-import { Router, nativeHistory } from 'react-router-native';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-
-import reducers from '<project-path>/reducers'
-
-// Add the reducer to your store on the `routing` key
-const store = createStore(
-  combineReducers({
-    ...reducers,
-    routing: routerReducer
-  })
-)
-
-// Create an enhanced history that syncs navigation events with the store
-const history = syncHistoryWithStore(nativeHistory, store)
-// Set current path to '/'
-history.push('/')
-
-const routes = (
-  <Provider store={store}>
-    /* Tell the Router to use our enhanced history */
-    <Router history={history}>
-      /* ... */
-    </Router>
-  </Provider>
-);
-
-AppRegistry.registerComponent('YourApp', () => () => routes);
-```
+Redux is supported via [connected-react-router](https://github.com/supasate/connected-react-router). For up-to-date implementation instructions see the package's [README](https://github.com/supasate/connected-react-router/blob/master/README.md).
